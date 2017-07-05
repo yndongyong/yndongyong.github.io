@@ -93,17 +93,17 @@
 
 
 
-<meta name="description" content="本文的核心：Android lifecycle process 梳理Android的生命周期的相关概念 Activity state变换时，各种个生命周期hook的执行顺序。 概述一下每个生命周期方法适合做的操作。 Android lifecycle process概述 见图   Activity的生命周期hook onCreate（）  onStart()  onResume()    onPa">
+<meta name="description" content="本文的核心：Android lifecycle process 梳理Android的生命周期的相关概念 Activity state变换时，各种个生命周期hook的执行顺序。 概述一下每个生命周期方法适合做的操作。  Android lifecycle process  概述   见图 Activity的生命周期hook onCreate（）  onStart()  onResume()    o">
 <meta name="keywords" content="Andoird">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Android 生命周期概述">
 <meta property="og:url" content="https://yndongyong.github.io/2017/07/05/Android-生命周期概述/index.html">
 <meta property="og:site_name" content="yndongyong‘s blog">
-<meta property="og:description" content="本文的核心：Android lifecycle process 梳理Android的生命周期的相关概念 Activity state变换时，各种个生命周期hook的执行顺序。 概述一下每个生命周期方法适合做的操作。 Android lifecycle process概述 见图   Activity的生命周期hook onCreate（）  onStart()  onResume()    onPa">
-<meta property="og:updated_time" content="2017-07-05T15:53:53.000Z">
+<meta property="og:description" content="本文的核心：Android lifecycle process 梳理Android的生命周期的相关概念 Activity state变换时，各种个生命周期hook的执行顺序。 概述一下每个生命周期方法适合做的操作。  Android lifecycle process  概述   见图 Activity的生命周期hook onCreate（）  onStart()  onResume()    o">
+<meta property="og:updated_time" content="2017-07-05T15:58:37.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Android 生命周期概述">
-<meta name="twitter:description" content="本文的核心：Android lifecycle process 梳理Android的生命周期的相关概念 Activity state变换时，各种个生命周期hook的执行顺序。 概述一下每个生命周期方法适合做的操作。 Android lifecycle process概述 见图   Activity的生命周期hook onCreate（）  onStart()  onResume()    onPa">
+<meta name="twitter:description" content="本文的核心：Android lifecycle process 梳理Android的生命周期的相关概念 Activity state变换时，各种个生命周期hook的执行顺序。 概述一下每个生命周期方法适合做的操作。  Android lifecycle process  概述   见图 Activity的生命周期hook onCreate（）  onStart()  onResume()    o">
 
 
 
@@ -323,11 +323,10 @@
         <h2 id="本文的核心：Android-lifecycle-process"><a href="#本文的核心：Android-lifecycle-process" class="headerlink" title="本文的核心：Android lifecycle process"></a>本文的核心：Android lifecycle process</h2><ul>
 <li>梳理Android的生命周期的相关概念</li>
 <li>Activity state变换时，各种个生命周期hook的执行顺序。</li>
-<li><p>概述一下每个生命周期方法适合做的操作。</p>
-<h2 id="Android-lifecycle-process"><a href="#Android-lifecycle-process" class="headerlink" title="Android lifecycle process"></a>Android lifecycle process</h2><p>概述</p>
-<p>见图</p>
-</li>
+<li>概述一下每个生命周期方法适合做的操作。</li>
 </ul>
+<h2 id="Android-lifecycle-process"><a href="#Android-lifecycle-process" class="headerlink" title="Android lifecycle process"></a>Android lifecycle process</h2><p>  概述</p>
+<p>  见图</p>
 <h2 id="Activity的生命周期hook"><a href="#Activity的生命周期hook" class="headerlink" title="Activity的生命周期hook"></a>Activity的生命周期hook</h2><ol>
 <li><p>onCreate（）</p>
 </li>
@@ -345,18 +344,19 @@
 <ol>
 <li>onDestroy()</li>
 </ol>
-<h2 id="onConfigurationChange时的一些处理。"><a href="#onConfigurationChange时的一些处理。" class="headerlink" title="onConfigurationChange时的一些处理。"></a>onConfigurationChange时的一些处理。</h2><p>  4.1 介绍</p>
+<h2 id="onConfigurationChange时的一些处理"><a href="#onConfigurationChange时的一些处理" class="headerlink" title="onConfigurationChange时的一些处理"></a>onConfigurationChange时的一些处理</h2><p>  4.1 介绍</p>
 <p>  4.2 它的值</p>
 <p>  4.3 回调的时机</p>
 <p>  4.4 设置不造成重走生命周期。</p>
-<h2 id="各种状态下Android的生命周期方法调用顺序。"><a href="#各种状态下Android的生命周期方法调用顺序。" class="headerlink" title="各种状态下Android的生命周期方法调用顺序。"></a>各种状态下Android的生命周期方法调用顺序。</h2><p>  5.1 切换Activity</p>
+<h2 id="各种状态下Android的生命周期方法调用顺序"><a href="#各种状态下Android的生命周期方法调用顺序" class="headerlink" title="各种状态下Android的生命周期方法调用顺序"></a>各种状态下Android的生命周期方法调用顺序</h2><p>  5.1 切换Activity</p>
 <p>  5.2 显示float window类型 dialog/activity/dialogfragment</p>
 <p>  5.3 按下home键</p>
 <p>  5.4 跳转到其他程序</p>
 <p>  5.5 充其他程序切换回本应用</p>
 <p>  5.6 按下锁屏键</p>
 <p>  5.7 解锁</p>
-<p>  ##注意：</p>
+<h2 id="onSaveIntance"><a href="#onSaveIntance" class="headerlink" title="onSaveIntance"></a>onSaveIntance</h2><p>onSavaInstance 和onpause 都可以存储值，他们的区别。  </p>
+<p>##注意：</p>
 <ul>
 <li>不要在onPause方法中执行耗时的炒作，当跳转Activity时，只有当当前Activity的onPause方法执行完毕返回后， 下一个Activity的生命周期方法才会执行。如果当前Activity在onPause方法中执行了耗时操作，将会执行UI的卡顿。</li>
 <li>需要在每个方法内调用父类方法</li>
@@ -516,7 +516,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#本文的核心：Android-lifecycle-process"><span class="nav-number">1.</span> <span class="nav-text">本文的核心：Android lifecycle process</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Android-lifecycle-process"><span class="nav-number">2.</span> <span class="nav-text">Android lifecycle process</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Activity的生命周期hook"><span class="nav-number">3.</span> <span class="nav-text">Activity的生命周期hook</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#onConfigurationChange时的一些处理。"><span class="nav-number">4.</span> <span class="nav-text">onConfigurationChange时的一些处理。</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#各种状态下Android的生命周期方法调用顺序。"><span class="nav-number">5.</span> <span class="nav-text">各种状态下Android的生命周期方法调用顺序。</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#本文的核心：Android-lifecycle-process"><span class="nav-number">1.</span> <span class="nav-text">本文的核心：Android lifecycle process</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Android-lifecycle-process"><span class="nav-number">2.</span> <span class="nav-text">Android lifecycle process</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Activity的生命周期hook"><span class="nav-number">3.</span> <span class="nav-text">Activity的生命周期hook</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#onConfigurationChange时的一些处理"><span class="nav-number">4.</span> <span class="nav-text">onConfigurationChange时的一些处理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#各种状态下Android的生命周期方法调用顺序"><span class="nav-number">5.</span> <span class="nav-text">各种状态下Android的生命周期方法调用顺序</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#onSaveIntance"><span class="nav-number">6.</span> <span class="nav-text">onSaveIntance</span></a></li></ol></div>
             
 
           </div>
