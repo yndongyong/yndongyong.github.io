@@ -5,7 +5,7 @@
   
 
 
-<html class="theme-next muse use-motion" lang="ch">
+<html class="theme-next pisces use-motion" lang="zh-Hans">
 <head>
   <meta charset="UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -109,13 +109,13 @@
   var NexT = window.NexT || {};
   var CONFIG = {
     root: '/',
-    scheme: 'Muse',
+    scheme: 'Pisces',
     sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
     fancybox: true,
     motion: true,
     duoshuo: {
       userId: '0',
-      author: 'Author'
+      author: '博主'
     },
     algolia: {
       applicationID: '',
@@ -153,7 +153,7 @@
 
 </head>
 
-<body itemscope itemtype="http://schema.org/WebPage" lang="ch">
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
 
   
   
@@ -178,7 +178,7 @@
       </a>
     </div>
       
-        <p class="site-subtitle">blog</p>
+        <p class="site-subtitle">生命不息，学习不止！</p>
       
   </div>
 
@@ -203,7 +203,7 @@
             
               <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
             
-            Startseite
+            首页
           </a>
         </li>
       
@@ -213,7 +213,7 @@
             
               <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
             
-            Archiv
+            归档
           </a>
         </li>
       
@@ -223,7 +223,7 @@
             
               <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
             
-            Tags
+            标签
           </a>
         </li>
       
@@ -256,7 +256,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://yndongyong.github.io/2017/07/05/hello-world/">
+    <link itemprop="mainEntityOfPage" href="https://yndongyong.github.io/2017/07/05/Android-生命周期概述/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="yndongyong">
@@ -275,7 +275,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/07/05/hello-world/" itemprop="url">Hello World</a></h1>
+                <a class="post-title-link" href="/2017/07/05/Android-生命周期概述/" itemprop="url">Android 生命周期概述</a></h1>
         
 
         <div class="post-meta">
@@ -285,9 +285,9 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               
-                <span class="post-meta-item-text">Veröffentlicht am</span>
+                <span class="post-meta-item-text">发表于</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-07-05T21:02:32+08:00">
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-05T22:11:19+08:00">
                 2017-07-05
               </time>
             
@@ -324,15 +324,48 @@
       
         
           
-            <p>Welcome to <a href="https://hexo.io/" target="_blank" rel="external">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="external">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="external">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="external">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo new <span class="string">"My New Post"</span></div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="external">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo server</div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="external">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo generate</div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="external">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo deploy</div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="external">Deployment</a></p>
+            <h2 id="本文的核心：Android-lifecycle-process"><a href="#本文的核心：Android-lifecycle-process" class="headerlink" title="本文的核心：Android lifecycle process"></a>本文的核心：Android lifecycle process</h2><ul>
+<li>梳理Android的生命周期的相关概念</li>
+<li>Activity state变换时，各种个生命周期hook的执行顺序。</li>
+<li><p>概述一下每个生命周期方法适合做的操作。</p>
+<h2 id="Android-lifecycle-process"><a href="#Android-lifecycle-process" class="headerlink" title="Android lifecycle process"></a>Android lifecycle process</h2><p>概述</p>
+<p>见图</p>
+</li>
+</ul>
+<h2 id="Activity的生命周期hook"><a href="#Activity的生命周期hook" class="headerlink" title="Activity的生命周期hook"></a>Activity的生命周期hook</h2><ol>
+<li><p>onCreate（）</p>
+</li>
+<li><p>onStart()</p>
+</li>
+<li><p>onResume()</p>
+</li>
+</ol>
+<ol>
+<li>onPause()</li>
+</ol>
+<ol>
+<li>onStop()</li>
+</ol>
+<ol>
+<li>onDestroy()</li>
+</ol>
+<h2 id="onConfigurationChange时的一些处理。"><a href="#onConfigurationChange时的一些处理。" class="headerlink" title="onConfigurationChange时的一些处理。"></a>onConfigurationChange时的一些处理。</h2><p>  4.1 介绍</p>
+<p>  4.2 它的值</p>
+<p>  4.3 回调的时机</p>
+<p>  4.4 设置不造成重走生命周期。</p>
+<h2 id="各种状态下Android的生命周期方法调用顺序。"><a href="#各种状态下Android的生命周期方法调用顺序。" class="headerlink" title="各种状态下Android的生命周期方法调用顺序。"></a>各种状态下Android的生命周期方法调用顺序。</h2><p>  5.1 切换Activity</p>
+<p>  5.2 显示float window类型 dialog/activity/dialogfragment</p>
+<p>  5.3 按下home键</p>
+<p>  5.4 跳转到其他程序</p>
+<p>  5.5 充其他程序切换回本应用</p>
+<p>  5.6 按下锁屏键</p>
+<p>  5.7 解锁</p>
+<p>  ##注意：</p>
+<ul>
+<li>不要在onPause方法中执行耗时的炒作，当跳转Activity时，只有当当前Activity的onPause方法执行完毕返回后， 下一个Activity的生命周期方法才会执行。如果当前Activity在onPause方法中执行了耗时操作，将会执行UI的卡顿。</li>
+<li>需要在每个方法内调用父类方法</li>
+<li>注册broadcast和取消注册braodcast的的两种时机，以及差异。</li>
+</ul>
 
           
         
@@ -413,13 +446,22 @@
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
                 <span class="site-state-item-count">1</span>
-                <span class="site-state-item-name">Artikel</span>
+                <span class="site-state-item-name">日志</span>
               </a>
             </div>
           
 
           
 
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              
+                <span class="site-state-item-count">1</span>
+                <span class="site-state-item-name">标签</span>
+              
+            </div>
           
 
         </nav>
@@ -467,13 +509,13 @@
 
 
 <div class="powered-by">
-  Erstellt mit  <a class="theme-link" href="https://hexo.io">Hexo</a>
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
 </div>
 
 <div class="theme-info">
-  Theme -
+  主题 -
   <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
-    NexT.Muse
+    NexT.Pisces
   </a>
 </div>
 
@@ -552,6 +594,13 @@
 
   
   
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.1"></script>
+
+
 
   
     <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
