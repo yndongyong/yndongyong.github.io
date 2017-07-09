@@ -4,12 +4,13 @@
 
 # Site
 title: yndongyong‘s blog
-subtitle: blog
+subtitle: 生命不息，学习不止！
 description: 记录学习的点滴
 author: yndongyong
-language: ch
-timezone: UTC
+language: zh-Hans
+timezone: 
 
+since: 2017
 # URL
 ## If your site is put in a subdirectory, set url as 'http://yoursite.com/child' and root as '/child/'
 url: https://yndongyong.github.io
@@ -68,7 +69,7 @@ theme: next
 # Deployment
 ## Docs: https://hexo.io/docs/deployment.html
 deploy:
-  type:git
-  repo:https://github.com/yndongyong/yndongyong.github.io.git
-  brach:master
-  message:Site update
+  type: git
+  repo: https://github.com/yndongyong/yndongyong.github.io.git
+  brach: master
+  message: Default to Site updated {{ now('YYYY-MM-DD HH:mm:ss') }}
