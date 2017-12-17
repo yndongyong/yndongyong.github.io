@@ -102,7 +102,7 @@
 <meta property="og:description" content="iOS生命周期状态iOS应用的生命周期状态分为如下几种：  Not Running （非运行状态） 应用尚未运行或者被系统终止 Inactive （前台非运行状态） 应用正在进入前台状态，还不能接受事件处理 Active (前台运行状态) 应用进入前台运行状态，可以接受用户事件处理 Background （后台运行状态） 应用进入后台，依然能够执行代码。执行完之后将进入挂起状态 Suspended">
 <meta property="og:image" content="http://oav23hfp9.bkt.clouddn.com/17-12-17/35088222.jpg">
 <meta property="og:image" content="http://oav23hfp9.bkt.clouddn.com/17-12-17/33791198.jpg">
-<meta property="og:updated_time" content="2017-12-17T07:13:11.063Z">
+<meta property="og:updated_time" content="2017-12-17T07:19:58.941Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="iOS应用生命周期小节">
 <meta name="twitter:description" content="iOS生命周期状态iOS应用的生命周期状态分为如下几种：  Not Running （非运行状态） 应用尚未运行或者被系统终止 Inactive （前台非运行状态） 应用正在进入前台状态，还不能接受事件处理 Active (前台运行状态) 应用进入前台运行状态，可以接受用户事件处理 Background （后台运行状态） 应用进入后台，依然能够执行代码。执行完之后将进入挂起状态 Suspended">
@@ -331,7 +331,7 @@
 <li>Background （后台运行状态） 应用进入后台，依然能够执行代码。执行完之后将进入挂起状态</li>
 <li>Suspended（挂起状态） 被挂起的应用进入一种“冷冻状态” ，不能执行代码，若系统内存不足，应用会被终止。</li>
 </ul>
-<p><img src="http://oav23hfp9.bkt.clouddn.com/17-12-17/35088222.jpg" alt="ios应用的5中状态"></p>
+<p><img src="http://oav23hfp9.bkt.clouddn.com/17-12-17/35088222.jpg" alt="iOS应用的5中状态"></p>
 <p>在iOS应用的各种状态转换的过程中，iOS系统会回调应用程序的委托对象AppDelegate中的方法，并且能够发送相应的通知。主要的方法和通知如下：</p>
 <table>
 <thead>
@@ -378,7 +378,7 @@
 <h3 id="应用启动时的状态切换，对应图中的红线"><a href="#应用启动时的状态切换，对应图中的红线" class="headerlink" title="应用启动时的状态切换，对应图中的红线"></a>应用启动时的状态切换，对应图中的红线</h3><p>Not Running -&gt; Inactive -&gt; Active</p>
 <h3 id="点击home键退出应用时的状态切换，对应图中的绿线"><a href="#点击home键退出应用时的状态切换，对应图中的绿线" class="headerlink" title="点击home键退出应用时的状态切换，对应图中的绿线"></a>点击home键退出应用时的状态切换，对应图中的绿线</h3><p>应用不可以后台执行时<br>Active -&gt; Inactive -&gt; Background -&gt; Suspended -&gt; Not Running</p>
 <p>应用可以后台执行时<br>Active -&gt; Inactive -&gt; Background -&gt; Suspended </p>
-<h3 id="挂起从新运行场景，对应途中的蓝线"><a href="#挂起从新运行场景，对应途中的蓝线" class="headerlink" title="挂起从新运行场景，对应途中的蓝线"></a>挂起从新运行场景，对应途中的蓝线</h3><p>Suspended -&gt; Background -&gt; Inactive -&gt; Active </p>
+<h3 id="挂起从新运行场景，对应图中的蓝线"><a href="#挂起从新运行场景，对应图中的蓝线" class="headerlink" title="挂起从新运行场景，对应图中的蓝线"></a>挂起从新运行场景，对应图中的蓝线</h3><p>Suspended -&gt; Background -&gt; Inactive -&gt; Active </p>
 <h3 id="应用挂起后被清除时不会调用任何回调方法"><a href="#应用挂起后被清除时不会调用任何回调方法" class="headerlink" title="应用挂起后被清除时不会调用任何回调方法"></a>应用挂起后被清除时不会调用任何回调方法</h3><p>清除包括系统内存不足的系统清除 和 用户从多任务列表中清除</p>
 <p>注意：</p>
 <ul>
@@ -554,7 +554,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#iOS生命周期状态"><span class="nav-number">1.</span> <span class="nav-text">iOS生命周期状态</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#应用启动时的状态切换，对应图中的红线"><span class="nav-number">2.</span> <span class="nav-text">应用启动时的状态切换，对应图中的红线</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#点击home键退出应用时的状态切换，对应图中的绿线"><span class="nav-number">3.</span> <span class="nav-text">点击home键退出应用时的状态切换，对应图中的绿线</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#挂起从新运行场景，对应途中的蓝线"><span class="nav-number">4.</span> <span class="nav-text">挂起从新运行场景，对应途中的蓝线</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#应用挂起后被清除时不会调用任何回调方法"><span class="nav-number">5.</span> <span class="nav-text">应用挂起后被清除时不会调用任何回调方法</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#iOS生命周期状态"><span class="nav-number">1.</span> <span class="nav-text">iOS生命周期状态</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#应用启动时的状态切换，对应图中的红线"><span class="nav-number">2.</span> <span class="nav-text">应用启动时的状态切换，对应图中的红线</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#点击home键退出应用时的状态切换，对应图中的绿线"><span class="nav-number">3.</span> <span class="nav-text">点击home键退出应用时的状态切换，对应图中的绿线</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#挂起从新运行场景，对应图中的蓝线"><span class="nav-number">4.</span> <span class="nav-text">挂起从新运行场景，对应图中的蓝线</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#应用挂起后被清除时不会调用任何回调方法"><span class="nav-number">5.</span> <span class="nav-text">应用挂起后被清除时不会调用任何回调方法</span></a></li></ol></div>
             
 
           </div>
