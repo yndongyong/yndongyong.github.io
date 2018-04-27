@@ -256,6 +256,144 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://yndongyong.github.io/2018/01/11/使用Behavior实现Toolbar的透明度跟随滑页面动进行变换/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="yndongyong">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="yndongyong‘s blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/01/11/使用Behavior实现Toolbar的透明度跟随滑页面动进行变换/" itemprop="url">使用Behavior实现Toolbar的透明度跟随滑页面动进行变换</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-11T16:43:07+08:00">
+                2018-01-11
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>使用Behavior实现Toolbar的透明度跟随页面上下滑动从不透明到透明以及反向的一个显示效果，如下图：</p>
+<p><img src="http://oav23hfp9.bkt.clouddn.com/18-4-27/40610293.jpg" alt="`Toobar`的显示与隐藏"></p>
+<p>###一、实现的效果</p>
+<ol>
+<li>界面上滑过程中，Toolbar逐渐显示出来，直到完全显示</li>
+<li>界面下滑过程中，Toolbar逐渐隐藏，直到完全不可见</li>
+</ol>
+<p>###二、常规思路</p>
+<p>如图所示的效果，常规的做法是为AppBarLayout添加一个OnOffsetChangedListener来监听appbarlayout的滑动的过程，用当前滑动的距离和slideDistance某个固定值计算一个比例，比如图中红色背景块作为锚点，slideDistance就是这个view的高度，通过比例计算出当前的Toolbar的背景颜色的透明值。</p>
+<p>1.上滑过程中滑动距离从 0 到 slideDistance 变化，背景颜色根据滑动距离百分比改变颜色透明度，这个过程颜色透明度从 0 到 255。</p>
+<p>2.下滑过程：即上滑过程的逆向。</p>
+<p>通常情况下，slideDistance 是某个UI元素的高度，这个高度还需要动态的拿到。一般的做法是在Activity的onCreated方法中使用View.post(runnable),或者添加个一个addOnGlobalLayoutListener监听器待界面绘制完成后得到view的高度。</p>
+<p>OnOffsetChangedListener的核心代码如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">AppBarLayout.OnOffsetChangedListener offsetChangedListener = new AppBarLayout.OnOffsetChangedListener() &#123;</div><div class="line">        @RequiresApi(api = Build.VERSION_CODES.M)</div><div class="line">        @Override</div><div class="line">        public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) &#123;</div><div class="line">            float fraction = Math.abs(verticalOffset * 1.0f) / slideDistance;</div><div class="line">            fraction = Math.min(fraction, 1);</div><div class="line">            bgColor = changeAlpha(getResources().getColor(R.color.white), fraction);</div><div class="line">            header_toolbar.setBackgroundColor(bgColor);</div><div class="line">            tv_toolbar_title.setAlpha(fraction);</div><div class="line">        &#125;</div><div class="line">    &#125;;</div></pre></td></tr></table></figure>
+<h3 id="三、优化后的思路"><a href="#三、优化后的思路" class="headerlink" title="三、优化后的思路"></a>三、优化后的思路</h3><p>由于项目中的多个详情界面都需要实现这样的效果，造成了代码的多次拷贝，如果将来UI需要改变的话，散落在项目各个角落的代码也将难以维护。此外，在每个界面中Toobar显示隐藏参考的view元素也不同的。</p>
+<p>基于以上这些缺点项目最终废弃了常规的做法，使用AppBarLayout.Behavior将这一效果封装、抽象。<br>在需要使用的地方直接引用自定义的Behavior就行。通过Behavior，以一种非侵入的方式为view添加<br>行为。</p>
+<p>核心代码如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">public class ChangeToolbarAlphaBehavior extends AppBarLayout.Behavior &#123;</div><div class="line"></div><div class="line">    //锚点view</div><div class="line">    private static final String TAG_ANCHOR_VIEW = &quot;anchorView&quot;;</div><div class="line">    //title</div><div class="line">    private static final String TAG_TOOLBAR_TITLE = &quot;toolbarTitle&quot;;</div><div class="line">    //toolbar</div><div class="line">    private static final String TAG_TOOLBAR = &quot;toolbar&quot;;</div><div class="line"></div><div class="line">    private TextView header_title;</div><div class="line">    private View anchorView;</div><div class="line">    private android.support.v7.widget.Toolbar toolbar;</div><div class="line"></div><div class="line">    float slideDistance = 0f;</div><div class="line"></div><div class="line">    private int bgColor;</div><div class="line"></div><div class="line">    private int mainColor = 0;</div><div class="line"></div><div class="line">    public ChangeToolbarAlphaBehavior(Context context, AttributeSet attrs) &#123;</div><div class="line">        super(context, attrs);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    /**</div><div class="line">     * AppBarLayout布局时调用</div><div class="line">     * @param parent</div><div class="line">     * @param abl</div><div class="line">     * @param layoutDirection</div><div class="line">     * @return</div><div class="line">     */</div><div class="line">    @Override</div><div class="line">    public boolean onLayoutChild(CoordinatorLayout parent, AppBarLayout abl, int layoutDirection) &#123;</div><div class="line"></div><div class="line">        //拿到toolbar</div><div class="line">        if (toolbar == null) &#123;</div><div class="line">            toolbar = parent.findViewWithTag(TAG_TOOLBAR);</div><div class="line">        &#125;</div><div class="line">        //拿到title</div><div class="line">        if (header_title == null) &#123;</div><div class="line">            header_title = parent.findViewWithTag(TAG_TOOLBAR_TITLE);</div><div class="line">        &#125;</div><div class="line">        //拿到锚点View，以锚点view的高度作为完全显示或者隐藏的临界值</div><div class="line">        if (anchorView == null) &#123;</div><div class="line">            anchorView = parent.findViewWithTag(TAG_ANCHOR_VIEW);</div><div class="line">        &#125;</div><div class="line">        if (anchorView == null || toolbar == null) &#123;</div><div class="line">            return super.onLayoutChild(parent, abl, layoutDirection);</div><div class="line">        &#125;</div><div class="line">        //临界值</div><div class="line">        if (slideDistance == 0f) &#123;</div><div class="line">            slideDistance = anchorView.getBottom() - toolbar.getHeight();</div><div class="line">        &#125;</div><div class="line">        if (mainColor == 0) &#123;</div><div class="line">            mainColor = ContextCompat.getColor(parent.getContext(), R.color.white);</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        abl.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() &#123;</div><div class="line">            @Override</div><div class="line">            public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) &#123;</div><div class="line">                float fraction = Math.abs(verticalOffset * 1.0f) / slideDistance;</div><div class="line">                fraction = Math.min(fraction, 1);</div><div class="line"></div><div class="line">                bgColor = changeAlpha(mainColor, fraction);</div><div class="line">                toolbar.setBackgroundColor(bgColor);</div><div class="line">                header_title.setAlpha(fraction);</div><div class="line">            &#125;</div><div class="line">        &#125;);</div><div class="line"></div><div class="line">        return super.onLayoutChild(parent, abl, layoutDirection);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    /**</div><div class="line">     * 根据百分比改变颜色透明度</div><div class="line">     */</div><div class="line">    public int changeAlpha(int color, float fraction) &#123;</div><div class="line">        int red = Color.red(color);</div><div class="line">        int green = Color.green(color);</div><div class="line">        int blue = Color.blue(color);</div><div class="line">        int alpha = (int) (Color.alpha(color) * fraction);</div><div class="line">        return Color.argb(alpha, red, green, blue);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>使用方式</p>
+<p>1、直接在xml里为AppbarLayout添加自定义的behavior</p>
+<p><code>app:layout_behavior=&quot;packagename.ChangeToolbarAlphaBehavior&quot;</code></p>
+<p>2、为toolbar添加tag</p>
+<p><code>android:tag=&quot;toolbar&quot;</code></p>
+<p>3、 为锚点view添加tag</p>
+<p><code>android:tag=&quot;anchorView&quot;</code></p>
+<p>3、 为toolbar中有相同动作的view添加tag</p>
+<p>比如此处的title<br><code>android:tag=&quot;toolbarTitle&quot;</code></p>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="https://yndongyong.github.io/2017/12/17/iOS应用生命周期小节/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1094,7 +1232,7 @@ public void onRequestPermissionsResult(int requestCode, @NonNull String[] permis
           
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
-                <span class="site-state-item-count">5</span>
+                <span class="site-state-item-count">6</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -1107,7 +1245,7 @@ public void onRequestPermissionsResult(int requestCode, @NonNull String[] permis
             
             <div class="site-state-item site-state-tags">
               
-                <span class="site-state-item-count">6</span>
+                <span class="site-state-item-count">7</span>
                 <span class="site-state-item-name">标签</span>
               
             </div>
@@ -1148,8 +1286,8 @@ public void onRequestPermissionsResult(int requestCode, @NonNull String[] permis
       <div class="footer-inner">
         <div class="copyright" >
   
-  &copy; 
-  <span itemprop="copyrightYear">2017</span>
+  &copy;  2017 - 
+  <span itemprop="copyrightYear">2018</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
