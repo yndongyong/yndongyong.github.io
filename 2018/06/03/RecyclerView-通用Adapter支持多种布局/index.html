@@ -77,7 +77,7 @@
 <link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="iOS 生命周期," />
+  <meta name="keywords" content="RecyclerView Adapter," />
 
 
 
@@ -93,20 +93,19 @@
 
 
 
-<meta name="description" content="iOS生命周期状态iOS应用的生命周期状态分为如下几种：  Not Running （非运行状态） 应用尚未运行或者被系统终止 Inactive （前台非运行状态） 应用正在进入前台状态，还不能接受事件处理 Active (前台运行状态) 应用进入前台运行状态，可以接受用户事件处理 Background （后台运行状态） 应用进入后台，依然能够执行代码。执行完之后将进入挂起状态 Suspended">
-<meta name="keywords" content="iOS 生命周期">
+<meta name="description" content="作用：简化adapter中涉及多种ItemView布局的写法，使用对象池存放布局对象(ItemViewProvider)，每一个布局委托一个ItemViewProvider，并在其中封装布局与对象绑定相关的逻辑，简化Adapter。 特性 极少的类文件 简化Adapter的写法，直接使用SimpleAdapter 支持多种布局类型，扩展方便 每一种布局相关逻辑均写在对应的委托类中 支持一种数据类型">
+<meta name="keywords" content="RecyclerView Adapter">
 <meta property="og:type" content="article">
-<meta property="og:title" content="iOS应用生命周期小节">
-<meta property="og:url" content="https://yndongyong.github.io/2017/12/17/iOS应用生命周期小节/index.html">
+<meta property="og:title" content="RecyclerView 通用Adapter支持多种布局">
+<meta property="og:url" content="https://yndongyong.github.io/2018/06/03/RecyclerView-通用Adapter支持多种布局/index.html">
 <meta property="og:site_name" content="yndongyong‘s blog">
-<meta property="og:description" content="iOS生命周期状态iOS应用的生命周期状态分为如下几种：  Not Running （非运行状态） 应用尚未运行或者被系统终止 Inactive （前台非运行状态） 应用正在进入前台状态，还不能接受事件处理 Active (前台运行状态) 应用进入前台运行状态，可以接受用户事件处理 Background （后台运行状态） 应用进入后台，依然能够执行代码。执行完之后将进入挂起状态 Suspended">
-<meta property="og:image" content="http://oav23hfp9.bkt.clouddn.com/17-12-17/35088222.jpg">
-<meta property="og:image" content="http://oav23hfp9.bkt.clouddn.com/17-12-17/33791198.jpg">
-<meta property="og:updated_time" content="2017-12-17T07:19:58.941Z">
+<meta property="og:description" content="作用：简化adapter中涉及多种ItemView布局的写法，使用对象池存放布局对象(ItemViewProvider)，每一个布局委托一个ItemViewProvider，并在其中封装布局与对象绑定相关的逻辑，简化Adapter。 特性 极少的类文件 简化Adapter的写法，直接使用SimpleAdapter 支持多种布局类型，扩展方便 每一种布局相关逻辑均写在对应的委托类中 支持一种数据类型">
+<meta property="og:image" content="http://oav23hfp9.bkt.clouddn.com/18-6-3/25785972.jpg">
+<meta property="og:updated_time" content="2018-06-03T04:44:56.796Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="iOS应用生命周期小节">
-<meta name="twitter:description" content="iOS生命周期状态iOS应用的生命周期状态分为如下几种：  Not Running （非运行状态） 应用尚未运行或者被系统终止 Inactive （前台非运行状态） 应用正在进入前台状态，还不能接受事件处理 Active (前台运行状态) 应用进入前台运行状态，可以接受用户事件处理 Background （后台运行状态） 应用进入后台，依然能够执行代码。执行完之后将进入挂起状态 Suspended">
-<meta name="twitter:image" content="http://oav23hfp9.bkt.clouddn.com/17-12-17/35088222.jpg">
+<meta name="twitter:title" content="RecyclerView 通用Adapter支持多种布局">
+<meta name="twitter:description" content="作用：简化adapter中涉及多种ItemView布局的写法，使用对象池存放布局对象(ItemViewProvider)，每一个布局委托一个ItemViewProvider，并在其中封装布局与对象绑定相关的逻辑，简化Adapter。 特性 极少的类文件 简化Adapter的写法，直接使用SimpleAdapter 支持多种布局类型，扩展方便 每一种布局相关逻辑均写在对应的委托类中 支持一种数据类型">
+<meta name="twitter:image" content="http://oav23hfp9.bkt.clouddn.com/18-6-3/25785972.jpg">
 
 
 
@@ -134,13 +133,13 @@
 
 
 
-  <link rel="canonical" href="https://yndongyong.github.io/2017/12/17/iOS应用生命周期小节/"/>
+  <link rel="canonical" href="https://yndongyong.github.io/2018/06/03/RecyclerView-通用Adapter支持多种布局/"/>
 
 
 
 
 
-  <title>iOS应用生命周期小节 | yndongyong‘s blog</title>
+  <title>RecyclerView 通用Adapter支持多种布局 | yndongyong‘s blog</title>
   
 
 
@@ -259,7 +258,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://yndongyong.github.io/2017/12/17/iOS应用生命周期小节/">
+    <link itemprop="mainEntityOfPage" href="https://yndongyong.github.io/2018/06/03/RecyclerView-通用Adapter支持多种布局/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="yndongyong">
@@ -276,7 +275,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">iOS应用生命周期小节</h1>
+          <h1 class="post-title" itemprop="name headline">RecyclerView 通用Adapter支持多种布局</h1>
         
 
         <div class="post-meta">
@@ -288,8 +287,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-17T13:13:27+08:00">
-                2017-12-17
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-06-03T12:43:16+08:00">
+                2018-06-03
               </time>
             
 
@@ -323,67 +322,71 @@
       
 
       
-        <h3 id="iOS生命周期状态"><a href="#iOS生命周期状态" class="headerlink" title="iOS生命周期状态"></a>iOS生命周期状态</h3><p>iOS应用的生命周期状态分为如下几种：</p>
-<ul>
-<li>Not Running （非运行状态） 应用尚未运行或者被系统终止</li>
-<li>Inactive （前台非运行状态） 应用正在进入前台状态，还不能接受事件处理</li>
-<li>Active (前台运行状态) 应用进入前台运行状态，可以接受用户事件处理</li>
-<li>Background （后台运行状态） 应用进入后台，依然能够执行代码。执行完之后将进入挂起状态</li>
-<li>Suspended（挂起状态） 被挂起的应用进入一种“冷冻状态” ，不能执行代码，若系统内存不足，应用会被终止。</li>
+        <p>作用：简化adapter中涉及多种ItemView布局的写法，使用对象池存放布局对象(ItemViewProvider)，每一个布局委托一个ItemViewProvider，并在其中封装布局与对象绑定相关的逻辑，简化Adapter。</p>
+<h3 id="特性"><a href="#特性" class="headerlink" title="特性"></a>特性</h3><ul>
+<li>极少的类文件</li>
+<li>简化Adapter的写法，直接使用SimpleAdapter</li>
+<li>支持多种布局类型，扩展方便</li>
+<li>每一种布局相关逻辑均写在对应的委托类中</li>
+<li>支持一种数据类型对应多种布局</li>
 </ul>
-<p><img src="http://oav23hfp9.bkt.clouddn.com/17-12-17/35088222.jpg" alt="iOS应用的5中状态"></p>
-<p>在iOS应用的各种状态转换的过程中，iOS系统会回调应用程序的委托对象AppDelegate中的方法，并且能够发送相应的通知。主要的方法和通知如下：</p>
+<h3 id="主要涉及的类"><a href="#主要涉及的类" class="headerlink" title="主要涉及的类"></a>主要涉及的类</h3><h4 id="SimpleAdapter"><a href="#SimpleAdapter" class="headerlink" title="SimpleAdapter"></a>SimpleAdapter</h4><p>继承RecylerView的adapter，简化多类型Item的Adapter写法。</p>
+<h4 id="ItemViewProvider"><a href="#ItemViewProvider" class="headerlink" title="ItemViewProvider"></a>ItemViewProvider</h4><p>针对每一种布局Item的委托类，onCreateViewHolder和onBindViewHolder都由其委托，在其中完成布局的解析和对象的绑定和该布局相关的逻辑，向外暴露两个方法，一个是返回布局id,一个用于ViewHolder和实体对象的绑定。</p>
+<pre><code>int getLayoutId()//布局文件id
+void onBindViewHolder(SimpleViewHolder holder, T entity);//绑定UI和值
+</code></pre><h4 id="Items"><a href="#Items" class="headerlink" title="Items"></a>Items</h4><p>用于存放数据集</p>
+<h3 id="实现思想"><a href="#实现思想" class="headerlink" title="实现思想"></a>实现思想</h3><ul>
+<li>使用一个SparseArray来保存viewType(即是getItemViewType的返回值)和ItemViewProvider的对应关系</li>
+<li>使用一个SparseArray来保存viewType和Model（实体类型）的对应关系</li>
+</ul>
+<p>对应关系举例如下表所示：</p>
 <table>
 <thead>
 <tr>
-<th>方法</th>
-<th>通知</th>
-<th>说明</th>
+<th style="text-align:center">viewType</th>
+<th style="text-align:center">Model</th>
+<th style="text-align:left">ItemViewProvider</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>application:didFinishLaunchingWithOptions:</td>
-<td>UIApplicationDidFinishLaunchingNotification</td>
-<td>应用启动初始化时会调用该方法并发出通知，这个阶段会实例化根视图控制器</td>
+<td style="text-align:center">0</td>
+<td style="text-align:center">Category</td>
+<td style="text-align:left">CategoryStyle1ItemViewProvider</td>
 </tr>
 <tr>
-<td>applictaionDidBecomeActive:</td>
-<td>UIApplicationDidBecomeActiveNotification</td>
-<td>应用进入前台并且出去活动状态时调用该方法并发出通知，可以在这个方法里恢复UI的状态</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">News</td>
+<td style="text-align:left">NewsItemViewProvider</td>
 </tr>
 <tr>
-<td>applicationWillResignActive：</td>
-<td>UIApplicationWillResignActiveNotification</td>
-<td>应用从活动状态进入到非活动状态是调用该方法并发出通知。可以在这个方法里保存UI状态</td>
-</tr>
-<tr>
-<td>applicationDidEnterBackground:</td>
-<td>UIApplicationDidEnterBackgroundNotification</td>
-<td>应用进入后台时调用该方法并发出通知，可以在这里保存用户数据，释放资源如数据库资源</td>
-</tr>
-<tr>
-<td>applicationWillEnterForegound:</td>
-<td>UIApplicationWillEnterForegoundNotification</td>
-<td>应用进入到前台，但是处于非活动状态会调用该方法，这个阶段可以恢复用户数据</td>
-</tr>
-<tr>
-<td>applicationWillTerminate:</td>
-<td>UIApplicationWillTerminateNotification</td>
-<td>应用被终止时调用该方法并发出通知，但是内存清除除外，可以在这里释放资源 或者保存用户数据</td>
+<td style="text-align:center">2</td>
+<td style="text-align:center">Category</td>
+<td style="text-align:left">CategoryStyle2ItemViewProvider</td>
 </tr>
 </tbody>
 </table>
-<p>iOS应用各种状态切换的方法回调说明见下图<br><img src="http://oav23hfp9.bkt.clouddn.com/17-12-17/33791198.jpg" alt="iOS 生命周期"></p>
-<h3 id="应用启动时的状态切换，对应图中的红线"><a href="#应用启动时的状态切换，对应图中的红线" class="headerlink" title="应用启动时的状态切换，对应图中的红线"></a>应用启动时的状态切换，对应图中的红线</h3><p>Not Running -&gt; Inactive -&gt; Active</p>
-<h3 id="点击home键退出应用时的状态切换，对应图中的绿线"><a href="#点击home键退出应用时的状态切换，对应图中的绿线" class="headerlink" title="点击home键退出应用时的状态切换，对应图中的绿线"></a>点击home键退出应用时的状态切换，对应图中的绿线</h3><p>应用不可以后台执行时<br>Active -&gt; Inactive -&gt; Background -&gt; Suspended -&gt; Not Running</p>
-<p>应用可以后台执行时<br>Active -&gt; Inactive -&gt; Background -&gt; Suspended </p>
-<h3 id="挂起从新运行场景，对应图中的蓝线"><a href="#挂起从新运行场景，对应图中的蓝线" class="headerlink" title="挂起从新运行场景，对应图中的蓝线"></a>挂起从新运行场景，对应图中的蓝线</h3><p>Suspended -&gt; Background -&gt; Inactive -&gt; Active </p>
-<h3 id="应用挂起后被清除时不会调用任何回调方法"><a href="#应用挂起后被清除时不会调用任何回调方法" class="headerlink" title="应用挂起后被清除时不会调用任何回调方法"></a>应用挂起后被清除时不会调用任何回调方法</h3><p>清除包括系统内存不足的系统清除 和 用户从多任务列表中清除</p>
-<p>注意：</p>
-<ul>
-<li>应用是否可以在后台运行和挂起，由info.plist的属性Application dose not run in bakground属性决定，对应的键是UIApplicationExitsonSuspended。</li>
-</ul>
+<p>Adapter的getItemViewType方法的思路举例如下：</p>
+<p>对应的实体类型是News，先找到他的viewType，为1，在通过viewType找到对应的ItemViewProvider,对应的ItemViewProvider只有一个，getItemViewType则立即放回ViewType</p>
+<p>对应的实体类型是Category，先找到他的viewType为0，2，再通过viewType找到的对应的ItemViewViewProvider为多个，最终通过ItemViewProvider的accept方法判断由哪个具体的ItemViewViewProvider处理，最中返回其viewType的值。 </p>
+<h3 id="用法"><a href="#用法" class="headerlink" title="用法"></a>用法</h3><pre><code>//准备数据
+ items.add(&quot;头部1 -- type1&quot;);
+items.add(new CategoryEntry(&quot;http://pic.58pic.com/58pic/14/27/45/71r58PICmDM_1024.jpg&quot;, &quot;风景图片1&quot;));
+items.add(new CategoryEntry(&quot;http://img0.imgtn.bdimg.com/it/u=1610953019,3012342313&amp;fm=214&amp;gp=0.jpg&quot;, &quot;风景图片2&quot;));
+
+items.add(&quot;头部2 -- type2&quot;);
+items.add(new CategoryEntry(&quot;http://pic.58pic.com/58pic/14/27/45/71r58PICmDM_1024.jpg&quot;, &quot;风景图片4&quot;, 2));
+items.add(new CategoryEntry(&quot;http://img0.imgtn.bdimg.com/it/u=1610953019,3012342313&amp;fm=214&amp;gp=0.jpg&quot;, &quot;风景图片5&quot;, 2));
+
+multiTypeAdapter = SimpleAdapter.create(this)
+            .addNewData(items)
+            .register(new HeaderItemViewProvider())
+            .register(new Category1EntryItemViewProvider())
+            .register(new Category2EntryItemViewProvider())
+            .register(new Category3EntryItemViewProvider())
+            .attachToRecyclerView(rv_list);
+</code></pre><p>效果图中一共实现了4中布局类型：</p>
+<p><img src="http://oav23hfp9.bkt.clouddn.com/18-6-3/25785972.jpg" alt="多种布局"></p>
 
       
     </div>
@@ -413,7 +416,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/iOS-生命周期/" rel="tag"># iOS 生命周期</a>
+            <a href="/tags/RecyclerView-Adapter/" rel="tag"># RecyclerView Adapter</a>
           
         </div>
       
@@ -426,8 +429,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/10/14/TinyBus-Intellij-plugin/" rel="next" title="TinyBus Intellij plugin">
-                <i class="fa fa-chevron-left"></i> TinyBus Intellij plugin
+              <a href="/2018/01/27/使用RecyclerView实现分组的展开与收缩/" rel="next" title="使用RecyclerView实现分组的展开与收缩">
+                <i class="fa fa-chevron-left"></i> 使用RecyclerView实现分组的展开与收缩
               </a>
             
           </div>
@@ -435,10 +438,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2018/01/11/使用Behavior实现Toolbar的透明度跟随页面滑动进行变换/" rel="prev" title="使用Behavior实现Toolbar的透明度跟随页面滑动进行变换">
-                使用Behavior实现Toolbar的透明度跟随页面滑动进行变换 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -558,7 +557,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#iOS生命周期状态"><span class="nav-number">1.</span> <span class="nav-text">iOS生命周期状态</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#应用启动时的状态切换，对应图中的红线"><span class="nav-number">2.</span> <span class="nav-text">应用启动时的状态切换，对应图中的红线</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#点击home键退出应用时的状态切换，对应图中的绿线"><span class="nav-number">3.</span> <span class="nav-text">点击home键退出应用时的状态切换，对应图中的绿线</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#挂起从新运行场景，对应图中的蓝线"><span class="nav-number">4.</span> <span class="nav-text">挂起从新运行场景，对应图中的蓝线</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#应用挂起后被清除时不会调用任何回调方法"><span class="nav-number">5.</span> <span class="nav-text">应用挂起后被清除时不会调用任何回调方法</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#特性"><span class="nav-number">1.</span> <span class="nav-text">特性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#主要涉及的类"><span class="nav-number">2.</span> <span class="nav-text">主要涉及的类</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#SimpleAdapter"><span class="nav-number">2.1.</span> <span class="nav-text">SimpleAdapter</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ItemViewProvider"><span class="nav-number">2.2.</span> <span class="nav-text">ItemViewProvider</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Items"><span class="nav-number">2.3.</span> <span class="nav-text">Items</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#实现思想"><span class="nav-number">3.</span> <span class="nav-text">实现思想</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#用法"><span class="nav-number">4.</span> <span class="nav-text">用法</span></a></li></ol></div>
             
 
           </div>

@@ -256,6 +256,182 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://yndongyong.github.io/2018/06/03/RecyclerView-通用Adapter支持多种布局/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="yndongyong">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="yndongyong‘s blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/06/03/RecyclerView-通用Adapter支持多种布局/" itemprop="url">RecyclerView 通用Adapter支持多种布局</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-06-03T12:43:16+08:00">
+                2018-06-03
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>作用：简化adapter中涉及多种ItemView布局的写法，使用对象池存放布局对象(ItemViewProvider)，每一个布局委托一个ItemViewProvider，并在其中封装布局与对象绑定相关的逻辑，简化Adapter。</p>
+<h3 id="特性"><a href="#特性" class="headerlink" title="特性"></a>特性</h3><ul>
+<li>极少的类文件</li>
+<li>简化Adapter的写法，直接使用SimpleAdapter</li>
+<li>支持多种布局类型，扩展方便</li>
+<li>每一种布局相关逻辑均写在对应的委托类中</li>
+<li>支持一种数据类型对应多种布局</li>
+</ul>
+<h3 id="主要涉及的类"><a href="#主要涉及的类" class="headerlink" title="主要涉及的类"></a>主要涉及的类</h3><h4 id="SimpleAdapter"><a href="#SimpleAdapter" class="headerlink" title="SimpleAdapter"></a>SimpleAdapter</h4><p>继承RecylerView的adapter，简化多类型Item的Adapter写法。</p>
+<h4 id="ItemViewProvider"><a href="#ItemViewProvider" class="headerlink" title="ItemViewProvider"></a>ItemViewProvider</h4><p>针对每一种布局Item的委托类，onCreateViewHolder和onBindViewHolder都由其委托，在其中完成布局的解析和对象的绑定和该布局相关的逻辑，向外暴露两个方法，一个是返回布局id,一个用于ViewHolder和实体对象的绑定。</p>
+<pre><code>int getLayoutId()//布局文件id
+void onBindViewHolder(SimpleViewHolder holder, T entity);//绑定UI和值
+</code></pre><h4 id="Items"><a href="#Items" class="headerlink" title="Items"></a>Items</h4><p>用于存放数据集</p>
+<h3 id="实现思想"><a href="#实现思想" class="headerlink" title="实现思想"></a>实现思想</h3><ul>
+<li>使用一个SparseArray来保存viewType(即是getItemViewType的返回值)和ItemViewProvider的对应关系</li>
+<li>使用一个SparseArray来保存viewType和Model（实体类型）的对应关系</li>
+</ul>
+<p>对应关系举例如下表所示：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">viewType</th>
+<th style="text-align:center">Model</th>
+<th style="text-align:left">ItemViewProvider</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">0</td>
+<td style="text-align:center">Category</td>
+<td style="text-align:left">CategoryStyle1ItemViewProvider</td>
+</tr>
+<tr>
+<td style="text-align:center">1</td>
+<td style="text-align:center">News</td>
+<td style="text-align:left">NewsItemViewProvider</td>
+</tr>
+<tr>
+<td style="text-align:center">2</td>
+<td style="text-align:center">Category</td>
+<td style="text-align:left">CategoryStyle2ItemViewProvider</td>
+</tr>
+</tbody>
+</table>
+<p>Adapter的getItemViewType方法的思路举例如下：</p>
+<p>对应的实体类型是News，先找到他的viewType，为1，在通过viewType找到对应的ItemViewProvider,对应的ItemViewProvider只有一个，getItemViewType则立即放回ViewType</p>
+<p>对应的实体类型是Category，先找到他的viewType为0，2，再通过viewType找到的对应的ItemViewViewProvider为多个，最终通过ItemViewProvider的accept方法判断由哪个具体的ItemViewViewProvider处理，最中返回其viewType的值。 </p>
+<h3 id="用法"><a href="#用法" class="headerlink" title="用法"></a>用法</h3><pre><code>//准备数据
+ items.add(&quot;头部1 -- type1&quot;);
+items.add(new CategoryEntry(&quot;http://pic.58pic.com/58pic/14/27/45/71r58PICmDM_1024.jpg&quot;, &quot;风景图片1&quot;));
+items.add(new CategoryEntry(&quot;http://img0.imgtn.bdimg.com/it/u=1610953019,3012342313&amp;fm=214&amp;gp=0.jpg&quot;, &quot;风景图片2&quot;));
+
+items.add(&quot;头部2 -- type2&quot;);
+items.add(new CategoryEntry(&quot;http://pic.58pic.com/58pic/14/27/45/71r58PICmDM_1024.jpg&quot;, &quot;风景图片4&quot;, 2));
+items.add(new CategoryEntry(&quot;http://img0.imgtn.bdimg.com/it/u=1610953019,3012342313&amp;fm=214&amp;gp=0.jpg&quot;, &quot;风景图片5&quot;, 2));
+
+multiTypeAdapter = SimpleAdapter.create(this)
+            .addNewData(items)
+            .register(new HeaderItemViewProvider())
+            .register(new Category1EntryItemViewProvider())
+            .register(new Category2EntryItemViewProvider())
+            .register(new Category3EntryItemViewProvider())
+            .attachToRecyclerView(rv_list);
+</code></pre><p>效果图中一共实现了4中布局类型：</p>
+<p><img src="http://oav23hfp9.bkt.clouddn.com/18-6-3/25785972.jpg" alt="多种布局"></p>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="https://yndongyong.github.io/2018/01/27/使用RecyclerView实现分组的展开与收缩/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1412,7 +1588,7 @@ public void onRequestPermissionsResult(int requestCode, @NonNull String[] permis
           
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
-                <span class="site-state-item-count">7</span>
+                <span class="site-state-item-count">8</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -1425,7 +1601,7 @@ public void onRequestPermissionsResult(int requestCode, @NonNull String[] permis
             
             <div class="site-state-item site-state-tags">
               
-                <span class="site-state-item-count">8</span>
+                <span class="site-state-item-count">9</span>
                 <span class="site-state-item-name">标签</span>
               
             </div>
