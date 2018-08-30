@@ -93,16 +93,16 @@
 
 
 
-<meta name="description" content="重大更改过了很久来找个Util类，发现已经找不到了，于是使用NON-UI-fragment重新实现了一遍，代码见最后。  使用方式  1234567891011121314//初始化permissionHelper = PermissionHelper.attach(this);//申请权限permissionHelper.applyPermission(new String[]&amp;#123;Man">
+<meta name="description" content="重大更改过了很久来找个Util类，发现已经找不到了，于是使用NON-UI-fragment重新实现了一遍。之前的Util需要5个步骤集成，使用了fragment之后，开箱即用。见使用方式。完整代码见最后。  使用方式  1234567891011121314//初始化permissionHelper = PermissionHelper.attach(this);//申请权限permissionH">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Android 6 运行时权限小节">
 <meta property="og:url" content="https://yndongyong.github.io/2017/08/15/Android-6-运行时权限小节/index.html">
 <meta property="og:site_name" content="yndongyong‘s blog">
-<meta property="og:description" content="重大更改过了很久来找个Util类，发现已经找不到了，于是使用NON-UI-fragment重新实现了一遍，代码见最后。  使用方式  1234567891011121314//初始化permissionHelper = PermissionHelper.attach(this);//申请权限permissionHelper.applyPermission(new String[]&amp;#123;Man">
-<meta property="og:updated_time" content="2018-08-30T02:18:33.405Z">
+<meta property="og:description" content="重大更改过了很久来找个Util类，发现已经找不到了，于是使用NON-UI-fragment重新实现了一遍。之前的Util需要5个步骤集成，使用了fragment之后，开箱即用。见使用方式。完整代码见最后。  使用方式  1234567891011121314//初始化permissionHelper = PermissionHelper.attach(this);//申请权限permissionH">
+<meta property="og:updated_time" content="2018-08-30T02:24:32.463Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Android 6 运行时权限小节">
-<meta name="twitter:description" content="重大更改过了很久来找个Util类，发现已经找不到了，于是使用NON-UI-fragment重新实现了一遍，代码见最后。  使用方式  1234567891011121314//初始化permissionHelper = PermissionHelper.attach(this);//申请权限permissionHelper.applyPermission(new String[]&amp;#123;Man">
+<meta name="twitter:description" content="重大更改过了很久来找个Util类，发现已经找不到了，于是使用NON-UI-fragment重新实现了一遍。之前的Util需要5个步骤集成，使用了fragment之后，开箱即用。见使用方式。完整代码见最后。  使用方式  1234567891011121314//初始化permissionHelper = PermissionHelper.attach(this);//申请权限permissionH">
 
 
 
@@ -319,7 +319,7 @@
       
 
       
-        <h2 id="重大更改"><a href="#重大更改" class="headerlink" title="重大更改"></a>重大更改</h2><p>过了很久来找个Util类，发现已经找不到了，于是使用NON-UI-fragment重新实现了一遍，代码见最后。</p>
+        <h2 id="重大更改"><a href="#重大更改" class="headerlink" title="重大更改"></a>重大更改</h2><p>过了很久来找个Util类，发现已经找不到了，于是使用NON-UI-fragment重新实现了一遍。之前的Util需要5个步骤集成，使用了fragment之后，开箱即用。见使用方式。完整代码见最后。</p>
 <ul>
 <li><p>使用方式</p>
  <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">//初始化</div><div class="line">permissionHelper = PermissionHelper.attach(this);</div><div class="line">//申请权限</div><div class="line">permissionHelper.applyPermission(new String[]&#123;Manifest.permission.READ_CONTACTS&#125;, 101, new PermissionHelper.IPermissionCallback() &#123;</div><div class="line">           @Override</div><div class="line">           public void onPermissionsGranted(int requestCode, String[] permissions) &#123;</div><div class="line">               Toast.makeText(MainActivity.this, &quot;onPermissionsGranted&quot;, Toast.LENGTH_SHORT).show();</div><div class="line">           &#125;</div><div class="line"></div><div class="line">           @Override</div><div class="line">           public void onPermissionsDenied(int requestCode, String[] permissions) &#123;</div><div class="line">               Toast.makeText(MainActivity.this, &quot;onPermissionsDenied&quot;, Toast.LENGTH_SHORT).show();</div><div class="line">           &#125;</div><div class="line">       &#125;);</div></pre></td></tr></table></figure>
@@ -407,7 +407,7 @@ public void onRequestPermissionsResult(int requestCode, @NonNull String[] permis
 <h4 id="step-5"><a href="#step-5" class="headerlink" title="step 5"></a>step 5</h4><p>在Activity 或者fragment的onActivityResult方法回调用处理应用权限的开启情况。 </p>
 <p>需要注意的是，当用户在应用的权限设置界面打开某一个程序之后跳转到当前应用程序时（一直按返回键）会直接回调到onActivityResult，如果存在用户关闭某一个权限的情况下，再跳转回当前应用程序时（一直按返回键），会先导致当前应用的Activity重启，最后依然会回调到onActivityResult方法。</p>
 <p>  demo地址</p>
-<h4 id="最新版本代码："><a href="#最新版本代码：" class="headerlink" title="最新版本代码："></a>最新版本代码：</h4><pre><code>public class PermissionHelper extends Fragment {
+<h2 id="最新版本代码："><a href="#最新版本代码：" class="headerlink" title="最新版本代码："></a>最新版本代码：</h2><pre><code>public class PermissionHelper extends Fragment {
 
 private static final String FRAG_TAG = PermissionHelper.class.getCanonicalName();
 
@@ -782,7 +782,7 @@ public interface IPermissionCallback {
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#重大更改"><span class="nav-number">1.</span> <span class="nav-text">重大更改</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Android-6-运行时权限小结"><span class="nav-number">2.</span> <span class="nav-text">Android 6 运行时权限小结</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#权限的几种分类"><span class="nav-number">2.1.</span> <span class="nav-text">权限的几种分类</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#权限分组"><span class="nav-number">2.1.1.</span> <span class="nav-text">权限分组</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#值得注意的地方"><span class="nav-number">2.2.</span> <span class="nav-text">值得注意的地方</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Android-6-和-Android-O上的差异"><span class="nav-number">2.3.</span> <span class="nav-text">Android 6 和 Android O上的差异</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Util类的使用"><span class="nav-number">2.4.</span> <span class="nav-text">Util类的使用</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#step-0"><span class="nav-number">2.4.1.</span> <span class="nav-text">step 0</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#step-1"><span class="nav-number">2.4.2.</span> <span class="nav-text">step 1</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#step2"><span class="nav-number">2.4.3.</span> <span class="nav-text">step2</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#step3"><span class="nav-number">2.4.4.</span> <span class="nav-text">step3</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#step-4"><span class="nav-number">2.4.5.</span> <span class="nav-text">step 4</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#step-5"><span class="nav-number">2.4.6.</span> <span class="nav-text">step 5</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#最新版本代码："><span class="nav-number">2.4.7.</span> <span class="nav-text">最新版本代码：</span></a></li></ol></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#重大更改"><span class="nav-number">1.</span> <span class="nav-text">重大更改</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Android-6-运行时权限小结"><span class="nav-number">2.</span> <span class="nav-text">Android 6 运行时权限小结</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#权限的几种分类"><span class="nav-number">2.1.</span> <span class="nav-text">权限的几种分类</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#权限分组"><span class="nav-number">2.1.1.</span> <span class="nav-text">权限分组</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#值得注意的地方"><span class="nav-number">2.2.</span> <span class="nav-text">值得注意的地方</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Android-6-和-Android-O上的差异"><span class="nav-number">2.3.</span> <span class="nav-text">Android 6 和 Android O上的差异</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Util类的使用"><span class="nav-number">2.4.</span> <span class="nav-text">Util类的使用</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#step-0"><span class="nav-number">2.4.1.</span> <span class="nav-text">step 0</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#step-1"><span class="nav-number">2.4.2.</span> <span class="nav-text">step 1</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#step2"><span class="nav-number">2.4.3.</span> <span class="nav-text">step2</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#step3"><span class="nav-number">2.4.4.</span> <span class="nav-text">step3</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#step-4"><span class="nav-number">2.4.5.</span> <span class="nav-text">step 4</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#step-5"><span class="nav-number">2.4.6.</span> <span class="nav-text">step 5</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#最新版本代码："><span class="nav-number">3.</span> <span class="nav-text">最新版本代码：</span></a></li></ol></div>
             
 
           </div>
