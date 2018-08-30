@@ -256,6 +256,193 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://yndongyong.github.io/2018/08/30/使用NON-UI—FRAGMENT优化startActivityForResult代码/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="yndongyong">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="yndongyong‘s blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/08/30/使用NON-UI—FRAGMENT优化startActivityForResult代码/" itemprop="url">使用NON-UI—FRAGMENT优化startActivityForResult代码</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-30T10:30:58+08:00">
+                2018-08-30
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="使用NON-UI-FRAGMENT优化startActivityForResult"><a href="#使用NON-UI-FRAGMENT优化startActivityForResult" class="headerlink" title="使用NON-UI-FRAGMENT优化startActivityForResult"></a>使用NON-UI-FRAGMENT优化startActivityForResult</h2><p>一般地，要使用AActivity.startActivityForResult(BActivity)需要在Activity中覆盖父类的onActivityForResult（）回调方法。</p>
+<p>如果一个Activity需要调用多个Activity并且获取返回结果，会造成调用处和回调处彼此分离，逻辑不清晰、代码混乱的的问题。有没有一种较为优雅的方式，打破这种惯性。</p>
+<p>回答是肯定的，即本文的NON-UI-FRAGMENT，使用无UI的fragment，将部分业务代码封装到fragment中，再通过callback将最终结果回调给Activity，原本的Activity再也不用复写父类的startActivityForResult，传递一个回调即可。</p>
+<p>使用这种方式，可以封装那些共性较多的类，将原本需要通过继承和复写的逻辑放到fragment中，体现了软件开发中的一大设计原则——使用组合替代继承。</p>
+<p>本文中的startActivityForResult的替代优化仅是NON-UI-FRAGMENT的一种实现使用，NON-UI-FRAGMENT的可以做的更多，一些简单的使用场景：譬如封装权限申请、登录判断跳转，第三方登录等、截屏等等，其他待自己拓展。</p>
+<h3 id="使用方式"><a href="#使用方式" class="headerlink" title="使用方式"></a>使用方式</h3><pre><code>ActivityResultHelper resultHelper = ActivityResultHelper.attach(this);
+resultHelper.startForResult(intent, 0x10, new ActivityResultHelper.CallBack() {
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == 101 &amp;&amp; resultCode == RESULT_OK) {
+            Log.d(&quot;DONG&quot;, &quot;true&quot;);
+        } else {
+            Log.d(&quot;DONG&quot;, &quot;false&quot;);
+        }
+    }
+});
+</code></pre><p>再也不用将调用入口和返回结果处理的代码分开了。 </p>
+<h3 id="完整代码"><a href="#完整代码" class="headerlink" title="完整代码"></a>完整代码</h3><pre><code> public class ActivityResultHelper extends Fragment {
+
+    private static final String FRAG_TAG = ActivityResultHelper.class.getCanonicalName();
+
+    private Activity mContext;
+
+    private CallBack mListener;
+
+    public interface CallBack {
+        void onActivityResult(int requestCode, int resultCode, Intent data);
+    }
+
+    public static &lt;ParentFrag extends Fragment&gt; ActivityResultHelper attach(ParentFrag parent) {
+        return attach(parent.getChildFragmentManager());
+    }
+
+    public static &lt;ParentActivity extends FragmentActivity&gt; ActivityResultHelper attach(ParentActivity parent) {
+        return attach(parent.getSupportFragmentManager());
+    }
+
+    private static ActivityResultHelper attach(FragmentManager fragmentManager) {
+        ActivityResultHelper frag = (ActivityResultHelper) fragmentManager.findFragmentByTag(FRAG_TAG);
+        if (frag == null) {
+            frag = new ActivityResultHelper();
+            fragmentManager.beginTransaction().add(frag, FRAG_TAG).commit();
+            //TODO fragment在Activity的onCreate中被attach之后就立即调用fragment的一些方法，需要如下代码，否则不需要
+            fragmentManager.executePendingTransactions();
+        }
+        return frag;
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        mContext = (Activity) context;
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mContext = null;
+    }
+
+    public Activity getContext() {
+        return mContext;
+    }
+
+    public void startForResult(Intent intent, int requestCode, CallBack listener) {
+        this.mListener = listener;
+        startActivityForResult(intent, requestCode);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (mListener != null) {
+            mListener.onActivityResult(requestCode, resultCode, data);
+        }
+    }
+}      
+</code></pre>
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="https://yndongyong.github.io/2018/08/01/Android自定义View实现功能引导页/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1948,7 +2135,7 @@ public interface IPermissionCallback {
           
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
-                <span class="site-state-item-count">9</span>
+                <span class="site-state-item-count">10</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -1961,7 +2148,7 @@ public interface IPermissionCallback {
             
             <div class="site-state-item site-state-tags">
               
-                <span class="site-state-item-count">10</span>
+                <span class="site-state-item-count">12</span>
                 <span class="site-state-item-name">标签</span>
               
             </div>

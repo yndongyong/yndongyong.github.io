@@ -77,7 +77,7 @@
 <link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="RecyclerView Adapter," />
+  <meta name="keywords" content="non-ui-framgment headlessfragment," />
 
 
 
@@ -93,19 +93,17 @@
 
 
 
-<meta name="description" content="库地址：https://github.com/yndongyong/multiitemview/tree/ontomany_0.0.3 作用：简化adapter中涉及多种ItemView布局的写法，使用对象池存放布局对象(ItemViewProvider)，每一个布局委托一个ItemViewProvider，并在其中封装布局与对象绑定相关的逻辑，简化Adapter。 特性 极少的类文件 简化Ada">
-<meta name="keywords" content="RecyclerView Adapter">
+<meta name="description" content="使用NON-UI-FRAGMENT优化startActivityForResult一般地，要使用AActivity.startActivityForResult(BActivity)需要在Activity中覆盖父类的onActivityForResult（）回调方法。 如果一个Activity需要调用多个Activity并且获取返回结果，会造成调用处和回调处彼此分离，逻辑不清晰、代码混乱的的问题。">
+<meta name="keywords" content="non-ui-framgment headlessfragment">
 <meta property="og:type" content="article">
-<meta property="og:title" content="RecyclerView 通用Adapter支持多种布局">
-<meta property="og:url" content="https://yndongyong.github.io/2018/06/03/RecyclerView-通用Adapter支持多种布局/index.html">
+<meta property="og:title" content="使用NON-UI—FRAGMENT优化startActivityForResult代码">
+<meta property="og:url" content="https://yndongyong.github.io/2018/08/30/使用NON-UI—FRAGMENT优化startActivityForResult代码/index.html">
 <meta property="og:site_name" content="yndongyong‘s blog">
-<meta property="og:description" content="库地址：https://github.com/yndongyong/multiitemview/tree/ontomany_0.0.3 作用：简化adapter中涉及多种ItemView布局的写法，使用对象池存放布局对象(ItemViewProvider)，每一个布局委托一个ItemViewProvider，并在其中封装布局与对象绑定相关的逻辑，简化Adapter。 特性 极少的类文件 简化Ada">
-<meta property="og:image" content="http://oav23hfp9.bkt.clouddn.com/18-6-3/25785972.jpg">
-<meta property="og:updated_time" content="2018-06-03T04:46:21.761Z">
+<meta property="og:description" content="使用NON-UI-FRAGMENT优化startActivityForResult一般地，要使用AActivity.startActivityForResult(BActivity)需要在Activity中覆盖父类的onActivityForResult（）回调方法。 如果一个Activity需要调用多个Activity并且获取返回结果，会造成调用处和回调处彼此分离，逻辑不清晰、代码混乱的的问题。">
+<meta property="og:updated_time" content="2018-08-30T03:23:58.122Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="RecyclerView 通用Adapter支持多种布局">
-<meta name="twitter:description" content="库地址：https://github.com/yndongyong/multiitemview/tree/ontomany_0.0.3 作用：简化adapter中涉及多种ItemView布局的写法，使用对象池存放布局对象(ItemViewProvider)，每一个布局委托一个ItemViewProvider，并在其中封装布局与对象绑定相关的逻辑，简化Adapter。 特性 极少的类文件 简化Ada">
-<meta name="twitter:image" content="http://oav23hfp9.bkt.clouddn.com/18-6-3/25785972.jpg">
+<meta name="twitter:title" content="使用NON-UI—FRAGMENT优化startActivityForResult代码">
+<meta name="twitter:description" content="使用NON-UI-FRAGMENT优化startActivityForResult一般地，要使用AActivity.startActivityForResult(BActivity)需要在Activity中覆盖父类的onActivityForResult（）回调方法。 如果一个Activity需要调用多个Activity并且获取返回结果，会造成调用处和回调处彼此分离，逻辑不清晰、代码混乱的的问题。">
 
 
 
@@ -133,13 +131,13 @@
 
 
 
-  <link rel="canonical" href="https://yndongyong.github.io/2018/06/03/RecyclerView-通用Adapter支持多种布局/"/>
+  <link rel="canonical" href="https://yndongyong.github.io/2018/08/30/使用NON-UI—FRAGMENT优化startActivityForResult代码/"/>
 
 
 
 
 
-  <title>RecyclerView 通用Adapter支持多种布局 | yndongyong‘s blog</title>
+  <title>使用NON-UI—FRAGMENT优化startActivityForResult代码 | yndongyong‘s blog</title>
   
 
 
@@ -258,7 +256,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://yndongyong.github.io/2018/06/03/RecyclerView-通用Adapter支持多种布局/">
+    <link itemprop="mainEntityOfPage" href="https://yndongyong.github.io/2018/08/30/使用NON-UI—FRAGMENT优化startActivityForResult代码/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="yndongyong">
@@ -275,7 +273,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">RecyclerView 通用Adapter支持多种布局</h1>
+          <h1 class="post-title" itemprop="name headline">使用NON-UI—FRAGMENT优化startActivityForResult代码</h1>
         
 
         <div class="post-meta">
@@ -287,8 +285,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-06-03T12:43:16+08:00">
-                2018-06-03
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-30T10:30:58+08:00">
+                2018-08-30
               </time>
             
 
@@ -322,73 +320,83 @@
       
 
       
-        <p>库地址：<a href="https://github.com/yndongyong/multiitemview/tree/ontomany_0.0.3" target="_blank" rel="external">https://github.com/yndongyong/multiitemview/tree/ontomany_0.0.3</a></p>
-<p>作用：简化adapter中涉及多种ItemView布局的写法，使用对象池存放布局对象(ItemViewProvider)，每一个布局委托一个ItemViewProvider，并在其中封装布局与对象绑定相关的逻辑，简化Adapter。</p>
-<h3 id="特性"><a href="#特性" class="headerlink" title="特性"></a>特性</h3><ul>
-<li>极少的类文件</li>
-<li>简化Adapter的写法，直接使用SimpleAdapter</li>
-<li>支持多种布局类型，扩展方便</li>
-<li>每一种布局相关逻辑均写在对应的委托类中</li>
-<li>支持一种数据类型对应多种布局</li>
-</ul>
-<h3 id="主要涉及的类"><a href="#主要涉及的类" class="headerlink" title="主要涉及的类"></a>主要涉及的类</h3><h4 id="SimpleAdapter"><a href="#SimpleAdapter" class="headerlink" title="SimpleAdapter"></a>SimpleAdapter</h4><p>继承RecylerView的adapter，简化多类型Item的Adapter写法。</p>
-<h4 id="ItemViewProvider"><a href="#ItemViewProvider" class="headerlink" title="ItemViewProvider"></a>ItemViewProvider</h4><p>针对每一种布局Item的委托类，onCreateViewHolder和onBindViewHolder都由其委托，在其中完成布局的解析和对象的绑定和该布局相关的逻辑，向外暴露两个方法，一个是返回布局id,一个用于ViewHolder和实体对象的绑定。</p>
-<pre><code>int getLayoutId()//布局文件id
-void onBindViewHolder(SimpleViewHolder holder, T entity);//绑定UI和值
-</code></pre><h4 id="Items"><a href="#Items" class="headerlink" title="Items"></a>Items</h4><p>用于存放数据集</p>
-<h3 id="实现思想"><a href="#实现思想" class="headerlink" title="实现思想"></a>实现思想</h3><ul>
-<li>使用一个SparseArray来保存viewType(即是getItemViewType的返回值)和ItemViewProvider的对应关系</li>
-<li>使用一个SparseArray来保存viewType和Model（实体类型）的对应关系</li>
-</ul>
-<p>对应关系举例如下表所示：</p>
-<table>
-<thead>
-<tr>
-<th style="text-align:center">viewType</th>
-<th style="text-align:center">Model</th>
-<th style="text-align:left">ItemViewProvider</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:center">0</td>
-<td style="text-align:center">Category</td>
-<td style="text-align:left">CategoryStyle1ItemViewProvider</td>
-</tr>
-<tr>
-<td style="text-align:center">1</td>
-<td style="text-align:center">News</td>
-<td style="text-align:left">NewsItemViewProvider</td>
-</tr>
-<tr>
-<td style="text-align:center">2</td>
-<td style="text-align:center">Category</td>
-<td style="text-align:left">CategoryStyle2ItemViewProvider</td>
-</tr>
-</tbody>
-</table>
-<p>Adapter的getItemViewType方法的思路举例如下：</p>
-<p>对应的实体类型是News，先找到他的viewType，为1，在通过viewType找到对应的ItemViewProvider,对应的ItemViewProvider只有一个，getItemViewType则立即放回ViewType</p>
-<p>对应的实体类型是Category，先找到他的viewType为0，2，再通过viewType找到的对应的ItemViewViewProvider为多个，最终通过ItemViewProvider的accept方法判断由哪个具体的ItemViewViewProvider处理，最中返回其viewType的值。 </p>
-<h3 id="用法"><a href="#用法" class="headerlink" title="用法"></a>用法</h3><pre><code>//准备数据
- items.add(&quot;头部1 -- type1&quot;);
-items.add(new CategoryEntry(&quot;http://pic.58pic.com/58pic/14/27/45/71r58PICmDM_1024.jpg&quot;, &quot;风景图片1&quot;));
-items.add(new CategoryEntry(&quot;http://img0.imgtn.bdimg.com/it/u=1610953019,3012342313&amp;fm=214&amp;gp=0.jpg&quot;, &quot;风景图片2&quot;));
+        <h2 id="使用NON-UI-FRAGMENT优化startActivityForResult"><a href="#使用NON-UI-FRAGMENT优化startActivityForResult" class="headerlink" title="使用NON-UI-FRAGMENT优化startActivityForResult"></a>使用NON-UI-FRAGMENT优化startActivityForResult</h2><p>一般地，要使用AActivity.startActivityForResult(BActivity)需要在Activity中覆盖父类的onActivityForResult（）回调方法。</p>
+<p>如果一个Activity需要调用多个Activity并且获取返回结果，会造成调用处和回调处彼此分离，逻辑不清晰、代码混乱的的问题。有没有一种较为优雅的方式，打破这种惯性。</p>
+<p>回答是肯定的，即本文的NON-UI-FRAGMENT，使用无UI的fragment，将部分业务代码封装到fragment中，再通过callback将最终结果回调给Activity，原本的Activity再也不用复写父类的startActivityForResult，传递一个回调即可。</p>
+<p>使用这种方式，可以封装那些共性较多的类，将原本需要通过继承和复写的逻辑放到fragment中，体现了软件开发中的一大设计原则——使用组合替代继承。</p>
+<p>本文中的startActivityForResult的替代优化仅是NON-UI-FRAGMENT的一种实现使用，NON-UI-FRAGMENT的可以做的更多，一些简单的使用场景：譬如封装权限申请、登录判断跳转，第三方登录等、截屏等等，其他待自己拓展。</p>
+<h3 id="使用方式"><a href="#使用方式" class="headerlink" title="使用方式"></a>使用方式</h3><pre><code>ActivityResultHelper resultHelper = ActivityResultHelper.attach(this);
+resultHelper.startForResult(intent, 0x10, new ActivityResultHelper.CallBack() {
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == 101 &amp;&amp; resultCode == RESULT_OK) {
+            Log.d(&quot;DONG&quot;, &quot;true&quot;);
+        } else {
+            Log.d(&quot;DONG&quot;, &quot;false&quot;);
+        }
+    }
+});
+</code></pre><p>再也不用将调用入口和返回结果处理的代码分开了。 </p>
+<h3 id="完整代码"><a href="#完整代码" class="headerlink" title="完整代码"></a>完整代码</h3><pre><code> public class ActivityResultHelper extends Fragment {
 
-items.add(&quot;头部2 -- type2&quot;);
-items.add(new CategoryEntry(&quot;http://pic.58pic.com/58pic/14/27/45/71r58PICmDM_1024.jpg&quot;, &quot;风景图片4&quot;, 2));
-items.add(new CategoryEntry(&quot;http://img0.imgtn.bdimg.com/it/u=1610953019,3012342313&amp;fm=214&amp;gp=0.jpg&quot;, &quot;风景图片5&quot;, 2));
+    private static final String FRAG_TAG = ActivityResultHelper.class.getCanonicalName();
 
-multiTypeAdapter = SimpleAdapter.create(this)
-            .addNewData(items)
-            .register(new HeaderItemViewProvider())
-            .register(new Category1EntryItemViewProvider())
-            .register(new Category2EntryItemViewProvider())
-            .register(new Category3EntryItemViewProvider())
-            .attachToRecyclerView(rv_list);
-</code></pre><p>效果图中一共实现了4中布局类型：</p>
-<p><img src="http://oav23hfp9.bkt.clouddn.com/18-6-3/25785972.jpg" alt="多种布局"></p>
+    private Activity mContext;
 
+    private CallBack mListener;
+
+    public interface CallBack {
+        void onActivityResult(int requestCode, int resultCode, Intent data);
+    }
+
+    public static &lt;ParentFrag extends Fragment&gt; ActivityResultHelper attach(ParentFrag parent) {
+        return attach(parent.getChildFragmentManager());
+    }
+
+    public static &lt;ParentActivity extends FragmentActivity&gt; ActivityResultHelper attach(ParentActivity parent) {
+        return attach(parent.getSupportFragmentManager());
+    }
+
+    private static ActivityResultHelper attach(FragmentManager fragmentManager) {
+        ActivityResultHelper frag = (ActivityResultHelper) fragmentManager.findFragmentByTag(FRAG_TAG);
+        if (frag == null) {
+            frag = new ActivityResultHelper();
+            fragmentManager.beginTransaction().add(frag, FRAG_TAG).commit();
+            //TODO fragment在Activity的onCreate中被attach之后就立即调用fragment的一些方法，需要如下代码，否则不需要
+            fragmentManager.executePendingTransactions();
+        }
+        return frag;
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        mContext = (Activity) context;
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mContext = null;
+    }
+
+    public Activity getContext() {
+        return mContext;
+    }
+
+    public void startForResult(Intent intent, int requestCode, CallBack listener) {
+        this.mListener = listener;
+        startActivityForResult(intent, requestCode);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (mListener != null) {
+            mListener.onActivityResult(requestCode, resultCode, data);
+        }
+    }
+}      
+</code></pre>
       
     </div>
 
@@ -417,7 +425,7 @@ multiTypeAdapter = SimpleAdapter.create(this)
       
         <div class="post-tags">
           
-            <a href="/tags/RecyclerView-Adapter/" rel="tag"># RecyclerView Adapter</a>
+            <a href="/tags/non-ui-framgment-headlessfragment/" rel="tag"># non-ui-framgment headlessfragment</a>
           
         </div>
       
@@ -430,8 +438,8 @@ multiTypeAdapter = SimpleAdapter.create(this)
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/01/27/使用RecyclerView实现分组的展开与收缩/" rel="next" title="使用RecyclerView实现分组的展开与收缩">
-                <i class="fa fa-chevron-left"></i> 使用RecyclerView实现分组的展开与收缩
+              <a href="/2018/08/01/Android自定义View实现功能引导页/" rel="next" title="Android自定义View实现功能引导页">
+                <i class="fa fa-chevron-left"></i> Android自定义View实现功能引导页
               </a>
             
           </div>
@@ -439,10 +447,6 @@ multiTypeAdapter = SimpleAdapter.create(this)
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2018/08/01/Android自定义View实现功能引导页/" rel="prev" title="Android自定义View实现功能引导页">
-                Android自定义View实现功能引导页 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -562,7 +566,7 @@ multiTypeAdapter = SimpleAdapter.create(this)
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#特性"><span class="nav-number">1.</span> <span class="nav-text">特性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#主要涉及的类"><span class="nav-number">2.</span> <span class="nav-text">主要涉及的类</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#SimpleAdapter"><span class="nav-number">2.1.</span> <span class="nav-text">SimpleAdapter</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ItemViewProvider"><span class="nav-number">2.2.</span> <span class="nav-text">ItemViewProvider</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Items"><span class="nav-number">2.3.</span> <span class="nav-text">Items</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#实现思想"><span class="nav-number">3.</span> <span class="nav-text">实现思想</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#用法"><span class="nav-number">4.</span> <span class="nav-text">用法</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#使用NON-UI-FRAGMENT优化startActivityForResult"><span class="nav-number">1.</span> <span class="nav-text">使用NON-UI-FRAGMENT优化startActivityForResult</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#使用方式"><span class="nav-number">1.1.</span> <span class="nav-text">使用方式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#完整代码"><span class="nav-number">1.2.</span> <span class="nav-text">完整代码</span></a></li></ol></li></ol></div>
             
 
           </div>
