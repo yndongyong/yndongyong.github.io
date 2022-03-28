@@ -1,0 +1,728 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Android Toolbar Behavior," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="yndongyong‘s blog" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="使用Behavior实现Toolbar的透明度跟随页面上下滑动从不透明到透明以及反向的一个显示效果，如下图：  ###一、实现的效果  界面上滑过程中，Toolbar逐渐显示出来，直到完全显示 界面下滑过程中，Toolbar逐渐隐藏，直到完全不可见  ###二、常规思路 如图所示的效果，常规的做法是为AppBarLayout添加一个OnOffsetChangedListener来监听appbarl">
+<meta property="og:type" content="article">
+<meta property="og:title" content="使用Behavior实现Toolbar的透明度跟随页面滑动进行变换">
+<meta property="og:url" content="https://yndongyong.github.io/2018/01/11/%E4%BD%BF%E7%94%A8Behavior%E5%AE%9E%E7%8E%B0Toolbar%E7%9A%84%E9%80%8F%E6%98%8E%E5%BA%A6%E8%B7%9F%E9%9A%8F%E9%A1%B5%E9%9D%A2%E6%BB%91%E5%8A%A8%E8%BF%9B%E8%A1%8C%E5%8F%98%E6%8D%A2/index.html">
+<meta property="og:site_name" content="yndongyong‘s blog">
+<meta property="og:description" content="使用Behavior实现Toolbar的透明度跟随页面上下滑动从不透明到透明以及反向的一个显示效果，如下图：  ###一、实现的效果  界面上滑过程中，Toolbar逐渐显示出来，直到完全显示 界面下滑过程中，Toolbar逐渐隐藏，直到完全不可见  ###二、常规思路 如图所示的效果，常规的做法是为AppBarLayout添加一个OnOffsetChangedListener来监听appbarl">
+<meta property="og:locale">
+<meta property="og:image" content="http://oav23hfp9.bkt.clouddn.com/18-4-27/40610293.jpg">
+<meta property="article:published_time" content="2018-01-11T08:43:07.000Z">
+<meta property="article:modified_time" content="2018-04-27T09:58:20.000Z">
+<meta property="article:author" content="yndongyong">
+<meta property="article:tag" content="Android Toolbar Behavior">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://oav23hfp9.bkt.clouddn.com/18-4-27/40610293.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://yndongyong.github.io/2018/01/11/使用Behavior实现Toolbar的透明度跟随页面滑动进行变换/"/>
+
+
+
+
+
+  <title>使用Behavior实现Toolbar的透明度跟随页面滑动进行变换 | yndongyong‘s blog</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<meta name="generator" content="Hexo 6.1.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">yndongyong‘s blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">生命不息，学习不止！</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-about"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://yndongyong.github.io/2018/01/11/%E4%BD%BF%E7%94%A8Behavior%E5%AE%9E%E7%8E%B0Toolbar%E7%9A%84%E9%80%8F%E6%98%8E%E5%BA%A6%E8%B7%9F%E9%9A%8F%E9%A1%B5%E9%9D%A2%E6%BB%91%E5%8A%A8%E8%BF%9B%E8%A1%8C%E5%8F%98%E6%8D%A2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="yndongyong‘s blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">使用Behavior实现Toolbar的透明度跟随页面滑动进行变换</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-11T16:43:07+08:00">
+                2018-01-11
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>使用Behavior实现Toolbar的透明度跟随页面上下滑动从不透明到透明以及反向的一个显示效果，如下图：</p>
+<p><img src="http://oav23hfp9.bkt.clouddn.com/18-4-27/40610293.jpg" alt="`Toobar`的显示与隐藏"></p>
+<p>###一、实现的效果</p>
+<ol>
+<li>界面上滑过程中，Toolbar逐渐显示出来，直到完全显示</li>
+<li>界面下滑过程中，Toolbar逐渐隐藏，直到完全不可见</li>
+</ol>
+<p>###二、常规思路</p>
+<p>如图所示的效果，常规的做法是为AppBarLayout添加一个OnOffsetChangedListener来监听appbarlayout的滑动的过程，用当前滑动的距离和slideDistance某个固定值计算一个比例，比如图中红色背景块作为锚点，slideDistance就是这个view的高度，通过比例计算出当前的Toolbar的背景颜色的透明值。</p>
+<p>1.上滑过程中滑动距离从 0 到 slideDistance 变化，背景颜色根据滑动距离百分比改变颜色透明度，这个过程颜色透明度从 0 到 255。</p>
+<p>2.下滑过程：即上滑过程的逆向。</p>
+<p>通常情况下，slideDistance 是某个UI元素的高度，这个高度还需要动态的拿到。一般的做法是在Activity的onCreated方法中使用View.post(runnable),或者添加个一个addOnGlobalLayoutListener监听器待界面绘制完成后得到view的高度。</p>
+<p>OnOffsetChangedListener的核心代码如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">AppBarLayout.OnOffsetChangedListener offsetChangedListener = new AppBarLayout.OnOffsetChangedListener() &#123;</span><br><span class="line">        @RequiresApi(api = Build.VERSION_CODES.M)</span><br><span class="line">        @Override</span><br><span class="line">        public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) &#123;</span><br><span class="line">            float fraction = Math.abs(verticalOffset * 1.0f) / slideDistance;</span><br><span class="line">            fraction = Math.min(fraction, 1);</span><br><span class="line">            bgColor = changeAlpha(getResources().getColor(R.color.white), fraction);</span><br><span class="line">            header_toolbar.setBackgroundColor(bgColor);</span><br><span class="line">            tv_toolbar_title.setAlpha(fraction);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="三、优化后的思路"><a href="#三、优化后的思路" class="headerlink" title="三、优化后的思路"></a>三、优化后的思路</h3><p>由于项目中的多个详情界面都需要实现这样的效果，造成了代码的多次拷贝，如果将来UI需要改变的话，散落在项目各个角落的代码也将难以维护。此外，在每个界面中Toobar显示隐藏参考的view元素也不同的。</p>
+<p>基于以上这些缺点项目最终废弃了常规的做法，使用AppBarLayout.Behavior将这一效果封装、抽象。<br>在需要使用的地方直接引用自定义的Behavior就行。通过Behavior，以一种非侵入的方式为view添加<br>行为。</p>
+<p>核心代码如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">public class ChangeToolbarAlphaBehavior extends AppBarLayout.Behavior &#123;</span><br><span class="line"></span><br><span class="line">    //锚点view</span><br><span class="line">    private static final String TAG_ANCHOR_VIEW = &quot;anchorView&quot;;</span><br><span class="line">    //title</span><br><span class="line">    private static final String TAG_TOOLBAR_TITLE = &quot;toolbarTitle&quot;;</span><br><span class="line">    //toolbar</span><br><span class="line">    private static final String TAG_TOOLBAR = &quot;toolbar&quot;;</span><br><span class="line"></span><br><span class="line">    private TextView header_title;</span><br><span class="line">    private View anchorView;</span><br><span class="line">    private android.support.v7.widget.Toolbar toolbar;</span><br><span class="line"></span><br><span class="line">    float slideDistance = 0f;</span><br><span class="line"></span><br><span class="line">    private int bgColor;</span><br><span class="line"></span><br><span class="line">    private int mainColor = 0;</span><br><span class="line"></span><br><span class="line">    public ChangeToolbarAlphaBehavior(Context context, AttributeSet attrs) &#123;</span><br><span class="line">        super(context, attrs);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     * AppBarLayout布局时调用</span><br><span class="line">     * @param parent</span><br><span class="line">     * @param abl</span><br><span class="line">     * @param layoutDirection</span><br><span class="line">     * @return</span><br><span class="line">     */</span><br><span class="line">    @Override</span><br><span class="line">    public boolean onLayoutChild(CoordinatorLayout parent, AppBarLayout abl, int layoutDirection) &#123;</span><br><span class="line"></span><br><span class="line">        //拿到toolbar</span><br><span class="line">        if (toolbar == null) &#123;</span><br><span class="line">            toolbar = parent.findViewWithTag(TAG_TOOLBAR);</span><br><span class="line">        &#125;</span><br><span class="line">        //拿到title</span><br><span class="line">        if (header_title == null) &#123;</span><br><span class="line">            header_title = parent.findViewWithTag(TAG_TOOLBAR_TITLE);</span><br><span class="line">        &#125;</span><br><span class="line">        //拿到锚点View，以锚点view的高度作为完全显示或者隐藏的临界值</span><br><span class="line">        if (anchorView == null) &#123;</span><br><span class="line">            anchorView = parent.findViewWithTag(TAG_ANCHOR_VIEW);</span><br><span class="line">        &#125;</span><br><span class="line">        if (anchorView == null || toolbar == null) &#123;</span><br><span class="line">            return super.onLayoutChild(parent, abl, layoutDirection);</span><br><span class="line">        &#125;</span><br><span class="line">        //临界值</span><br><span class="line">        if (slideDistance == 0f) &#123;</span><br><span class="line">            slideDistance = anchorView.getBottom() - toolbar.getHeight();</span><br><span class="line">        &#125;</span><br><span class="line">        if (mainColor == 0) &#123;</span><br><span class="line">            mainColor = ContextCompat.getColor(parent.getContext(), R.color.white);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        abl.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() &#123;</span><br><span class="line">            @Override</span><br><span class="line">            public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) &#123;</span><br><span class="line">                float fraction = Math.abs(verticalOffset * 1.0f) / slideDistance;</span><br><span class="line">                fraction = Math.min(fraction, 1);</span><br><span class="line"></span><br><span class="line">                bgColor = changeAlpha(mainColor, fraction);</span><br><span class="line">                toolbar.setBackgroundColor(bgColor);</span><br><span class="line">                header_title.setAlpha(fraction);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line"></span><br><span class="line">        return super.onLayoutChild(parent, abl, layoutDirection);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     * 根据百分比改变颜色透明度</span><br><span class="line">     */</span><br><span class="line">    public int changeAlpha(int color, float fraction) &#123;</span><br><span class="line">        int red = Color.red(color);</span><br><span class="line">        int green = Color.green(color);</span><br><span class="line">        int blue = Color.blue(color);</span><br><span class="line">        int alpha = (int) (Color.alpha(color) * fraction);</span><br><span class="line">        return Color.argb(alpha, red, green, blue);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>使用方式</p>
+<p>1、直接在xml里为AppbarLayout添加自定义的behavior</p>
+<p><code>app:layout_behavior=&quot;packagename.ChangeToolbarAlphaBehavior&quot;</code></p>
+<p>2、为toolbar添加tag</p>
+<p><code>android:tag=&quot;toolbar&quot;</code></p>
+<p>3、 为锚点view添加tag</p>
+<p><code>android:tag=&quot;anchorView&quot;</code></p>
+<p>3、 为toolbar中有相同动作的view添加tag</p>
+<p>比如此处的title<br><code>android:tag=&quot;toolbarTitle&quot;</code></p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Android-Toolbar-Behavior/" rel="tag"># Android Toolbar Behavior</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/12/17/iOS%E5%BA%94%E7%94%A8%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%E5%B0%8F%E8%8A%82/" rel="next" title="iOS应用生命周期小节">
+                <i class="fa fa-chevron-left"></i> iOS应用生命周期小节
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/01/27/%E4%BD%BF%E7%94%A8RecyclerView%E5%AE%9E%E7%8E%B0%E5%88%86%E7%BB%84%E7%9A%84%E5%B1%95%E5%BC%80%E4%B8%8E%E6%94%B6%E7%BC%A9/" rel="prev" title="使用RecyclerView实现分组的展开与收缩">
+                使用RecyclerView实现分组的展开与收缩 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="" />
+          <p class="site-author-name" itemprop="name"></p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">10</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              
+                <span class="site-state-item-count">12</span>
+                <span class="site-state-item-name">标签</span>
+              
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%89%E3%80%81%E4%BC%98%E5%8C%96%E5%90%8E%E7%9A%84%E6%80%9D%E8%B7%AF"><span class="nav-number">1.</span> <span class="nav-text">三、优化后的思路</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">yndongyong</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" target="_blank" rel="noopener" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" target="_blank" rel="noopener" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.1"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
