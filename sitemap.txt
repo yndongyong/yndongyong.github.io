@@ -33,4 +33,3 @@ https://yndongyong.github.io/tags/android/
 https://yndongyong.github.io/tags/android-minSdk/
 https://yndongyong.github.io/categories/android/
 https://yndongyong.github.io/categories/android%E7%BA%BF%E4%B8%8A%E5%A1%AB%E5%9D%91/
-https://yndongyong.github.io/categories/android-studio/

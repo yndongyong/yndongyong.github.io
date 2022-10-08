@@ -325,7 +325,7 @@
               
                 <span class="post-meta-item-text">更新于</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2022-10-08T11:53:58+08:00">
+              <time title="更新于" itemprop="dateModified" datetime="2022-10-08T12:57:42+08:00">
                 2022-10-08
               </time>
             
@@ -362,17 +362,6 @@
 
                 
                 
-                  ， 
-                
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/android-studio/" itemprop="url" rel="index">
-                    <span itemprop="name">android studio</span>
-                  </a>
-                </span>
-
-                
-                
               
             </span>
           
@@ -403,8 +392,8 @@
         
           
           升级的原因最近，因为vivo商店的审核问题，将App的minSdk从21升级到24，下限支持为Android7。ci上打包的apk，发给测试之后，测试反馈打开之后就闪退。
-出现的问题排查日志，有一个SIGE（11）相关的日志，使用未加固的包安装测试，发现正常。因而认为是加固引起的问题。此前的加固策略里有两条，一条是签名检测、一条是so加固。签名检测到不一致时，会退出App。
-原因这里是build.
+出现的问题排查日志，有一个SIGE（11）相关的日志，使用未加固的包安装测试，发现正常。因而认为是加固引起的问题。此前的加固策略里有一条是签名检测，加固包签名检测到不一致时，会退出App。
+原因这里是build.gradle中签
           ...
           <!--noindex-->
           <div class="post-button text-center">
@@ -1827,7 +1816,7 @@ Suspended
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">3</span>
+                <span class="site-state-item-count">2</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
@@ -1913,7 +1902,7 @@ Suspended
 </div>
 <div class="theme-info">
   <div class="powered-by"></div>
-  <span class="post-count">博客全站共11.8k字</span>
+  <span class="post-count">博客全站共12.1k字</span>
 </div>
 
 
