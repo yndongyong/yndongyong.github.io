@@ -1,8 +1,31 @@
 ---
 title: Android 6 运行时权限小节
 date: 2017-08-15 21:31:00
-tags:
+tags: non-ui-framgment headlessfragment 动态权限
 ---
+## 重大更改
+
+过了很久来找个Util类，发现已经找不到了，于是使用NON-UI-fragment重新实现了一遍。之前的Util需要5个步骤集成，使用了fragment之后，开箱即用。见使用方式。完整代码见最后。
+
+ - 使用方式
+  
+	```
+	//初始化
+	permissionHelper = PermissionHelper.attach(this);
+	//申请权限
+	permissionHelper.applyPermission(new String[]{Manifest.permission.READ_CONTACTS}, 101, new PermissionHelper.IPermissionCallback() {
+            @Override
+            public void onPermissionsGranted(int requestCode, String[] permissions) {
+                Toast.makeText(MainActivity.this, "onPermissionsGranted", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onPermissionsDenied(int requestCode, String[] permissions) {
+                Toast.makeText(MainActivity.this, "onPermissionsDenied", Toast.LENGTH_SHORT).show();
+            }
+        });
+	```
+
 ## Android 6 运行时权限小结
 
 用了很多的第三方权限框架，都不是很顺手。由于最近项目里使用的框架存在一些问题，于是自己阅读了官方的文档，梳理了运行时权限相关的知识点，并形成了一个工具类供复用。
@@ -131,6 +154,216 @@ dangerous权限，将会直接涉及到用户的隐私、敏感数据，在使�
   
   demo地址
   
+## 最新版本代码：  
+  
+	
+	public class PermissionHelper extends Fragment {
+
+    private static final String FRAG_TAG = PermissionHelper.class.getCanonicalName();
+
+    public static final String[] CALENDAR, CAMERA, CONTACTS, LOCATION, MICROPHONE, PHONE, SENSORS, SMS, STORAGE;
+
+    static {
+        //读写 日历
+        CALENDAR = new String[]{
+                Manifest.permission.READ_CALENDAR,
+                Manifest.permission.WRITE_CALENDAR};
+        //摄像头
+        CAMERA = new String[]{
+                Manifest.permission.CAMERA};
+        // 读取联系人 写入联系人
+        CONTACTS = new String[]{
+                Manifest.permission.READ_CONTACTS,
+                Manifest.permission.WRITE_CONTACTS,
+                Manifest.permission.GET_ACCOUNTS};
+        //位置信息
+        LOCATION = new String[]{
+                Manifest.permission.ACCESS_FINE_LOCATION,
+                Manifest.permission.ACCESS_COARSE_LOCATION};
+        //麦克风
+        MICROPHONE = new String[]{
+                Manifest.permission.RECORD_AUDIO};
+        //读取电话状态 打电话 读写通话记录 处理来电
+        PHONE = new String[]{
+                Manifest.permission.READ_PHONE_STATE,
+                Manifest.permission.CALL_PHONE,
+                Manifest.permission.READ_CALL_LOG,
+                Manifest.permission.WRITE_CALL_LOG,
+                Manifest.permission.USE_SIP,
+                Manifest.permission.PROCESS_OUTGOING_CALLS};
+        // 传感器
+        SENSORS = new String[]{
+                Manifest.permission.BODY_SENSORS};
+        // 读写短信 收发短信
+        SMS = new String[]{
+                Manifest.permission.SEND_SMS,
+                Manifest.permission.RECEIVE_SMS,
+                Manifest.permission.READ_SMS,
+                Manifest.permission.RECEIVE_WAP_PUSH,
+                Manifest.permission.RECEIVE_MMS};
+        //读写存储
+        STORAGE = new String[]{
+                Manifest.permission.READ_EXTERNAL_STORAGE,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE};
+    }
+
+    private Activity mContext;
+
+    private int mRequestCode;
+    private IPermissionCallback mPermissionListener;
+
+
+    public static <ParentFrag extends Fragment > PermissionHelper attach(ParentFrag parent) {
+        return attach(parent.getChildFragmentManager());
+    }
+
+    public static <ParentActivity extends FragmentActivity > PermissionHelper attach(ParentActivity parent) {
+        return attach(parent.getSupportFragmentManager());
+    }
+
+    private static PermissionHelper attach(FragmentManager fragmentManager) {
+        PermissionHelper frag = (PermissionHelper) fragmentManager.findFragmentByTag(FRAG_TAG);
+        if (frag == null) {
+            frag = new PermissionHelper();
+            fragmentManager.beginTransaction().add(frag, FRAG_TAG).commit();
+            //fragment在Activity的onreate中被attach之后就立即调用fragment的一些方法，需要如下代码，否则不需要
+            fragmentManager.executePendingTransactions();
+        }
+        return frag;
+    }
+
+
+    protected IPermissionCallback getParent() {
+        Fragment parentFragment = getParentFragment();
+        if (parentFragment instanceof IPermissionCallback) {
+            return (IPermissionCallback) parentFragment;
+        } else {
+            Activity activity = getActivity();
+            if (activity instanceof IPermissionCallback) {
+                return (IPermissionCallback) activity;
+            }
+        }
+        return null;
+    }
+
+    public void applyPermission(final String[] permissions, final int requestCode, final IPermissionCallback listener) {
+
+        //版本检测
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+            listener.onPermissionsGranted(requestCode, permissions);
+            return;
+        }
+
+        //被拒的权限
+        final List<String> deniedPermissions = findDeniedPermissions(permissions);
+
+        if (deniedPermissions.size() == 0) {
+            listener.onPermissionsGranted(requestCode, permissions);
+            return;
+        }
+        this.mRequestCode = requestCode;
+        this.mPermissionListener = listener;
+
+        //需要解释
+        List<String> rationalePermissions = hasShowRequestPermissionRationale(permissions);
+        if (rationalePermissions.size() == 0) {
+            requestPermissions(deniedPermissions.toArray(new String[deniedPermissions.size()]), requestCode);
+        } else {
+            // TODO: 被用户拒绝过但是没有勾选再也不提示的checkbox，需要向用户解释说明为什么需要权限
+            AlertDialog dialog = new AlertDialog.Builder(mContext).setTitle("权限申请提示").setMessage("需要使用权限才能正常使用，是否授权？")
+                    .setNegativeButton("cancle", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            if (mPermissionListener != null) {
+                                mPermissionListener.onPermissionsDenied(requestCode, permissions);
+                            }
+                        }
+                    })
+                    .setPositiveButton("confirm", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+
+                            requestPermissions(deniedPermissions.toArray(new String[deniedPermissions.size()]), requestCode);
+                        }
+                    }).create();
+
+            dialog.show();
+
+        }
+
+
+
+    }
+
+    private List<String> hasShowRequestPermissionRationale(String... permission) {
+        List<String> rationalePermissions = new ArrayList<>();
+        for (String value : permission) {
+            if (shouldShowRequestPermissionRationale(value)) {
+                rationalePermissions.add(value);
+            }
+        }
+        return rationalePermissions;
+    }
+
+    private List<String> findDeniedPermissions(String... permission) {
+        List<String> denyPermissions = new ArrayList<>();
+        for (String value : permission) {
+            if (ContextCompat.checkSelfPermission(mContext, value) != PackageManager.PERMISSION_GRANTED) {
+                denyPermissions.add(value);
+            }
+        }
+        return denyPermissions;
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (requestCode == this.mRequestCode) {
+            List<String> grantPermissions = new ArrayList<>();
+            List<String> deniedPermissions = new ArrayList<>();
+
+            for (int i = 0; i < grantResults.length; i++) {
+                if (grantResults[i] != PackageManager.PERMISSION_GRANTED) {
+                    deniedPermissions.add(permissions[i]);
+                } else {
+                    grantPermissions.add(permissions[i]);
+                }
+            }
+            if (deniedPermissions.size() == 0) {
+                if (mPermissionListener != null) {
+                    mPermissionListener.onPermissionsGranted(requestCode, grantPermissions.toArray(new String[grantPermissions.size()]));
+                }
+            } else {
+                if (mPermissionListener != null) {
+                    mPermissionListener.onPermissionsDenied(requestCode, deniedPermissions.toArray(new String[deniedPermissions.size()]));
+                }
+            }
+        }
+
+
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        mContext = (Activity) context;
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mContext = null;
+        mPermissionListener = null;
+    }
+
+    public interface IPermissionCallback {
+        //授予了所有的权限
+        void onPermissionsGranted(int requestCode, String permissions[]);
+
+        //拒绝的权限 考虑再该回调中指引用户打开系统设置界面，引导用户打开权限
+        void onPermissionsDenied(int requestCode, String permissions[]);
+    }
+
+	}
   
   
 		
