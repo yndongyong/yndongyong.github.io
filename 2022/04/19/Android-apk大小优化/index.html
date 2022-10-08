@@ -1,0 +1,808 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="android," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="yndongyong‘s blog" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="背景随着App工程的长时间维护，项目里堆积了一些曾经有用的、但随着升级迭代逐渐没有使用到的资源，比如Activity 、Fragment、RecyclerView的ItemView等的布局xml资源，各种背景Shape的xml资源，以及图标图片等。虽然在Release包的构建配置中设置了shrinkResources true的配置,但并没有将这些资源真正的删除，而是替换为一个个的空文件，仍然会参">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android Apk大小优化">
+<meta property="og:url" content="https://yndongyong.github.io/2022/04/19/Android-apk%E5%A4%A7%E5%B0%8F%E4%BC%98%E5%8C%96/index.html">
+<meta property="og:site_name" content="yndongyong‘s blog">
+<meta property="og:description" content="背景随着App工程的长时间维护，项目里堆积了一些曾经有用的、但随着升级迭代逐渐没有使用到的资源，比如Activity 、Fragment、RecyclerView的ItemView等的布局xml资源，各种背景Shape的xml资源，以及图标图片等。虽然在Release包的构建配置中设置了shrinkResources true的配置,但并没有将这些资源真正的删除，而是替换为一个个的空文件，仍然会参">
+<meta property="og:locale">
+<meta property="og:image" content="https://raw.githubusercontent.com/yndongyong/picBed/master/img/202204211417724.png?token=ACWZC7FJXPTKPHNL6QD6WS3CMD3TY">
+<meta property="article:published_time" content="2022-04-19T08:37:58.000Z">
+<meta property="article:modified_time" content="2022-04-21T06:59:15.724Z">
+<meta property="article:author" content="yndongyong">
+<meta property="article:tag" content="android">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/yndongyong/picBed/master/img/202204211417724.png?token=ACWZC7FJXPTKPHNL6QD6WS3CMD3TY">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://yndongyong.github.io/2022/04/19/Android-apk大小优化/"/>
+
+
+
+
+
+  <title>Android Apk大小优化 | yndongyong‘s blog</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<meta name="generator" content="Hexo 6.1.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">yndongyong‘s blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">生命不息，学习不止！</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://yndongyong.github.io/2022/04/19/Android-apk%E5%A4%A7%E5%B0%8F%E4%BC%98%E5%8C%96/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="yndongyong‘s blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Android Apk大小优化</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2022-04-19T16:37:58+08:00">
+                2022-04-19
+              </time>
+            
+
+            
+              <span class="post-meta-divider">|</span>
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">更新于</span>
+              
+              <time title="更新于" itemprop="dateModified" datetime="2022-04-21T14:59:15+08:00">
+                2022-04-21
+              </time>
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/android/" itemprop="url" rel="index">
+                    <span itemprop="name">android</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>随着App工程的长时间维护，项目里堆积了一些曾经有用的、但随着升级迭代逐渐没有使用到的资源，比如<code>Activity</code> 、<code>Fragment</code>、<code>RecyclerView</code>的<code>ItemView</code>等的布局<code>xml</code>资源，各种背景<code>Shape</code>的<code>xml</code>资源，以及图标图片等。虽然在<code>Release</code>包的构建配置中设置了<code>shrinkResources true</code>的配置,但并没有将这些资源真正的删除，而是替换为一个个的空文件，仍然会参与编译构建，最终导致。</p>
+<p>长此以往，造成了三个主要问题：</p>
+<ol>
+<li>工程代码包括资源的膨胀。</li>
+<li><code>Apk</code>的包大小越来越大的问题，此前v5.5.0版本的armv8a的包大小已经达到<code>69M</code>。进行包大小优化有助于提高下载转化率。</li>
+<li>编译耗时增加，目前的工程本地一次完整的<code>debug</code>包的全量编译需要耗时七八分钟之久（编译环境win11,corei5-1135g7，24g内存，m.2 ssd）。从编译速度的角度考虑，无用资源的移除也是很有必要的。</li>
+</ol>
+<h2 id="优化方法"><a href="#优化方法" class="headerlink" title="优化方法"></a>优化方法</h2><p>为了处理上述的三个问题，优化<code>Apk</code>包大小，主要采用以下三种手段</p>
+<ol>
+<li><code>android lint</code> 移除无用资源</li>
+<li>移除<code>drawable-xhpi</code>图片资源文件夹中的无用图片资源</li>
+<li>使用图片压缩工具将<code>drawable-xxhpi</code>图片资源文件夹中的尺寸比较的图片资源进行压缩减小图片大小。</li>
+</ol>
+<h3 id="一、android-lint-移除无用资源"><a href="#一、android-lint-移除无用资源" class="headerlink" title="一、android lint 移除无用资源"></a>一、<code>android lint</code> 移除无用资源</h3><p>在<code>Android studio</code>可以通过lint检查分析那些没有使用到的资源，操作路径为： <code>Analyze</code>-&gt;<code>Run INspection by Name</code> 输入<code>unused resources</code>对分析出的资源文件加以清理。</p>
+<p>如果直接删除<code>lint</code>分析出来的文件列表，可能会存在误删除的情况，比如<code>raw</code>文件中的文件，和通过反射方式以及<code>getResources().getIdentifier</code>的方法使用的资源<code>lint</code>是无法区分的，需要我们提前进行梳理，使用白名单进行保留，可以新建一个resource的xml文件，列出要保留的文件，防止误删。</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version=<span class="string">&quot;1.0&quot;</span> encoding=<span class="string">&quot;utf-8&quot;</span>?&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">resources</span> <span class="attr">xmlns:tools</span>=<span class="string">&quot;http://schemas.android.com/tools&quot;</span></span></span><br><span class="line"><span class="tag">    <span class="attr">tools:keep</span>=<span class="string">&quot;@drawable/ic_reoad_event_*,@drawable/ic_reoad_marker_*,@drawable/ic_reoad_marker_big_*,</span></span></span><br><span class="line"><span class="string"><span class="tag">    @dimen/status_bar_height,@dimen/navigation_bar_height,@raw/bg_video_login,@raw/roll,@string/MI_APP_ID,@string/MI_APP_KEY&quot;</span></span></span><br><span class="line"><span class="tag">    &gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">resources</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>在移除资源的过程需要各个小项仔细区分，防止避免误删除。建议整个工程都在git的版本管理之下再执行该操作。</p>
+<p>此外，在实际执行<code>Remove All Unused Resource</code>的过程中还出现了删除各种布局的控件id的情况，也需要避免，我们通过在<code>App moudle</code>的lint.xml文件中，定制扫描规则进行忽略。</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version=<span class="string">&quot;1.0&quot;</span> encoding=<span class="string">&quot;UTF-8&quot;</span>?&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">lint</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">issue</span> <span class="attr">id</span>=<span class="string">&quot;SpUsage&quot;</span> <span class="attr">severity</span>=<span class="string">&quot;ignore&quot;</span> /&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">issue</span> <span class="attr">id</span>=<span class="string">&quot;SmallSp&quot;</span> <span class="attr">severity</span>=<span class="string">&quot;ignore&quot;</span> /&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">issue</span> <span class="attr">id</span>=<span class="string">&quot;ContentDescription&quot;</span> <span class="attr">severity</span>=<span class="string">&quot;ignore&quot;</span>/&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">&lt;!-- 加上可以避免布局中的控件id被删除 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">issue</span> <span class="attr">id</span>=<span class="string">&quot;UnusedIds&quot;</span> <span class="attr">severity</span>=<span class="string">&quot;ignore&quot;</span>/&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;/<span class="name">lint</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+
+
+<p>这种<code>lint</code>方式也存在一定的缺陷，它是一个静态扫描工具，并没有考虑到<code>ProGuard</code>工程中删除的无用代码，<code>lint</code>检查不出这些无用代码所引用的无用资源。</p>
+<h3 id="二、drawable-xhpi中的无用资源移除"><a href="#二、drawable-xhpi中的无用资源移除" class="headerlink" title="二、drawable-xhpi中的无用资源移除"></a>二、<code>drawable-xhpi</code>中的无用资源移除</h3><p>对于<code>drawable-xhpi</code>的优化，我在App（目前的月活大概是数十万量级）中进行埋点，经过两个月的数据沉淀，通过分析埋点数据发现98%的设备的屏幕分辨率都是<code>1080*1920</code>以及之上的，还有1%的720P。基于以上的埋点数据来看<code>drawable-xhpi</code>的文件夹已经没有存在的必要了，但是为了防止之前导入图片只放一份在<code>drawable-xhpi</code>的情况，需要对比<code>drawable-xhpi</code>文件夹和<code>drawable-xxhpi</code>，将那些存在与<code>xxhdpi</code>也存在与<code>xhpi</code>的图片从<code>drawable-xxhpi</code>文件中删除，防止误删除情况的发生。</p>
+<p>使用了<code>python</code>编写了一个简单的脚本达到上诉目的</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># -*- coding: UTF-8 -*-</span></span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> shutil</span><br><span class="line"></span><br><span class="line">top = os.getcwd()</span><br><span class="line"><span class="built_in">print</span> <span class="string">&#x27;scan top: &#x27;</span> + top</span><br><span class="line">xDpi = os.path.join(top,<span class="string">&quot;drawable-xhdpi&quot;</span>)</span><br><span class="line"><span class="built_in">print</span> <span class="string">&#x27;scan xDpi dir: &#x27;</span> + xDpi</span><br><span class="line"></span><br><span class="line">xxDpi = os.path.join(top,<span class="string">&quot;drawable-xxhdpi&quot;</span>)</span><br><span class="line"><span class="built_in">print</span> <span class="string">&#x27;scan xxDpi dir: &#x27;</span> + xxDpi</span><br><span class="line"></span><br><span class="line">xxList = []</span><br><span class="line">xList = []</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> path <span class="keyword">in</span> os.listdir(xxDpi):</span><br><span class="line">	apps = os.path.join(xxDpi, path)</span><br><span class="line">	xxList.append(path)</span><br><span class="line"><span class="built_in">print</span> <span class="string">&#x27;xxList: &#x27;</span></span><br><span class="line"><span class="built_in">print</span> xxList </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> path <span class="keyword">in</span> os.listdir(xDpi):</span><br><span class="line">	apps = os.path.join(xDpi, path)</span><br><span class="line">	xList.append(path)</span><br><span class="line"><span class="built_in">print</span> <span class="string">&#x27;xList: &#x27;</span></span><br><span class="line"><span class="built_in">print</span> xList </span><br><span class="line"></span><br><span class="line">a = [x <span class="keyword">for</span> x <span class="keyword">in</span> xList <span class="keyword">if</span> x <span class="keyword">in</span> xxList]</span><br><span class="line"><span class="built_in">print</span> <span class="string">&#x27;删除xh中与xxh中的相同元素: &#x27;</span></span><br><span class="line"><span class="built_in">print</span> <span class="built_in">len</span>(a)</span><br><span class="line"><span class="built_in">print</span> a</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> path <span class="keyword">in</span> a:</span><br><span class="line">	filePath = os.path.join(xDpi, path)</span><br><span class="line">	os.remove(filePath)</span><br></pre></td></tr></table></figure>
+
+<p>此外，依据埋点数据的结论，在团队中推行，图片只用放一份到<code>xxhdpi</code>文件夹中的开发规范。</p>
+<h3 id="三、大图压缩"><a href="#三、大图压缩" class="headerlink" title="三、大图压缩"></a>三、大图压缩</h3><p>对于剩余的<code>drawable-xxhpi</code>中的图片资源，使用一款名叫鸭鸭压缩软件进行批量压缩，至于压缩效果前期已经找到UI老师进行确认。</p>
+<h2 id="优化效果"><a href="#优化效果" class="headerlink" title="优化效果"></a>优化效果</h2><ol>
+<li>移除<code>drawable-xhpi</code>中的无用图片资源820份</li>
+<li>移除布局 135份 ；移除<code>shape drawable</code> 131； 移除<code>drawable-xxhpi</code>未使用的图片400多份，以及各类<code>string</code>、<code>color</code>资源500多份</li>
+<li>v5.5.0版本的armv8a的包大小从<code>69.5M</code>包大小降低至<code>63.08M</code>，包大小减少<code>6.42M</code></li>
+</ol>
+<p><img src="https://raw.githubusercontent.com/yndongyong/picBed/master/img/202204211417724.png?token=ACWZC7FJXPTKPHNL6QD6WS3CMD3TY" alt="附图基于v5.5.0版本进行优化的包大小对比"></p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/android/" rel="tag"><i class="fa fa-tag"></i> android</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2022/03/29/Android%E7%AB%AF%E4%BB%A3%E7%A0%81%E5%88%86%E6%94%AF%E7%AE%A1%E7%90%86%E8%A7%84%E8%8C%83/" rel="next" title="Android端代码分支管理规范">
+                <i class="fa fa-chevron-left"></i> Android端代码分支管理规范
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2022/04/29/%E8%AE%B0%E4%B8%80%E6%AC%A1App%E6%8F%90%E5%AE%A1%E9%9A%90%E7%A7%81%E5%8D%8F%E8%AE%AEh5%E9%A1%B5%E9%9D%A2%E6%89%93%E4%B8%8D%E5%BC%80%E7%9A%84%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5/" rel="prev" title="记一次App提审隐私协议h5页面打不开的问题排查">
+                记一次App提审隐私协议h5页面打不开的问题排查 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="" />
+          <p class="site-author-name" itemprop="name"></p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">13</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">2</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">14</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%83%8C%E6%99%AF"><span class="nav-number">1.</span> <span class="nav-text">背景</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95"><span class="nav-number">2.</span> <span class="nav-text">优化方法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%80%E3%80%81android-lint-%E7%A7%BB%E9%99%A4%E6%97%A0%E7%94%A8%E8%B5%84%E6%BA%90"><span class="nav-number">2.1.</span> <span class="nav-text">一、android lint 移除无用资源</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BA%8C%E3%80%81drawable-xhpi%E4%B8%AD%E7%9A%84%E6%97%A0%E7%94%A8%E8%B5%84%E6%BA%90%E7%A7%BB%E9%99%A4"><span class="nav-number">2.2.</span> <span class="nav-text">二、drawable-xhpi中的无用资源移除</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%89%E3%80%81%E5%A4%A7%E5%9B%BE%E5%8E%8B%E7%BC%A9"><span class="nav-number">2.3.</span> <span class="nav-text">三、大图压缩</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BC%98%E5%8C%96%E6%95%88%E6%9E%9C"><span class="nav-number">3.</span> <span class="nav-text">优化效果</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">yndongyong</span>
+</div>
+
+
+<div class="powered-by">
+<i class="fa fa-user-md"></i><span id="busuanzi_container_site_uv">
+  本站访客数:<span id="busuanzi_value_site_uv"></span>
+</span>
+</div>
+<div class="powered-by">
+  由 <a class="theme-link" target="_blank" rel="noopener" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" target="_blank" rel="noopener" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+<div class="theme-info">
+  <div class="powered-by"></div>
+  <span class="post-count">博客全站共11.4k字</span>
+</div>
+
+
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+  
+  <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
