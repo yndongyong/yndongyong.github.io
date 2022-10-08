@@ -2,6 +2,15 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://yndongyong.github.io/2022/10/08/App-minSdk%E5%8D%87%E7%BA%A7%E4%B8%BA24%E4%B9%8B%E5%90%8E%E7%9A%84%E9%97%AE%E9%A2%98/</loc>
+    
+    <lastmod>2022-10-08</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>https://yndongyong.github.io/2022/04/29/%E8%AE%B0%E4%B8%80%E6%AC%A1App%E6%8F%90%E5%AE%A1%E9%9A%90%E7%A7%81%E5%8D%8F%E8%AE%AEh5%E9%A1%B5%E9%9D%A2%E6%89%93%E4%B8%8D%E5%BC%80%E7%9A%84%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5/</loc>
     
     <lastmod>2022-10-08</lastmod>
@@ -252,6 +261,13 @@
     <priority>0.2</priority>
   </url>
   
+  <url>
+    <loc>https://yndongyong.github.io/tags/android-minSdk/</loc>
+    <lastmod>2022-10-08</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
 
   
   <url>
@@ -263,6 +279,13 @@
   
   <url>
     <loc>https://yndongyong.github.io/categories/android%E7%BA%BF%E4%B8%8A%E5%A1%AB%E5%9D%91/</loc>
+    <lastmod>2022-10-08</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://yndongyong.github.io/categories/android-studio/</loc>
     <lastmod>2022-10-08</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>

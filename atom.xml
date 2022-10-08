@@ -6,7 +6,7 @@
   <link href="https://yndongyong.github.io/atom.xml" rel="self"/>
   
   <link href="https://yndongyong.github.io/"/>
-  <updated>2022-10-08T02:59:18.519Z</updated>
+  <updated>2022-10-08T03:53:58.601Z</updated>
   <id>https://yndongyong.github.io/</id>
   
   <author>
@@ -15,6 +15,34 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>App minSdk升级为24之后的问题</title>
+    <link href="https://yndongyong.github.io/2022/10/08/App-minSdk%E5%8D%87%E7%BA%A7%E4%B8%BA24%E4%B9%8B%E5%90%8E%E7%9A%84%E9%97%AE%E9%A2%98/"/>
+    <id>https://yndongyong.github.io/2022/10/08/App-minSdk%E5%8D%87%E7%BA%A7%E4%B8%BA24%E4%B9%8B%E5%90%8E%E7%9A%84%E9%97%AE%E9%A2%98/</id>
+    <published>2022-10-08T03:35:01.000Z</published>
+    <updated>2022-10-08T03:53:58.601Z</updated>
+    
+    <content type="html"><![CDATA[<h3 id="升级的原因"><a href="#升级的原因" class="headerlink" title="升级的原因"></a>升级的原因</h3><p>最近，因为vivo商店的审核问题，将App的minSdk从21升级到24，下限支持为Android7。ci上打包的apk，发给测试之后，测试反馈打开之后就闪退。</p><h3 id="出现的问题"><a href="#出现的问题" class="headerlink" title="出现的问题"></a>出现的问题</h3><p>排查日志，有一个<code>SIGE（11）</code>相关的日志，使用未加固的包安装测试，发现正常。因而认为是加固引起的问题。此前的加固策略里有两条，一条是签名检测、一条是so加固。签名检测到不一致时，会退出App。</p><h3 id="原因"><a href="#原因" class="headerlink" title="原因"></a>原因</h3><p>这里是<code>build.gradle</code>中签名相关的配置</p><figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">signingConfigs &#123;</span><br><span class="line">    release &#123;</span><br><span class="line">        storeFile file(<span class="string">&quot;../xxx.jks&quot;</span>)</span><br><span class="line">        storePassword <span class="string">&quot;xxxx&quot;</span></span><br><span class="line">        keyAlias <span class="string">&quot;xxxx&quot;</span></span><br><span class="line">        keyPassword <span class="string">&quot;xxxx&quot;</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>怀疑大概率是签名机制的问题，Android7及以上默认是使用v2签名。</p><p>minSdk是21时：包构建时使用v1签名打包，然后加固，最后重新使用v1+v2签名。</p><p>minSdk升级为24之后：包构建时使用v2签名打包，然后加固，最后重新使用v1+v2签名。</p><p>两种行为之下，在加固的签名校验环节任务签名不一致了，主动关闭App了。</p><h3 id="解决"><a href="#解决" class="headerlink" title="解决"></a>解决</h3><p>minSdk24的情况下，构建包时，配置使用使用v1进行签名，v2签名需要关闭（默认是打开的），加固之后使用v1+v2方式重新签名</p><p>配置如下：</p><figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">signingConfigs &#123;</span><br><span class="line">    release &#123;</span><br><span class="line">        storeFile file(<span class="string">&quot;../xxx.jks&quot;</span>)</span><br><span class="line">        storePassword <span class="string">&quot;xxxx&quot;</span></span><br><span class="line">        keyAlias <span class="string">&quot;xxxx&quot;</span></span><br><span class="line">        keyPassword <span class="string">&quot;xxxx&quot;</span></span><br><span class="line">        v2SigningEnabled <span class="literal">false</span></span><br><span class="line">        v1SigningEnabled <span class="literal">true</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;h3 id=&quot;升级的原因&quot;&gt;&lt;a href=&quot;#升级的原因&quot; class=&quot;headerlink&quot; title=&quot;升级的原因&quot;&gt;&lt;/a&gt;升级的原因&lt;/h3&gt;&lt;p&gt;最近，因为vivo商店的审核问题，将App的minSdk从21升级到24，下限支持为Android7。ci上打包的a</summary>
+      
+    
+    
+    
+    <category term="android" scheme="https://yndongyong.github.io/categories/android/"/>
+    
+    <category term="android线上填坑" scheme="https://yndongyong.github.io/categories/android%E7%BA%BF%E4%B8%8A%E5%A1%AB%E5%9D%91/"/>
+    
+    <category term="android studio" scheme="https://yndongyong.github.io/categories/android-studio/"/>
+    
+    
+    <category term="android minSdk" scheme="https://yndongyong.github.io/tags/android-minSdk/"/>
+    
+  </entry>
   
   <entry>
     <title>记一次App提审隐私协议h5页面打不开的问题排查</title>
