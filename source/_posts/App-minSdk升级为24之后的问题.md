@@ -90,6 +90,8 @@ java.lang.UnsatisfiedLinkError: couldn't find DSO to load: libgifimage.so caused
     at java.lang.Thread.run(Thread.java:919)
 ```
 
+### 解决
+
 发现是页面上有个gif动态图，使用的fresco-git先关的库展示的，`libgifimage.so`等相关的so库是有`fresco`的引入的。`fresco`有自己的一套`soloader`机制，加固之后so加载不到了。
 
 最终在加固策略中排除`fresco`相关的一系列so库，不对这部分so库加固，就能解决问题。
