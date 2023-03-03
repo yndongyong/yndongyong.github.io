@@ -6,7 +6,7 @@
   <link href="https://yndongyong.github.io/atom.xml" rel="self"/>
   
   <link href="https://yndongyong.github.io/"/>
-  <updated>2022-11-08T09:43:07.755Z</updated>
+  <updated>2023-03-03T09:49:31.198Z</updated>
   <id>https://yndongyong.github.io/</id>
   
   <author>
@@ -15,6 +15,31 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>红米note 8 pro 刷pixelexperience</title>
+    <link href="https://yndongyong.github.io/2023/03/03/%E7%BA%A2%E7%B1%B3note-8-pro-%E5%88%B7pixelexperience/"/>
+    <id>https://yndongyong.github.io/2023/03/03/%E7%BA%A2%E7%B1%B3note-8-pro-%E5%88%B7pixelexperience/</id>
+    <published>2023-03-03T09:43:22.000Z</published>
+    <updated>2023-03-03T09:49:31.198Z</updated>
+    
+    <content type="html"><![CDATA[<p>这款手机官方的rom版本已经永久的停留在Android11，近期app的targetsdk已经升级到3（android12），没有一个android12 的手机属实不方便，便开始了刷机的折腾之路。</p><p><strong>pixelexperience</strong> 刷机包下载地址：<a href="https://get.pixelexperience.org/begonia">https://get.pixelexperience.org/begonia</a><br><strong>pixelexperience twrp下载地址：</strong><a href="https://get.pixelexperience.org/begonia">https://get.pixelexperience.org/begonia</a></p><p><strong>驱动安装</strong><br>刷机前请确保已近安装对应的驱动，或者通过安装小米手机助手PC安装驱动。<br>需先确保开发者选项开启，usb调试开启，本机有adb工具环境</p><p><strong>bootloader解锁</strong><br>参考官网解锁文档<a href="https://www.miui.com/unlock/index.html">https://www.miui.com/unlock/index.html</a><br>需要注册小米账号，绑定手机号，申请解锁（首次的申请的需要等待好久审核），申请通过之后在使用官方提供的解锁工具进行解锁，具体步骤：<br>1.进入“设置 -&gt; 开发者选项 -&gt; 设备解锁状态”中绑定账号和设备；<br>2.手动进入Bootloader模式（关机后，同时按住开机键和音量下键）；<br>3.通过USB连接手机，在解锁软件中点击 “解锁”按钮；</p><p><strong>刷入第三方recovery</strong></p><ol><li><p>pixelexperience 提供了专用的的twrp，下载地址：<a href="https://get.pixelexperience.org/begonia">https://get.pixelexperience.org/begonia</a></p></li><li><p>连接手机至电脑，关机状态下长按音量减+电源键进入fastboot模式，亦可通过下列命令进入</p><p><code>adb reboot bootloader</code></p></li><li><p>当手机进入fastboot模式，使用如下命令验证，正常的话会识别出可用设备，没有输出内容的话，大概率是驱动问题，可以去windows设备管理下看是否有android设备，处理驱动问题，小米提供的驱动文件在win11上安装不了，或者直接右键选择更新驱动设备，选择通用串口设备下的驱动。</p><p><code>fastboot devices</code></p></li><li><p>刷入recovery</p><p><code>fastboot flash recovery &lt;recovery_filename&gt;.img</code></p></li><li><p>当刷入recovery完成时，直接安装音量加+电源键，进入recovery模式，这一步千万不能直接进入系统，否者recovery又会被替换为官方的。</p></li></ol><p><strong>刷入rom</strong></p><ol><li><p>进入recovery后，清除数据 Factory Reset -&gt; Format data &#x2F; factory reset</p></li><li><p>返回主界面，通过“Apply Update”-&gt; “Apply from ADB” 刷入rom，执行以下命令：</p><p><code>adb sideload rom_name.zip</code></p></li><li><p>刷好之后，返回主界面选择 “Reboot system now ” 重启系统。</p></li></ol>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;p&gt;这款手机官方的rom版本已经永久的停留在Android11，近期app的targetsdk已经升级到3（android12），没有一个android12 的手机属实不方便，便开始了刷机的折腾之路。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;pixelexperience&lt;/strong</summary>
+      
+    
+    
+    
+    <category term="android" scheme="https://yndongyong.github.io/categories/android/"/>
+    
+    
+    <category term="android" scheme="https://yndongyong.github.io/tags/android/"/>
+    
+  </entry>
   
   <entry>
     <title>EventBus源码分析</title>
