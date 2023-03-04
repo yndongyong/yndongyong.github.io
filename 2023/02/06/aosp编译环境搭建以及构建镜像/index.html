@@ -1,0 +1,890 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="android," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="yndongyong‘s blog" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="1. 参考文档 Cuttlefish 虚拟安卓设备  |  Android 开源项目  |  Android Open Source Project  官网对cuttlefish的介绍以及搭建 墨鱼：重启和重置  |  Android 开源项目  |  Android Open Source Project cutterfish相关操作命令 Android 开发者代码实验室  |  Android">
+<meta property="og:type" content="article">
+<meta property="og:title" content="aosp编译环境搭建以及构建镜像">
+<meta property="og:url" content="https://yndongyong.github.io/2023/02/06/aosp%E7%BC%96%E8%AF%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA%E4%BB%A5%E5%8F%8A%E6%9E%84%E5%BB%BA%E9%95%9C%E5%83%8F/index.html">
+<meta property="og:site_name" content="yndongyong‘s blog">
+<meta property="og:description" content="1. 参考文档 Cuttlefish 虚拟安卓设备  |  Android 开源项目  |  Android Open Source Project  官网对cuttlefish的介绍以及搭建 墨鱼：重启和重置  |  Android 开源项目  |  Android Open Source Project cutterfish相关操作命令 Android 开发者代码实验室  |  Android">
+<meta property="og:locale">
+<meta property="article:published_time" content="2023-02-06T07:58:50.000Z">
+<meta property="article:modified_time" content="2023-03-04T05:13:32.825Z">
+<meta property="article:author" content="yndongyong">
+<meta property="article:tag" content="android">
+<meta name="twitter:card" content="summary">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://yndongyong.github.io/2023/02/06/aosp编译环境搭建以及构建镜像/"/>
+
+
+
+
+
+  <title>aosp编译环境搭建以及构建镜像 | yndongyong‘s blog</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">yndongyong‘s blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">生命不息，学习不止！</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://yndongyong.github.io/2023/02/06/aosp%E7%BC%96%E8%AF%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA%E4%BB%A5%E5%8F%8A%E6%9E%84%E5%BB%BA%E9%95%9C%E5%83%8F/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="yndongyong‘s blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">aosp编译环境搭建以及构建镜像</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2023-02-06T15:58:50+08:00">
+                2023-02-06
+              </time>
+            
+
+            
+              <span class="post-meta-divider">|</span>
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">更新于</span>
+              
+              <time title="更新于" itemprop="dateModified" datetime="2023-03-04T13:13:32+08:00">
+                2023-03-04
+              </time>
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/android/" itemprop="url" rel="index">
+                    <span itemprop="name">android</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/framework/" itemprop="url" rel="index">
+                    <span itemprop="name">framework</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="1-参考文档"><a href="#1-参考文档" class="headerlink" title="1. 参考文档"></a>1. 参考文档</h1><ul>
+<li><a target="_blank" rel="noopener" href="https://source.android.com/docs/setup/create/cuttlefish?hl=zh-cn">Cuttlefish 虚拟安卓设备  |  Android 开源项目  |  Android Open Source Project</a>  官网对cuttlefish的介绍以及搭建</li>
+<li><a target="_blank" rel="noopener" href="https://source.android.com/docs/setup/create/cuttlefish-restart?hl=zh-cn">墨鱼：重启和重置  |  Android 开源项目  |  Android Open Source Project</a> cutterfish相关操作命令</li>
+<li><a target="_blank" rel="noopener" href="https://source.android.com/docs/setup/start?hl=zh-cn">Android 开发者代码实验室  |  Android 开源项目  |  Android Open Source Project</a> 官网队aosp环境搭建介绍</li>
+<li><a target="_blank" rel="noopener" href="https://source.android.com/docs/setup/download/downloading?hl=zh-cn">下载源代码  |  Android 开源项目  |  Android Open Source Project</a> 官网源码下载的介绍</li>
+</ul>
+<h1 id="2-硬件要求"><a href="#2-硬件要求" class="headerlink" title="2.硬件要求"></a>2.硬件要求</h1><ul>
+<li>需要 64 位环境linux</li>
+<li>硬盘容量至少500G，代码检出（aosp-master分支：350G左右）与编译（150G左右）均需要大量硬盘空间，<del>最后综合考虑检出的是android10分支的代码，硬盘占用少（120G多），编译耗时也会相应减少。</del>后面发现使用cuttlefish模拟器在Android11&#x2F;12上才开始退出，又再次下载了Android12的r26分支，编译使用cuttlefish启动不了编译好的镜像，在android issue网站上看到队intel 11&#x2F;12th的cpu支持有问题，已经在master分支上修复，最终检出aosp-master分支，有从头开始编译，这又是另外一个悲伤的故事。</li>
+<li>内存16G起步，越大越好，本机为24G（实际可用23G），在不配置swap的情况下，多次爆内存，表现为terminal闪退。</li>
+</ul>
+<blockquote>
+<p>从 2021 年 6 月起，Google 使用 72 核机器，内置 RAM 为 64 GB，完整构建过程大约需要 40 分钟（增量构建只需几分钟时间，具体取决于修改了哪些文件）。相比之下，RAM 数量相近的 6 核机器执行完整构建过程需要 3 个小时。</p>
+</blockquote>
+<p>开发机时间数据：在cpu为Intel-i5 1135G（4核心8线程），24G内存+8G Swap，编译android13,过程大约持续4个小时。编译Android10大约耗时：3个半小时（3个小时20多分）</p>
+<h1 id="3-软件要求"><a href="#3-软件要求" class="headerlink" title="3.软件要求"></a>3.软件要求</h1><ul>
+<li><p>操作系统Ubuntu20.4，如果需要使用cuttlefish模拟器，在该版本下可以避免很多依赖问题。编译aosp可用在Ubuntu18.04、Ubuntu22版本下进行，经过实验都可以正常编译成功，但是cuttlefish在这些版本下的依赖有很多问题，cuttlefish的部署debhelper-compat的12以及以上，但在Ubuntu18下，debhelper-compat为11，无法升级。在Ubuntu22下，descripte依赖版本又太高，降级的话还把在桌面环境搞坏掉，因此强烈推荐在Ubuntu20下搭建编译环境。</p>
+</li>
+<li><p>验证 KVM 可用性,返回一个数值。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">grep -c -w &quot;vmx\|svm&quot; /proc/cpuinfo</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>编译所需要的依赖</p>
+<p><code>sudo apt-get install git-core gnupg flex bison build-essential zip curl zlib1g-dev gcc-multilib g++-multilib libc6-dev-i386 libncurses5 lib32ncurses5-dev x11proto-core-dev libx11-dev lib32z1-dev libgl1-mesa-dev libxml2-utils xsltproc unzip fontconfig</code></p>
+<p>aosp源码内包含了用于构建的jdk、python版本了。</p>
+</li>
+<li><p>swap配置，物理内存不足有爆内存的可能。</p>
+<ul>
+<li>创建swap文件,这里设置为8G</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#停用 SWAP</span></span><br><span class="line">sudo swapoff -v /swapfile</span><br><span class="line"><span class="comment">#8g</span></span><br><span class="line">sudo <span class="built_in">dd</span> <span class="keyword">if</span>=/dev/zero of=/swapfile bs=1024M count=8</span><br><span class="line"><span class="comment">#设置读写权限</span></span><br><span class="line">sudo <span class="built_in">chmod</span> 600 /swapfile</span><br><span class="line"><span class="comment">#标注swap区域</span></span><br><span class="line">sudo mkswap /swapfile</span><br><span class="line"><span class="comment">#激活swap分区</span></span><br><span class="line">sudo swapon /swapfile</span><br><span class="line"><span class="comment">#查看swap是否工作</span></span><br><span class="line">sudo swapon --show</span><br><span class="line">sudo free -h</span><br><span class="line"><span class="comment">#将创建的 SWAP 分区设置为永久分区（开机自启）,将 SWAP 路径写入到/etc/fstab文件中</span></span><br><span class="line">/swapfile swap swap defaults 0 0</span><br><span class="line"></span><br><span class="line"><span class="comment">#其他命令</span></span><br><span class="line"><span class="comment">#停用 SWAP</span></span><br><span class="line">sudo swapoff -v /swapfile</span><br><span class="line"><span class="comment">#删除</span></span><br><span class="line">sudo <span class="built_in">rm</span> /swapfile</span><br></pre></td></tr></table></figure>
+
+<p>实践看下来swap只占用了一般。</p>
+</li>
+</ul>
+<h1 id="4-安装-Cuttlefish"><a href="#4-安装-Cuttlefish" class="headerlink" title="4.安装 Cuttlefish"></a>4.安装 Cuttlefish</h1><h2 id="4-1在终端窗口中，下载、构建和安装主机-Debian-软件包："><a href="#4-1在终端窗口中，下载、构建和安装主机-Debian-软件包：" class="headerlink" title="4.1在终端窗口中，下载、构建和安装主机 Debian 软件包："></a>4.1在终端窗口中，下载、构建和安装主机 Debian 软件包：</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">sudo apt install -y git devscripts config-package-dev debhelper-compat golang curl</span><br><span class="line">git clone https://github.com/google/android-cuttlefish</span><br><span class="line">cd android-cuttlefish</span><br><span class="line">for dir in base frontend; do</span><br><span class="line">  cd $dir</span><br><span class="line">  debuild -i -us -uc -b -d</span><br><span class="line">  cd ..</span><br><span class="line">done</span><br><span class="line">sudo dpkg -i ./cuttlefish-base_*_*64.deb || sudo apt-get install -f</span><br><span class="line">sudo dpkg -i ./cuttlefish-user_*_*64.deb || sudo apt-get install -f</span><br><span class="line">sudo usermod -aG kvm,cvdnetwork,render $USER</span><br><span class="line">sudo reboot</span><br></pre></td></tr></table></figure>
+
+<h1 id="5-编译aosp"><a href="#5-编译aosp" class="headerlink" title="5.编译aosp"></a>5.编译aosp</h1><h2 id="5-1安装repo"><a href="#5-1安装repo" class="headerlink" title="5.1安装repo"></a>5.1安装repo</h2><p>Android源码aosp包含了数百个git库，为了管理好这些git库，google开发repo工具，是一系列pythone脚本对git的封装，用来简化管理aosp的源码。</p>
+<p>首要先安装git curl，python ubuntu20已近自带了，没有的话也需要安装</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install git curl</span><br></pre></td></tr></table></figure>
+
+<p>值得注意的地方Ubuntu20安装的是python3，需要将python链接到python3，repo环境下有影响。</p>
+<p><code>sudo ln -s /usr/bin/python3 /usr/bin/python</code></p>
+<p>接下来创建bin，并加入到PATH中。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mkdir ~/bin</span><br><span class="line">PATH=~/bin:$PATH</span><br></pre></td></tr></table></figure>
+
+<p>下载repo并设置权限，这里使用的清华的镜像</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">curl https://mirrors.tuna.tsinghua.edu.cn/git/git-repo &gt; ~/bin/repo</span><br><span class="line">chmod a+x ~/bin/repo</span><br></pre></td></tr></table></figure>
+
+<h2 id="5-2-下载源码"><a href="#5-2-下载源码" class="headerlink" title="5.2 下载源码"></a>5.2 下载源码</h2><p>建立工作目录</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mkdir android_aosp</span><br><span class="line">cd android_aosp</span><br></pre></td></tr></table></figure>
+
+<p>指定repo tuna的源用于更新自己，~&#x2F;.zshrc里添加：</p>
+<p>指定repo更新 使用tuna的源 </p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">export</span> REPO_URL=<span class="string">&#x27;https://mirrors.tuna.tsinghua.edu.cn/git/git-repo/&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p>初始化仓库，可以通过-b指定版本,例如  -b android-12.1.0_r26</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">repo init -u https://aosp.tuna.tsinghua.edu.cn/platform/manifest</span><br></pre></td></tr></table></figure>
+
+<p>至于要下载哪些分支的源码，分支列表参见	<a target="_blank" rel="noopener" href="https://source.android.com/docs/setup/about/build-numbers?hl=zh-cn#source-code-tags-and-builds">代号、标记和 build 号  |  Android 开源项目  |  Android Open Source Project</a></p>
+<p>同步源码:</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">repo <span class="built_in">sync</span></span><br></pre></td></tr></table></figure>
+
+<p>需要经过漫长的等等。晚上估计需要下载3,4个小时。</p>
+<h1 id="6-编译镜像"><a href="#6-编译镜像" class="headerlink" title="6.编译镜像"></a>6.编译镜像</h1><p>使用 <code>envsetup.sh</code> 脚本初始化环境：</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">source</span> build/envsetup.sh</span><br></pre></td></tr></table></figure>
+
+<p>使用lunch 选择要构建的目标,因为要使用cutterfish模拟器，所以使用_cf相关的，</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">lunch aosp_cf_x86_64_phone-userdebug</span><br></pre></td></tr></table></figure>
+
+<p>userdebug代表构建类型，一共有三种构建类型，</p>
+<table>
+<thead>
+<tr>
+<th align="left">构建类型</th>
+<th align="left">使用情况</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">user</td>
+<td align="left">权限受限；适用于生产环境</td>
+</tr>
+<tr>
+<td align="left">userdebug</td>
+<td align="left">与“user”类似，但具有 root 权限和调试功能；是进行调试时的首选编译类型</td>
+</tr>
+<tr>
+<td align="left">eng</td>
+<td align="left">具有额外调试工具的开发配置</td>
+</tr>
+</tbody></table>
+<p>构建代码</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">m</span><br></pre></td></tr></table></figure>
+
+<p>构建过程依据机器配置的不同，需要几个小时的时间。</p>
+<p>构建产物生成目录</p>
+<p><code>out/producte/</code></p>
+<h2 id="6-1相关构建命令"><a href="#6-1相关构建命令" class="headerlink" title="6.1相关构建命令"></a>6.1相关构建命令</h2><p><strong>m</strong> - 从树的顶部运行构建系统，全量编译。</p>
+<p><strong>mma</strong> - 构建当前目录中的所有模块及其依赖项。</p>
+<p><strong>mmma</strong> - 构建提供的目录中的所有模块及其依赖项。</p>
+<p><strong>croot</strong> - <code>cd</code> 到树顶部。</p>
+<p><strong>clean</strong> - <code>m clean</code> 会删除此配置的所有输出和中间文件.</p>
+<h1 id="7-使用cutterfish启动aosp构建"><a href="#7-使用cutterfish启动aosp构建" class="headerlink" title="7. 使用cutterfish启动aosp构建"></a>7. 使用cutterfish启动aosp构建</h1><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">launch_cvd --daemon --start_webrtc=true</span><br></pre></td></tr></table></figure>
+
+<p>访问<strong><a target="_blank" rel="noopener" href="https://localhost:8443/">https://localhost:8443</a></strong>与虚拟设备交互</p>
+<h2 id="7-1cutterfisn先关命令"><a href="#7-1cutterfisn先关命令" class="headerlink" title="7.1cutterfisn先关命令"></a>7.1cutterfisn先关命令</h2><p><strong>launch_cvd</strong> - 启动设备</p>
+<p><strong>powerwash_cvd</strong> -将一个 Cuttlefish 设备重置为其初始磁盘状态</p>
+<p><strong>stop_cvd</strong> - 执行不正常关机并停止设备</p>
+<p><strong>adb reboot</strong> - 使设备完成完整的关机过程，将更改同步到磁盘并确保进程关闭</p>
+<p><strong>restart_cvd</strong> -立即关闭 Cuttlefish 设备执行不正常关机，相当于将电池断开并重新连接到物理设</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/android/" rel="tag"><i class="fa fa-tag"></i> android</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2023/01/04/jenkins-pipeline%E5%AE%9E%E6%88%98%E2%80%94%E2%80%94%E4%BC%81%E4%B8%9A%E7%BA%A7Android%E8%87%AA%E5%8A%A8%E5%8C%96%E6%89%93%E5%8C%85/" rel="next" title="jenkins pipeline实战——企业级Android自动化打包">
+                <i class="fa fa-chevron-left"></i> jenkins pipeline实战——企业级Android自动化打包
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2023/02/10/%E7%BA%A2%E7%B1%B3note-8-pro-%E5%88%B7pixelexperience/" rel="prev" title="红米note 8 pro 刷pixelexperience">
+                红米note 8 pro 刷pixelexperience <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="" />
+          <p class="site-author-name" itemprop="name"></p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">26</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">10</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">21</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-%E5%8F%82%E8%80%83%E6%96%87%E6%A1%A3"><span class="nav-number">1.</span> <span class="nav-text">1. 参考文档</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-%E7%A1%AC%E4%BB%B6%E8%A6%81%E6%B1%82"><span class="nav-number">2.</span> <span class="nav-text">2.硬件要求</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-%E8%BD%AF%E4%BB%B6%E8%A6%81%E6%B1%82"><span class="nav-number">3.</span> <span class="nav-text">3.软件要求</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-%E5%AE%89%E8%A3%85-Cuttlefish"><span class="nav-number">4.</span> <span class="nav-text">4.安装 Cuttlefish</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#4-1%E5%9C%A8%E7%BB%88%E7%AB%AF%E7%AA%97%E5%8F%A3%E4%B8%AD%EF%BC%8C%E4%B8%8B%E8%BD%BD%E3%80%81%E6%9E%84%E5%BB%BA%E5%92%8C%E5%AE%89%E8%A3%85%E4%B8%BB%E6%9C%BA-Debian-%E8%BD%AF%E4%BB%B6%E5%8C%85%EF%BC%9A"><span class="nav-number">4.1.</span> <span class="nav-text">4.1在终端窗口中，下载、构建和安装主机 Debian 软件包：</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#5-%E7%BC%96%E8%AF%91aosp"><span class="nav-number">5.</span> <span class="nav-text">5.编译aosp</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#5-1%E5%AE%89%E8%A3%85repo"><span class="nav-number">5.1.</span> <span class="nav-text">5.1安装repo</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-2-%E4%B8%8B%E8%BD%BD%E6%BA%90%E7%A0%81"><span class="nav-number">5.2.</span> <span class="nav-text">5.2 下载源码</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#6-%E7%BC%96%E8%AF%91%E9%95%9C%E5%83%8F"><span class="nav-number">6.</span> <span class="nav-text">6.编译镜像</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#6-1%E7%9B%B8%E5%85%B3%E6%9E%84%E5%BB%BA%E5%91%BD%E4%BB%A4"><span class="nav-number">6.1.</span> <span class="nav-text">6.1相关构建命令</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#7-%E4%BD%BF%E7%94%A8cutterfish%E5%90%AF%E5%8A%A8aosp%E6%9E%84%E5%BB%BA"><span class="nav-number">7.</span> <span class="nav-text">7. 使用cutterfish启动aosp构建</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#7-1cutterfisn%E5%85%88%E5%85%B3%E5%91%BD%E4%BB%A4"><span class="nav-number">7.1.</span> <span class="nav-text">7.1cutterfisn先关命令</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">yndongyong</span>
+</div>
+
+
+<div class="powered-by">
+<i class="fa fa-user-md"></i><span id="busuanzi_container_site_uv">
+  本站访客数:<span id="busuanzi_value_site_uv"></span>
+</span>
+</div>
+<div class="powered-by">
+  由 <a class="theme-link" target="_blank" rel="noopener" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" target="_blank" rel="noopener" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+<div class="theme-info">
+  <div class="powered-by"></div>
+  <span class="post-count">博客全站共20.8k字</span>
+</div>
+
+
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+  
+  <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
