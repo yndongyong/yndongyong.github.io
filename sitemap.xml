@@ -2,6 +2,15 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://yndongyong.github.io/2023/02/15/docker%E6%90%AD%E5%BB%BAJenkins-Android%E6%9E%84%E5%BB%BA%E7%8E%AF%E5%A2%83/</loc>
+    
+    <lastmod>2023-03-04</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>https://yndongyong.github.io/2023/02/11/%E5%B0%8F%E7%B1%B3%E6%89%8B%E6%9C%BA%E5%AE%89%E8%A3%85magisk%E8%8E%B7%E5%8F%96root%E6%9D%83%E9%99%90/</loc>
     
     <lastmod>2023-03-04</lastmod>
@@ -413,6 +422,13 @@
   
   <url>
     <loc>https://yndongyong.github.io/tags/magisk/</loc>
+    <lastmod>2023-03-04</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://yndongyong.github.io/tags/ci/</loc>
     <lastmod>2023-03-04</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>

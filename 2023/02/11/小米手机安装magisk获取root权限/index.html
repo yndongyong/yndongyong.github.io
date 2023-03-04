@@ -95,15 +95,15 @@
 
 
 
-<meta name="description" content="之前手机已经刷机为pixelexperience 系统，为了root权限，折腾一下magisk。 1.参考 Download Magisk Manager Latest Version 25.2 For Android 2022 magisk官方">
+<meta name="description" content="之前手机已经刷机为pixelexperience 系统，为了root权限，折腾一下magisk。 1.参考 Download Magisk Manager Latest Version 25.2 For Android 2022 magisk官方介绍  2.magisk安装步骤： 解锁bootloader，之前刷机时已经解锁了，解锁参考红米note 8 pro 刷pixelexperience |">
 <meta property="og:type" content="article">
-<meta property="og:title" content="小米手机安装magisk获取root权限">
+<meta property="og:title" content="小米手机安装magisk获取root权限配置抓包证书">
 <meta property="og:url" content="https://yndongyong.github.io/2023/02/11/%E5%B0%8F%E7%B1%B3%E6%89%8B%E6%9C%BA%E5%AE%89%E8%A3%85magisk%E8%8E%B7%E5%8F%96root%E6%9D%83%E9%99%90/index.html">
 <meta property="og:site_name" content="yndongyong‘s blog">
-<meta property="og:description" content="之前手机已经刷机为pixelexperience 系统，为了root权限，折腾一下magisk。 1.参考 Download Magisk Manager Latest Version 25.2 For Android 2022 magisk官方">
+<meta property="og:description" content="之前手机已经刷机为pixelexperience 系统，为了root权限，折腾一下magisk。 1.参考 Download Magisk Manager Latest Version 25.2 For Android 2022 magisk官方介绍  2.magisk安装步骤： 解锁bootloader，之前刷机时已经解锁了，解锁参考红米note 8 pro 刷pixelexperience |">
 <meta property="og:locale">
 <meta property="article:published_time" content="2023-02-11T06:59:14.000Z">
-<meta property="article:modified_time" content="2023-03-04T06:04:07.815Z">
+<meta property="article:modified_time" content="2023-03-04T09:25:56.749Z">
 <meta property="article:author" content="yndongyong">
 <meta property="article:tag" content="刷机">
 <meta property="article:tag" content="root">
@@ -142,7 +142,7 @@
 
 
 
-  <title>小米手机安装magisk获取root权限 | yndongyong‘s blog</title>
+  <title>小米手机安装magisk获取root权限配置抓包证书 | yndongyong‘s blog</title>
   
 
 
@@ -298,7 +298,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">小米手机安装magisk获取root权限</h1>
+          <h1 class="post-title" itemprop="name headline">小米手机安装magisk获取root权限配置抓包证书</h1>
         
 
         <div class="post-meta">
@@ -326,7 +326,7 @@
               
                 <span class="post-meta-item-text">更新于</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2023-03-04T14:04:07+08:00">
+              <time title="更新于" itemprop="dateModified" datetime="2023-03-04T17:25:56+08:00">
                 2023-03-04
               </time>
             
@@ -381,8 +381,57 @@
       
         <p>之前手机已经刷机为pixelexperience 系统，为了root权限，折腾一下magisk。</p>
 <h1 id="1-参考"><a href="#1-参考" class="headerlink" title="1.参考"></a>1.参考</h1><ul>
-<li><a target="_blank" rel="noopener" href="https://magiskmanager.com/">Download Magisk Manager Latest Version 25.2 For Android 2022</a> magisk官方</li>
+<li><a target="_blank" rel="noopener" href="https://magiskmanager.com/">Download Magisk Manager Latest Version 25.2 For Android 2022</a> magisk官方介绍</li>
 </ul>
+<h1 id="2-magisk安装步骤："><a href="#2-magisk安装步骤：" class="headerlink" title="2.magisk安装步骤："></a>2.magisk安装步骤：</h1><ol>
+<li><p>解锁bootloader，之前刷机时已经解锁了，解锁参考<a href="https://yndongyong.github.io/2023/03/03/%E7%BA%A2%E7%B1%B3note-8-pro-%E5%88%B7pixelexperience/">红米note 8 pro 刷pixelexperience | yndongyong‘s blog</a></p>
+</li>
+<li><p>从rom包提取boot.img，手机连接电脑 ，拷贝到手机sd卡根目录。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">adb push boot.img /sdcard</span><br></pre></td></tr></table></figure>
+
+<p>3.安装Magisk app，打开App，安装-&gt;下一步-&gt;选择并修补一个文件,从手机sd卡根目录选择boot.img 。“开始”生成补丁img</p>
+</li>
+<li><p>修补成功，会在sd卡根目录生成一个<strong>magisk_patched-版本_随机.img</strong></p>
+</li>
+<li><p>进入fastboot模式，</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">adb reboot bootloader</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>刷入magisk生成的img</p>
+</li>
+</ol>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">fastboot flash boot magisk_patcerd_xxx.img</span><br></pre></td></tr></table></figure>
+
+<ol start="7">
+<li>出现fish字样就是刷好了，然后重启进入手机，打开magisk app，会显示magsik的版本。</li>
+</ol>
+<p>	</p>
+<h1 id="3-Magisk隐藏root"><a href="#3-Magisk隐藏root" class="headerlink" title="3.Magisk隐藏root"></a>3.Magisk隐藏root</h1><h2 id="1-magisk随机包名隐藏"><a href="#1-magisk随机包名隐藏" class="headerlink" title="1.magisk随机包名隐藏"></a>1.magisk随机包名隐藏</h2><p>magisk app 设置 –&gt; 隐藏Magisk应用 –&gt;  允许来自此来源的应用（开启）–&gt;  输入新应用名称 –&gt;成功修改包名 –&gt;继续安装。</p>
+<h2 id="2-magisk隐藏root"><a href="#2-magisk隐藏root" class="headerlink" title="2.magisk隐藏root"></a>2.magisk隐藏root</h2><ol>
+<li>安装shamiko模块，<a target="_blank" rel="noopener" href="https://github.com/LSPosed/LSPosed.github.io/releases/tag/shamiko-126">Shamiko v0.6</a></li>
+<li>magisk 右上角设置  -&gt; 打开 Zygisk选项-&gt;打开<code>配置排除列表</code> -&gt;选择需要隐藏root的app，需要把app下所有模块都选上。</li>
+<li>重启手机。</li>
+</ol>
+<h1 id="4-抓包软件证书配置"><a href="#4-抓包软件证书配置" class="headerlink" title="4.抓包软件证书配置"></a>4.抓包软件证书配置</h1><ol>
+<li><p>安装各种抓包软件（charles 、httpcanary）对应的证书，此时是安装在系统目录下。</p>
+<p>用户目录</p>
+</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/data/misc/user/0/cacerts-added/</span><br></pre></td></tr></table></figure>
+
+<p>​		系统目录</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/system/etc/security/cacerts</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li><p>将用户证书移动到系统目录下</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash">申请root权限</span></span><br><span class="line">su root</span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">将系统文件系统重新挂载为可读写</span></span><br><span class="line">mount -o remount,rw /</span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">进入用户证书目录</span></span><br><span class="line">cd /data/misc/user/0/cacerts-added</span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">移动证书到系统目录</span></span><br><span class="line">mv * /etc/security/cacerts/ </span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">将权限改为只读</span></span><br><span class="line">mount -o remount,ro /</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>某些app采用固定证书时，还需要安装JustTrueMe模块。</p>
+<ul>
+<li>先安装LSPosed模块<a target="_blank" rel="noopener" href="https://hub.fgit.ml/LSPosed/LSPosed/releases/latest">https://hub.fgit.ml/LSPosed/LSPosed/releases/latest</a></li>
+<li>在安装JustTrustMe模块<a target="_blank" rel="noopener" href="https://github.com/SekiBetu/JustTrustMe/releases">Releases · SekiBetu&#x2F;JustTrustMe (github.com)</a></li>
+</ul>
+</li>
+</ol>
 
       
     </div>
@@ -513,7 +562,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
-                <span class="site-state-item-count">26</span>
+                <span class="site-state-item-count">27</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -535,7 +584,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">21</span>
+                <span class="site-state-item-count">22</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -577,7 +626,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-%E5%8F%82%E8%80%83"><span class="nav-number">1.</span> <span class="nav-text">1.参考</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-%E5%8F%82%E8%80%83"><span class="nav-number">1.</span> <span class="nav-text">1.参考</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-magisk%E5%AE%89%E8%A3%85%E6%AD%A5%E9%AA%A4%EF%BC%9A"><span class="nav-number">2.</span> <span class="nav-text">2.magisk安装步骤：</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-Magisk%E9%9A%90%E8%97%8Froot"><span class="nav-number">3.</span> <span class="nav-text">3.Magisk隐藏root</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-magisk%E9%9A%8F%E6%9C%BA%E5%8C%85%E5%90%8D%E9%9A%90%E8%97%8F"><span class="nav-number">3.1.</span> <span class="nav-text">1.magisk随机包名隐藏</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-magisk%E9%9A%90%E8%97%8Froot"><span class="nav-number">3.2.</span> <span class="nav-text">2.magisk隐藏root</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-%E6%8A%93%E5%8C%85%E8%BD%AF%E4%BB%B6%E8%AF%81%E4%B9%A6%E9%85%8D%E7%BD%AE"><span class="nav-number">4.</span> <span class="nav-text">4.抓包软件证书配置</span></a></li></ol></div>
             
 
           </div>
@@ -626,7 +675,7 @@
 </div>
 <div class="theme-info">
   <div class="powered-by"></div>
-  <span class="post-count">博客全站共20.8k字</span>
+  <span class="post-count">博客全站共22.2k字</span>
 </div>
 
 

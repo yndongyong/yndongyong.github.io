@@ -1,3 +1,4 @@
+https://yndongyong.github.io/2023/02/15/docker%E6%90%AD%E5%BB%BAJenkins-Android%E6%9E%84%E5%BB%BA%E7%8E%AF%E5%A2%83/
 https://yndongyong.github.io/2023/02/11/%E5%B0%8F%E7%B1%B3%E6%89%8B%E6%9C%BA%E5%AE%89%E8%A3%85magisk%E8%8E%B7%E5%8F%96root%E6%9D%83%E9%99%90/
 https://yndongyong.github.io/2023/02/12/Ubuntu20-4%E5%AE%89%E8%A3%85docker/
 https://yndongyong.github.io/2023/02/10/%E7%BA%A2%E7%B1%B3note-8-pro-%E5%88%B7pixelexperience/
@@ -49,6 +50,7 @@ https://yndongyong.github.io/tags/linux/
 https://yndongyong.github.io/tags/%E5%88%B7%E6%9C%BA/
 https://yndongyong.github.io/tags/root/
 https://yndongyong.github.io/tags/magisk/
+https://yndongyong.github.io/tags/ci/
 https://yndongyong.github.io/categories/android/
 https://yndongyong.github.io/categories/android%E7%BA%BF%E4%B8%8A%E5%A1%AB%E5%9D%91/
 https://yndongyong.github.io/categories/EventBus/

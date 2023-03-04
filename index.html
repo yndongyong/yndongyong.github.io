@@ -278,6 +278,161 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://yndongyong.github.io/2023/02/15/docker%E6%90%AD%E5%BB%BAJenkins-Android%E6%9E%84%E5%BB%BA%E7%8E%AF%E5%A2%83/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="yndongyong‘s blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2023/02/15/docker%E6%90%AD%E5%BB%BAJenkins-Android%E6%9E%84%E5%BB%BA%E7%8E%AF%E5%A2%83/" itemprop="url">docker搭建Jenkins+Android构建环境</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2023-02-15T17:29:18+08:00">
+                2023-02-15
+              </time>
+            
+
+            
+              <span class="post-meta-divider">|</span>
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">更新于</span>
+              
+              <time title="更新于" itemprop="dateModified" datetime="2023-03-04T20:20:30+08:00">
+                2023-03-04
+              </time>
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/linux/" itemprop="url" rel="index">
+                    <span itemprop="name">linux</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          通过docker file定制化jenkins容器，基于jenkins:lts-jdk11长期版本。
+jenkins构建Android，需要JDK、android sdk、gradle。jenkins:lts中已经包含了jdk11。
+1.通过dockerfile构建镜像1.创建Dockerfile文件
+123mkdir deploy_androidcd deploy_androidtouch Do
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2023/02/15/docker%E6%90%AD%E5%BB%BAJenkins-Android%E6%9E%84%E5%BB%BA%E7%8E%AF%E5%A2%83/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="https://yndongyong.github.io/2023/02/12/Ubuntu20-4%E5%AE%89%E8%A3%85docker/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -467,7 +622,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2023/02/11/%E5%B0%8F%E7%B1%B3%E6%89%8B%E6%9C%BA%E5%AE%89%E8%A3%85magisk%E8%8E%B7%E5%8F%96root%E6%9D%83%E9%99%90/" itemprop="url">小米手机安装magisk获取root权限</a></h1>
+                <a class="post-title-link" href="/2023/02/11/%E5%B0%8F%E7%B1%B3%E6%89%8B%E6%9C%BA%E5%AE%89%E8%A3%85magisk%E8%8E%B7%E5%8F%96root%E6%9D%83%E9%99%90/" itemprop="url">小米手机安装magisk获取root权限配置抓包证书</a></h1>
         
 
         <div class="post-meta">
@@ -495,7 +650,7 @@
               
                 <span class="post-meta-item-text">更新于</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2023-03-04T14:04:07+08:00">
+              <time title="更新于" itemprop="dateModified" datetime="2023-03-04T17:25:56+08:00">
                 2023-03-04
               </time>
             
@@ -552,10 +707,11 @@
           
           之前手机已经刷机为pixelexperience 系统，为了root权限，折腾一下magisk。
 1.参考
-Download Magisk Manager Latest Version 25.2 For Android 2022 magisk官方
+Download Magisk Manager Latest Version 25.2 For Android 2022 magisk官方介绍
 
-
-          
+2.magisk安装步骤：
+解锁bootloader，之前刷机时已经解锁了，解锁参考红米note 8 pro 刷pixelexperience |
+          ...
           <!--noindex-->
           <div class="post-button text-center">
             <a class="btn" href="/2023/02/11/%E5%B0%8F%E7%B1%B3%E6%89%8B%E6%9C%BA%E5%AE%89%E8%A3%85magisk%E8%8E%B7%E5%8F%96root%E6%9D%83%E9%99%90/#more" rel="contents">
@@ -1871,163 +2027,6 @@ EventBus 是基于发布-订阅模式（也叫观察模式）的事件总线框�
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://yndongyong.github.io/2022/10/12/%E5%9F%BA%E4%BA%8EKotlin-Channel%E5%AE%9E%E7%8E%B0%E4%BB%BB%E5%8A%A1%E9%98%9F%E5%88%97/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="yndongyong‘s blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2022/10/12/%E5%9F%BA%E4%BA%8EKotlin-Channel%E5%AE%9E%E7%8E%B0%E4%BB%BB%E5%8A%A1%E9%98%9F%E5%88%97/" itemprop="url">基于Kotlin Channel实现任务队列</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2022-10-12T09:22:35+08:00">
-                2022-10-12
-              </time>
-            
-
-            
-              <span class="post-meta-divider">|</span>
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-check-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">更新于</span>
-              
-              <time title="更新于" itemprop="dateModified" datetime="2022-10-12T09:52:30+08:00">
-                2022-10-12
-              </time>
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/android/" itemprop="url" rel="index">
-                    <span itemprop="name">android</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          简介基于kotlin coroutine的Channel，实现的一个非阻塞式的任务队列，按先进先出的规则执行任务。
-适用场景适用于多个任务没有依赖关系，需要排队执行的情况。
-比如：多个UI展示任务，需要排队一一展示的情况
-
-弹框任务编排，例如，app首页有多个弹框（隐私弹框、权限弹框、更新弹框、运营弹框），需要按一定顺序排队展示，一个接一个展示，并且上一个主动关闭之后才能下一个。
-直播间打赏礼物展
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2022/10/12/%E5%9F%BA%E4%BA%8EKotlin-Channel%E5%AE%9E%E7%8E%B0%E4%BB%BB%E5%8A%A1%E9%98%9F%E5%88%97/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -2077,7 +2076,7 @@ EventBus 是基于发布-订阅模式（也叫观察模式）的事件总线框�
           
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
-                <span class="site-state-item-count">26</span>
+                <span class="site-state-item-count">27</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -2099,7 +2098,7 @@ EventBus 是基于发布-订阅模式（也叫观察模式）的事件总线框�
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">21</span>
+                <span class="site-state-item-count">22</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -2174,7 +2173,7 @@ EventBus 是基于发布-订阅模式（也叫观察模式）的事件总线框�
 </div>
 <div class="theme-info">
   <div class="powered-by"></div>
-  <span class="post-count">博客全站共20.8k字</span>
+  <span class="post-count">博客全站共22.2k字</span>
 </div>
 
 
