@@ -143,7 +143,7 @@ String BUILD_TYPE_ALPHA ="alpha"
 String BUILD_TYPE_DEBUG ="debug"
 
 //项目的本地缓存路径，将gradle构建目录分离出workspace，否则一单清理worksapce，就需要全量构建
-String __GRADLE_CACHE_PATH = "/var/jenkins_home/gradle_cache"
+String __GRADLE_CACHE_PATH = "/var/jenkins_home/.gradle"
 
 //调试任务使用，不跳过stage ; true：不跳过 false :跳过 
 Boolean __DONT_SKIP_STAGE = true

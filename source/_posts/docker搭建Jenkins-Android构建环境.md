@@ -10,7 +10,23 @@ date: 2023-02-15 17:29:18
 
 通过docker file定制化jenkins容器，基于jenkins:lts-jdk11长期版本。
 
-jenkins构建Android，需要JDK、android sdk、gradle。jenkins:lts中已经包含了jdk11。
+jenkins构建Android，需要JDK、android sdk、gradle。jenkins:lts中已经包含了jdk11，其余都已经安装并注入了环境变量
+
+**需要注意的几个点：**
+
+- `jenkins-plugin-cli` 需要连接jenkins plugin.io，可能会下载plugin失败，jenkins启动之后需要检查一下对应的插件是否安装。
+- **jenkins已安装plugin**： rebuild:1.34 gradle-daemon:0.1.0 gradle:2.3.1 build-name-setter:2.2.0 git-parameter:0.9.18 envinject:2.901.v0038b_6471582 thinBackup:1.15 pipeline-utility-steps:2.15.1 versionnumber:1.10 build-user-vars-plugin:1.9
+- androidsdk 已经安装了sdkmanager cli，并同意了license，jenkins 会自动下载需要的sdk版本。
+- flutter：已经配置了国内镜像
+
+**环境变量**
+
+- **JAVA_HOME**= /opt/java/openjdk 
+- **ANDROID_HOME**=/var/jenkins_home/android/sdk
+- **FLUTTER_HOME**=/var/jenkins_home/flutter
+- **GRADLE_USER_HOME**=/var/jenkins_home/.gradle
+
+
 
 # 1.通过dockerfile构建镜像
 
@@ -25,101 +41,104 @@ touch Dockerfile
 2.Dockerfile内容，依据需求改动
 
 ```shell
-#基于jenkins镜像
 FROM jenkins/jenkins:lts-jdk11
+LABEL maintainer yndongyong@foxmail.com
+
 USER root
-#设置时区
+
 ENV TZ=Asia/Shanghai 
   
-#将walle-cli等jar包拷贝到容器内部
-ADD ./lib/ /sdk 
-RUN chmod -R 775 /sdk
-
-#处理腾讯cos
-RUN mkdir /sdk/cos \
-     && cd /sdk/cos \
-     && curl -o coscli-linux $COS_CLI_URL \
-     && mv coscli-linux coscli \
-     && chmod 755 coscli
-
-# .cos.yaml 拷贝到 /sdk/cos
-ADD ./.cos.yaml /sdk/cos/
-#检查cos
-RUN /sdk/cos/coscli ls cos://app-pkg-1254950508 -c /sdk/cos/.cos.yaml
-
 # 设置变量 JAVA_HOME 已经在path中
 ENV JAVA_HOME="/opt/java/openjdk"
-ENV ANDROID_HOME="/sdk/android/sdk" \
+ENV ANDROID_HOME="/var/jenkins_home/android/sdk" \
      SDK_TOOL_URL="https://dl.google.com/android/repository/commandlinetools-linux-8512546_latest.zip" \
      COS_CLI_URL="https://cosbrowser-1253960454.cos.ap-shanghai.myqcloud.com/software/coscli/coscli-linux" \
-     FLUTTER_HOME="/sdk/flutter"\
+     FLUTTER_HOME="/var/jenkins_home/flutter"\
      FLUTTER_RELEASE_URL="https://storage.flutter-io.cn/flutter_infra_release/releases/stable/linux/flutter_linux_3.3.10-stable.tar.xz"
 
 # 创建android sdk目录,并下载 sdkmanager
-RUN mkdir -p ${ANDROID_HOME} \
-     && mkdir -p $FLUTTER_HOME \
+RUN mkdir -p $ANDROID_HOME \
      && cd $ANDROID_HOME \
      && curl -o sdk.zip $SDK_TOOL_URL \
      && unzip sdk.zip \
-     && rm sdk.zip
+     && rm sdk.zip \
+     && cd cmdline-tools \
+     && mkdir latest \
+     && mv bin/ latest \
+     && mv lib/ latest \
+     && mv NOTICE.txt latest \
+     && mv source.properties latest 
 
 # 安装android sdk其他package, 输入y是因为此处会有一个licence,需要用户同意后才会安装 
-RUN echo yes | ${ANDROID_HOME}/cmdline-tools/bin/sdkmanager --sdk_root=${ANDROID_HOME} --licenses
-RUN echo y | ${ANDROID_HOME}/cmdline-tools/bin/sdkmanager --sdk_root=${ANDROID_HOME} "platform-tools" "platforms;android-29" "build-tools;29.0.3"
-RUN echo y | ${ANDROID_HOME}/cmdline-tools/bin/sdkmanager --sdk_root=${ANDROID_HOME} "platforms;android-28" "build-tools;28.0.3" "build-tools;28.0.2"
-RUN echo y | ${ANDROID_HOME}/cmdline-tools/bin/sdkmanager --sdk_root=${ANDROID_HOME} "platforms;android-30" "build-tools;30.0.0" "build-tools;30.0.2" "build-tools;30.0.3"
-RUN echo y | ${ANDROID_HOME}/cmdline-tools/bin/sdkmanager --sdk_root=${ANDROID_HOME} "platforms;android-31" "build-tools;31.0.0"
+RUN echo y | ${ANDROID_HOME}/cmdline-tools/latest/bin/sdkmanager  --licenses \
+    && echo y | ${ANDROID_HOME}/cmdline-tools/latest/bin/sdkmanager  "platforms;android-29" "build-tools;29.0.3"
 
+RUN chmod -R a+w $ANDROID_HOME  \
+    && chown -R jenkins $ANDROID_HOME
+
+  
 #更换一个软件源
-RUN sed -i -e "s/deb.debian.org/mirrors.tuna.tsinghua.edu.cn/" /etc/apt/sources.list
 #安装flutter需要的插件
-RUN apt-get update && \
+RUN sed -i -e "s/deb.debian.org/mirrors.tuna.tsinghua.edu.cn/" /etc/apt/sources.list && \ 
+    apt-get update && \
     apt-get install -y \
-       xz-utils
+       xz-utils \
+      &&  apt-get clean
+
     
 # 设置环境变量: 把 android sdk 路径加入到 PATH 中
 ENV PATH="$PATH:$ANDROID_HOME:$ANDROID_HOME/cmdline-tools/latest/bin:$ANDROID_HOME/tools:$ANDROID_HOME/platform-tools:$FLUTTER_HOME/bin:$FLUTTER_HOME/bin/cache/dart-sdk/bin"
 
+
+
 #flutter
 RUN echo "Flutter sdk" && \
-    cd /sdk && \
+    cd /var/jenkins_home && \
     curl -o flutter.tar.xz $FLUTTER_RELEASE_URL && \
     tar xf flutter.tar.xz && \
     git config --global --add safe.directory $FLUTTER_HOME && \
-    flutter config --no-analytics && \
-    rm -f flutter.tar.xz   
+    flutter config --no-analytics && \ 
+    rm -f flutter.tar.xz && \ 
+    chmod -R 775 flutter  
     
 # Flutter 设定镜像
 ENV PUB_HOSTED_URL=https://pub.flutter-io.cn
 ENV FLUTTER_STORAGE_BASE_URL=https://storage.flutter-io.cn
 
-#创建gradle_cache目录，在job内由gradlew指定项目的gradle缓存目录，否则cleanworkspace之后，缓存不在了,/var/jenkins_home被映射到host了，一直存在。
+#创建gradle_cache目录，由job指定项目的gradle缓存目录，否则cleanworkspace之后，缓存不在了,/var/jenkins_home被映射到host了，永久存在
+ENV GRADLE_USER_HOME="/var/jenkins_home/.gradle"
 
-#gradle user home
-ENV GRADLE_USER_HOME="/var/jenkins_home/gradle_cache"
-# 创建jenkins需要的目录。
-RUN mkdir -p /var/jenkins_home && \
-    chmod 777 /var/jenkins_home 	&& \
-    mkdir /var/jenkins_home/gradle_cache 
+RUN mkdir -p $GRADLE_USER_HOME \
+     && cd $GRADLE_USER_HOME \
+     && chown -hR jenkins $GRADLE_USER_HOME \
+     && chmod -R a+w $GRADLE_USER_HOME 
     
-    
-#将gradle全局属性拷贝到GRADLE_USER_HOME ，方便全局设置gradle相关的配置，gradle的jvm参数，以及全局的maven地址
-ADD ./init.gradle $GRADLE_USER_HOME
-ADD ./gradle.properties $GRADLE_USER_HOME
+#将gradle全局属性拷贝到GRADLE_USER_HOME
+COPY ./init.gradle $GRADLE_USER_HOME
+COPY ./gradle.properties $GRADLE_USER_HOME
 
-#使用jenkins内嵌的cli 安装插件 
-RUN jenkins-plugin-cli --plugins build-name-setter:2.2.0 git-parameter:0.9.17 envinject:2.892.v25453b_80e595 thinBackup:1.15 pipeline-utility-steps:2.13.0 versionnumber:1.10 build-user-vars-plugin:1.9
+
+#将walle-cli等拷贝
+COPY ./lib/ /sdk 
+
+#处理cos
+# .cos.yaml 拷贝到 /sdk/cos #检查cos
+COPY ./.cos.yaml /sdk/cos/
+RUN cd /sdk/cos \
+     && curl -o coscli-linux $COS_CLI_URL \
+     && mv coscli-linux coscli \
+     && chown -R jenkins /sdk/cos \
+     && chmod 755 coscli \
+     && /sdk/cos/coscli ls cos://app-pkg-1254950508 -c /sdk/cos/.cos.yaml
+#里面有一些jar包
+#RUN chmod -R 775 /sdk
+
+#使用内嵌的cli安装一些插件 
+RUN jenkins-plugin-cli --plugins rebuild:1.34 gradle-daemon:0.1.0 gradle:2.3.1 build-name-setter:2.2.0 git-parameter:0.9.18 envinject:2.901.v0038b_6471582 thinBackup:1.15 pipeline-utility-steps:2.15.1 versionnumber:1.10 build-user-vars-plugin:1.9
 
 USER jenkins
+
 ```
-
-**需要注意的几个点：**，
-
-- `jenkins-plugin-cli` 需要连接jenkins plugin.io，可能会下载plugin失败，jenkins启动之后需要检查一下对应的插件是否安装。
--  JAVA_HOME= /opt/java/openjdk 
-- ANDROID_HOME=/sdk/android/sdk
-- FLUTTER_HOME=/sdk/flutter
-- GRADLE_USER_HOME=/var/jenkins_home/gradle_cache
 
 
 
@@ -132,15 +151,17 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+    image: yndongyong/jenkins-android:v0.0.1
     container_name: jenkins
     restart: always
     environment:
       JAVA_OPTS: "-server -Djava.awt.headless=true -Duser.timezone=Asia/Shanghai"
     ports:
       - "80:8080"
-      - "50000:50000"
     volumes:
       - "jenkins-data:/var/jenkins_home"
+      - "./jenkins_backup:/var/jenkins_backup"
+#      - "./lib:/sdk"
 #    deploy:
 #        resources:
 #            limits:
@@ -152,6 +173,9 @@ services:
 volumes:
   jenkins-data:
     external: true
+
+##需要特别注意jenkins_backup的owner是docker用户，docker jenkins_home是Jenkins，需要权限设置
+##sudo chown -R 1000:1000 jenkins_backup
 ```
 
 这里使用了一个docker volumes "jenkins-data".
@@ -162,9 +186,16 @@ volumes:
 docker volume create --name=jenkins-data
 ```
 
+同时还映射了一个host的jenkins_backup目录，thinBackup插件指定的备份数据存放到`/var/jenkins_backup`目录。方便备份数据拷贝存放，但是要注意目录权限问题
+
+```sh
+sudo chown -R 1000:1000 jenkins_backup
+```
+
+
+
 # 3.启动容器
 
 ```sh
 docker compose up -d
 ```
-
