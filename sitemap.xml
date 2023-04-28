@@ -341,21 +341,7 @@
   </url>
   
   <url>
-    <loc>https://yndongyong.github.io/tags/%E5%88%86%E6%94%AF%E7%AE%A1%E7%90%86/</loc>
-    <lastmod>2023-04-28</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
     <loc>https://yndongyong.github.io/tags/%E8%87%AA%E5%AE%9A%E4%B9%89View/</loc>
-    <lastmod>2023-04-28</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://yndongyong.github.io/tags/android-minSdk/</loc>
     <lastmod>2023-04-28</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -369,7 +355,14 @@
   </url>
   
   <url>
-    <loc>https://yndongyong.github.io/tags/linux/</loc>
+    <loc>https://yndongyong.github.io/tags/android-minSdk/</loc>
+    <lastmod>2023-04-28</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://yndongyong.github.io/tags/%E5%88%86%E6%94%AF%E7%AE%A1%E7%90%86/</loc>
     <lastmod>2023-04-28</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -383,7 +376,7 @@
   </url>
   
   <url>
-    <loc>https://yndongyong.github.io/tags/ci/</loc>
+    <loc>https://yndongyong.github.io/tags/linux/</loc>
     <lastmod>2023-04-28</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -404,6 +397,13 @@
   </url>
   
   <url>
+    <loc>https://yndongyong.github.io/tags/ci/</loc>
+    <lastmod>2023-04-28</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
     <loc>https://yndongyong.github.io/tags/jenkins/</loc>
     <lastmod>2023-04-28</lastmod>
     <changefreq>weekly</changefreq>
@@ -418,13 +418,6 @@
   </url>
   
   <url>
-    <loc>https://yndongyong.github.io/tags/Android-RecycleView-%E5%88%86%E7%BB%84-Section/</loc>
-    <lastmod>2023-04-28</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
     <loc>https://yndongyong.github.io/tags/non-ui-framgment-headlessfragment/</loc>
     <lastmod>2023-04-28</lastmod>
     <changefreq>weekly</changefreq>
@@ -432,7 +425,7 @@
   </url>
   
   <url>
-    <loc>https://yndongyong.github.io/tags/kotlin/</loc>
+    <loc>https://yndongyong.github.io/tags/Android-RecycleView-%E5%88%86%E7%BB%84-Section/</loc>
     <lastmod>2023-04-28</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -454,6 +447,13 @@
   
   <url>
     <loc>https://yndongyong.github.io/tags/magisk/</loc>
+    <lastmod>2023-04-28</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://yndongyong.github.io/tags/kotlin/</loc>
     <lastmod>2023-04-28</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -483,13 +483,6 @@
   </url>
   
   <url>
-    <loc>https://yndongyong.github.io/categories/linux/</loc>
-    <lastmod>2023-04-28</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
     <loc>https://yndongyong.github.io/categories/EventBus/</loc>
     <lastmod>2023-04-28</lastmod>
     <changefreq>weekly</changefreq>
@@ -504,14 +497,14 @@
   </url>
   
   <url>
-    <loc>https://yndongyong.github.io/categories/framework/</loc>
+    <loc>https://yndongyong.github.io/categories/linux/</loc>
     <lastmod>2023-04-28</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
-    <loc>https://yndongyong.github.io/categories/Ubuntu/</loc>
+    <loc>https://yndongyong.github.io/categories/framework/</loc>
     <lastmod>2023-04-28</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -526,6 +519,13 @@
   
   <url>
     <loc>https://yndongyong.github.io/categories/compose/</loc>
+    <lastmod>2023-04-28</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://yndongyong.github.io/categories/Ubuntu/</loc>
     <lastmod>2023-04-28</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
