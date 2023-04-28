@@ -1,0 +1,854 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="flutter," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="yndongyong‘s blog" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="从Android切换到Flutter开发也有一段时间了，记录下使用过程的遇到的布局问题，时间长了是真的会忘。 flutter widget分类flutter 的widget很多，但是掌握常用的这些widget，就能完成80%的UI布局。  基础widget：Text、Button、Image、Icon、TextField  布局类widget：Row 、Column、Expanded、Flex 、">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Flutter开发笔记">
+<meta property="og:url" content="https://yndongyong.github.io/2023/04/12/Flutter%E5%BC%80%E5%8F%91%E7%AC%94%E8%AE%B0/index.html">
+<meta property="og:site_name" content="yndongyong‘s blog">
+<meta property="og:description" content="从Android切换到Flutter开发也有一段时间了，记录下使用过程的遇到的布局问题，时间长了是真的会忘。 flutter widget分类flutter 的widget很多，但是掌握常用的这些widget，就能完成80%的UI布局。  基础widget：Text、Button、Image、Icon、TextField  布局类widget：Row 、Column、Expanded、Flex 、">
+<meta property="og:locale">
+<meta property="article:published_time" content="2023-04-12T02:28:51.000Z">
+<meta property="article:modified_time" content="2023-04-28T06:57:21.859Z">
+<meta property="article:author" content="yndongyong">
+<meta property="article:tag" content="flutter">
+<meta name="twitter:card" content="summary">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://yndongyong.github.io/2023/04/12/Flutter开发笔记/"/>
+
+
+
+
+
+  <title>Flutter开发笔记 | yndongyong‘s blog</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">yndongyong‘s blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">生命不息，学习不止！</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://yndongyong.github.io/2023/04/12/Flutter%E5%BC%80%E5%8F%91%E7%AC%94%E8%AE%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="yndongyong‘s blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Flutter开发笔记</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2023-04-12T10:28:51+08:00">
+                2023-04-12
+              </time>
+            
+
+            
+              <span class="post-meta-divider">|</span>
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">更新于</span>
+              
+              <time title="更新于" itemprop="dateModified" datetime="2023-04-28T14:57:21+08:00">
+                2023-04-28
+              </time>
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/flutter/" itemprop="url" rel="index">
+                    <span itemprop="name">flutter</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>从Android切换到Flutter开发也有一段时间了，记录下使用过程的遇到的布局问题，时间长了是真的会忘。</p>
+<h2 id="flutter-widget分类"><a href="#flutter-widget分类" class="headerlink" title="flutter widget分类"></a>flutter widget分类</h2><p>flutter 的widget很多，但是掌握常用的这些widget，就能完成80%的UI布局。</p>
+<ol>
+<li><p>基础widget：<code>Text</code>、<code>Button</code>、<code>Image</code>、<code>Icon</code>、<code>TextField</code></p>
+</li>
+<li><p>布局类widget：<code>Row</code> 、<code>Column</code>、<code>Expanded</code>、<code>Flex</code> 、<code>Stack</code>、<code>Positioned</code>、<code>Align</code>、<code>Center</code>、<code>Listview</code> </p>
+</li>
+<li><p>容器类widget：<code>Container</code>、<code>Scaffold</code>、<code>Padding</code>、<code>Center</code></p>
+</li>
+</ol>
+<p>基础的<code>widget</code>，对应Android的View类相关的控件，布局类widget好比Android里的<code>ViewGroup</code>类相关的控件，<code>Row/Column</code>可以实现横向和纵向的线性布局，再复杂的布局都可以拆解为<code>Row/Column</code>实现。</p>
+<h2 id="Widget常用技巧"><a href="#Widget常用技巧" class="headerlink" title="Widget常用技巧"></a>Widget常用技巧</h2><h3 id="Container"><a href="#Container" class="headerlink" title="Container"></a>Container</h3><p><code>Container</code>是一个最常用的Widget，可以通过它设置宽高、背景颜色、圆角、阴影、边框、外边距、内边距，child的对齐方式等。它本身是一个组合widget，外边距、内边距、居中等都是通过嵌套对应的widget实现。</p>
+<h4 id="Container的组成"><a href="#Container的组成" class="headerlink" title="Container的组成"></a>Container的组成</h4><ul>
+<li>最里层是child元素</li>
+<li>然后会被Align包裹</li>
+<li>接着被Padding包裹，设置内边距</li>
+<li>然后再被ColoredBox包裹</li>
+<li>接着又是背景decoration包裹</li>
+<li>再就是被前景foregroundDecoration包裹</li>
+<li>ConstrainedBox包裹</li>
+<li>再被Padding包裹，设置margin外边距</li>
+<li>最后被Transform包裹</li>
+</ul>
+<h4 id="Container-尺寸确定"><a href="#Container-尺寸确定" class="headerlink" title="Container 尺寸确定"></a>Container 尺寸确定</h4><ol>
+<li><p>没有子节点时，Container会尝试去变得足够大，在父节点 的约束范围内</p>
+</li>
+<li><p>带子节点的Container，会根据子节点尺寸调整自身尺寸，但如果Container设置了width、height以及constraints，则会按照这些参数来进行尺寸的调节。</p>
+</li>
+</ol>
+<h4 id="Container布局行为"><a href="#Container布局行为" class="headerlink" title="Container布局行为"></a>Container布局行为</h4><p>Container继承了StatelessWidget，由于组合了一系列的Widget，这些Widget都有自己的布局行为，因此导致Container的布局行为在不同widget组合下呈现比较复杂的布局行为。</p>
+<blockquote>
+<ul>
+<li>如果没有子节点、没有设置width、height以及constraints，并且父节点没有设置unbounded的限制，Container会将自身调整到足够小。</li>
+<li>如果没有子节点、对齐方式（alignment），但是提供了width、height或者constraints，那么Container会根据自身以及父节点的限制，将自身调节到足够小。</li>
+<li>如果没有子节点、width、height、constraints以及alignment，但是父节点提供了bounded限制，那么Container会按照父节点的限制，将自身调整到足够大。</li>
+<li>如果有alignment，父节点提供了unbounded限制，那么Container将会调节自身尺寸来包住child；</li>
+<li>如果有alignment，并且父节点提供了bounded限制，那么Container会将自身调整的足够大（在父节点的范围内），然后将child根据alignment调整位置；</li>
+<li>含有child，但是没有width、height、constraints以及alignment，Container会将父节点的constraints传递给child，并且根据child调整自身。</li>
+</ul>
+<p>另外，margin以及padding属性也会影响到布局。</p>
+</blockquote>
+<h4 id="设置宽高不起作用"><a href="#设置宽高不起作用" class="headerlink" title="设置宽高不起作用"></a>设置宽高不起作用</h4><p>给<code>Container</code>设置宽高不起作用，通常是<code>Container</code>的父widget给的<code>constraint</code>约束是紧约束，可以通过打断这种约束传递，达到设置宽高的目的。</p>
+<ol>
+<li>通过<code>UnconstrainedBox</code>  解除约束，让自身的约束变为无约束。</li>
+<li>通过<code>Center</code>、<code>Align</code>、<code>Row</code>、<code>Column</code>等组件放松约束，让自身的约束变为松约束。</li>
+</ol>
+<h3 id="bottomSheet-的高度"><a href="#bottomSheet-的高度" class="headerlink" title="bottomSheet 的高度"></a>bottomSheet 的高度</h3><h4 id="高度为自适应内容大小"><a href="#高度为自适应内容大小" class="headerlink" title="高度为自适应内容大小"></a>高度为自适应内容大小</h4><p>通常情况下<code>bottomSheet</code>的高度为半屏，想要其高度为包裹内容的大小的话，可以指定<code>Column</code> <code>child</code>的</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mainAxisSize: MainAxisSize.min</span><br></pre></td></tr></table></figure>
+
+<h4 id="高度为指定大小"><a href="#高度为指定大小" class="headerlink" title="高度为指定大小"></a>高度为指定大小</h4><p>可以给<code>root child</code>套个<code>Container</code>，指定<code>Container</code>的 <code>minHeight</code></p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">constraints: minHeight != <span class="keyword">null</span> ? BoxConstraints.tightForFinite(height: minHeight!) : <span class="keyword">null</span>,</span><br></pre></td></tr></table></figure>
+
+<h3 id="bottomSheet适配双端"><a href="#bottomSheet适配双端" class="headerlink" title="bottomSheet适配双端"></a>bottomSheet适配双端</h3><p>假如bottomSheet以及从贴着屏幕底部的dialog，其内部在底部有操作按钮的情况下，需要特殊处理一下，否则ios端可能存在小黑条遮在按钮上的情况。</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> result = <span class="keyword">await</span> Get.bottomSheet(</span><br><span class="line">    SafeArea(</span><br><span class="line">        child: child,</span><br><span class="line">    ),</span><br><span class="line">    <span class="comment">//圆角</span></span><br><span class="line">    shape: RoundedRectangleBorder(</span><br><span class="line">        borderRadius: BorderRadius.only(topRight: Radius.circular(<span class="number">8.</span>w), topLeft: Radius.circular(<span class="number">8.</span>w)),</span><br><span class="line">    ),</span><br><span class="line">    backgroundColor: Colors.white,</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="Widget设置不重绘"><a href="#Widget设置不重绘" class="headerlink" title="Widget设置不重绘"></a>Widget设置不重绘</h3><p>PageView切换、或者长表单中上下滑动时，child widget会被回收重新绘制，期望不重绘的话，可以给child widget的<code>state</code> <code>mix</code> <code>AutomaticKeepAliveClientMixin</code> 同时重写 <code>wantKeepAlive</code> 方法，这样<code>widget</code>就不会重绘了。</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">_TioFormFilePickerState</span> <span class="keyword">extends</span> <span class="title">State</span>&lt;<span class="title">TioFormFilePicker</span>&gt; <span class="title">with</span> <span class="title">AutomaticKeepAliveClientMixin</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  <span class="built_in">bool</span> <span class="keyword">get</span> wantKeepAlive =&gt; <span class="keyword">true</span>;</span><br><span class="line"></span><br><span class="line">&#125;  </span><br></pre></td></tr></table></figure>
+
+<h3 id="GestureDetector点击空白处不响应点击事件"><a href="#GestureDetector点击空白处不响应点击事件" class="headerlink" title="GestureDetector点击空白处不响应点击事件"></a>GestureDetector点击空白处不响应点击事件</h3><p>GestureDetector默认行为是不响应空白位置的点击事件，会忽略不可见的元素，如果需要触发的话，可以修改<code>behavior</code></p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">GestureDetector(</span><br><span class="line">    behavior: HitTestBehavior.translucent,<span class="comment">//响应空白位置的点击</span></span><br><span class="line">    onTap: () =&gt; xxxxx(),</span><br><span class="line">    child: child,</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+
+<h3 id="Text-行间距"><a href="#Text-行间距" class="headerlink" title="Text 行间距"></a>Text 行间距</h3><p>Text的<code>TextStyle</code> 没有提供对应的设置文本行间距的方法，但是可以通过<code>height</code>属性设置行高，<code>height</code>默认为1，表示行高等于文字高度。假设将<code>height</code>设置为1.5，则表示行高为1.5倍的文字高度，因此行间距也会变高。</p>
+<h3 id="TextFiled焦点处理"><a href="#TextFiled焦点处理" class="headerlink" title="TextFiled焦点处理"></a>TextFiled焦点处理</h3><p>表单中有很多个<code>TextFiled</code>时，需要在这些<code>TextFiled</code>中切换焦点时，为每个TextFiled设置FocusNode，设置 FocusNode获取焦点，这样移动焦点的方式就比较繁琐，需要为每个TextFiled都要写一些模板代码。简洁一点的方式是可以为TextFiled设置<code>textInputAction：TextInputAction.next</code>，这样输入焦点就会顺着表单中的TextFiled自动移动。</p>
+<p>ListView 滑动隐藏键盘</p>
+<p>通过keyboardDismissBehavior属性：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag</span><br></pre></td></tr></table></figure>
+
+<h3 id="StatefulBuilder"><a href="#StatefulBuilder" class="headerlink" title="StatefulBuilder"></a>StatefulBuilder</h3><p>StatelessWidget 组件内部 局部刷新，比如，RadioGroup ，Switch的切换,其内部的setState触发的刷新范围仅为widget内</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">StatefulBuilder(</span><br><span class="line">  builder: (BuildContext context, StateSetter setState) &#123;</span><br><span class="line">    <span class="keyword">return</span> RadioGroup.builder(</span><br><span class="line">      activeColor: TyColors.colorSecondary,</span><br><span class="line">      direction: Axis.horizontal,</span><br><span class="line">      groupValue: value,</span><br><span class="line">      onChanged: (newValue) &#123;</span><br><span class="line">        setState(() &#123;</span><br><span class="line">          value = newValue!;</span><br><span class="line">        &#125;);</span><br><span class="line">        <span class="keyword">if</span> (<span class="keyword">null</span> != newValue) &#123;</span><br><span class="line">          onChanged(newValue);</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;,</span><br><span class="line">      items: options,</span><br><span class="line">    );</span><br><span class="line">  &#125;,</span><br><span class="line">),</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="FlutterEngineGroup-传参"><a href="#FlutterEngineGroup-传参" class="headerlink" title="FlutterEngineGroup 传参"></a>FlutterEngineGroup 传参</h2><p>flutter 混合工程中 原生侧的Flutter engine使用FlutterEngineGroup管理，跳转到Flutter的页面并且携带参数</p>
+<h3 id="原生侧"><a href="#原生侧" class="headerlink" title="原生侧"></a>原生侧</h3><figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">dartEntrypoint = DartExecutor.DartEntrypoint(</span><br><span class="line">    FlutterInjector.instance().flutterLoader().findAppBundlePath(),</span><br><span class="line">    <span class="string">&quot;xxxxMain&quot;</span> <span class="comment">//tag1 flutter 的main方法名称</span></span><br><span class="line">)</span><br><span class="line"><span class="keyword">val</span> options = FlutterEngineGroup.Options(<span class="keyword">this</span>)</span><br><span class="line">options.dartEntrypoint = dartEntrypoint</span><br><span class="line">  <span class="comment">//options.initialRoute = path //和上一个同时设置会有两个跟页面</span></span><br><span class="line">options.dartEntrypointArgs = arrayListOf(<span class="string">&quot;key1=value1&amp;key2=value2&quot;</span>)  <span class="comment">//携带参数</span></span><br><span class="line">flutterEngine = FlutterManager.flutterEngines.createAndRunEngine(options)</span><br></pre></td></tr></table></figure>
+
+<h3 id="flutter侧"><a href="#flutter侧" class="headerlink" title="flutter侧"></a>flutter侧</h3><figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@pragma</span>(<span class="string">&#x27;vm:entry-point&#x27;</span>)</span><br><span class="line"><span class="keyword">void</span> xxxxMain(args) <span class="keyword">async</span> &#123; <span class="comment">//tag2</span></span><br><span class="line">  <span class="comment">//args 原生侧传递过来的参数，是个List&lt;String&gt;</span></span><br><span class="line">  <span class="keyword">var</span> params = <span class="built_in">Uri</span>.splitQueryString(args[<span class="number">0</span>]);</span><br><span class="line">  runApp(<span class="keyword">const</span> MyApp(initRoute: xxxxxx));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="Vertical（Horizontal）-viewport-was-given-unbounded-height"><a href="#Vertical（Horizontal）-viewport-was-given-unbounded-height" class="headerlink" title="Vertical（Horizontal） viewport was given unbounded height."></a>Vertical（Horizontal） viewport was given unbounded height.</h2><p><code>ListView</code>没有被赋予一个确定的纵向约束，该错误通常是因为在<code>Column</code>（<code>Row</code>、<code>ListView</code>）中嵌套<code>ListView</code>时中出现，一般情况下<code>Column</code>给ListView传递的约束是loose constraint。有三种解决办法。</p>
+<ol>
+<li>在<code>ListView</code>外层嵌套一个<code>SizedBox</code>并设置<code>tight constraint</code>。</li>
+<li>在<code>ListView</code>外层嵌套一个<code>Expand</code>，撑开<code>Column</code>剩余可用空间。</li>
+<li>指定<code>ShrinkWrap</code>属性为true，让<code>ListView</code>能根据自身高度进行自适应，<code>listview</code>会收缩，缩小到其child的高度。</li>
+</ol>
+<h2 id="混合开发Fflutter页面的返回按钮处理"><a href="#混合开发Fflutter页面的返回按钮处理" class="headerlink" title="混合开发Fflutter页面的返回按钮处理"></a>混合开发Fflutter页面的返回按钮处理</h2><p>一个flutter表单详情页面，跳转的它的入口有两类，一类是原生侧直接跳转，此时该Flutter页面会被当做根路由；第二类是是正常的flutter路由跳转，对于这两种情况返回按钮的处理逻辑是不同的。第一种的情况下，点击返回按钮要求关闭flutter该页面；第二种情况下，点击返回按钮要求返回到上一个Flutter页面。可以判断当前路由能否被关闭，能的话关闭当前页面返回上一个，不能的话就是根路由使用MethodChannel关闭FlutterActivity容器。</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ModalRoute.of(context)?.canPop ?? <span class="keyword">false</span></span><br><span class="line">        ? Get.back()</span><br><span class="line">        : schemeApi.closeFlutterPage(<span class="keyword">null</span>);</span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/flutter/" rel="tag"><i class="fa fa-tag"></i> flutter</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2023/02/20/Android12%E9%80%82%E9%85%8D/" rel="next" title="Android12升级适配">
+                <i class="fa fa-chevron-left"></i> Android12升级适配
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="" />
+          <p class="site-author-name" itemprop="name"></p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">29</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">10</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">23</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#flutter-widget%E5%88%86%E7%B1%BB"><span class="nav-number">1.</span> <span class="nav-text">flutter widget分类</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Widget%E5%B8%B8%E7%94%A8%E6%8A%80%E5%B7%A7"><span class="nav-number">2.</span> <span class="nav-text">Widget常用技巧</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Container"><span class="nav-number">2.1.</span> <span class="nav-text">Container</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Container%E7%9A%84%E7%BB%84%E6%88%90"><span class="nav-number">2.1.1.</span> <span class="nav-text">Container的组成</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Container-%E5%B0%BA%E5%AF%B8%E7%A1%AE%E5%AE%9A"><span class="nav-number">2.1.2.</span> <span class="nav-text">Container 尺寸确定</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Container%E5%B8%83%E5%B1%80%E8%A1%8C%E4%B8%BA"><span class="nav-number">2.1.3.</span> <span class="nav-text">Container布局行为</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%AE%BE%E7%BD%AE%E5%AE%BD%E9%AB%98%E4%B8%8D%E8%B5%B7%E4%BD%9C%E7%94%A8"><span class="nav-number">2.1.4.</span> <span class="nav-text">设置宽高不起作用</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#bottomSheet-%E7%9A%84%E9%AB%98%E5%BA%A6"><span class="nav-number">2.2.</span> <span class="nav-text">bottomSheet 的高度</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%AB%98%E5%BA%A6%E4%B8%BA%E8%87%AA%E9%80%82%E5%BA%94%E5%86%85%E5%AE%B9%E5%A4%A7%E5%B0%8F"><span class="nav-number">2.2.1.</span> <span class="nav-text">高度为自适应内容大小</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%AB%98%E5%BA%A6%E4%B8%BA%E6%8C%87%E5%AE%9A%E5%A4%A7%E5%B0%8F"><span class="nav-number">2.2.2.</span> <span class="nav-text">高度为指定大小</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#bottomSheet%E9%80%82%E9%85%8D%E5%8F%8C%E7%AB%AF"><span class="nav-number">2.3.</span> <span class="nav-text">bottomSheet适配双端</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Widget%E8%AE%BE%E7%BD%AE%E4%B8%8D%E9%87%8D%E7%BB%98"><span class="nav-number">2.4.</span> <span class="nav-text">Widget设置不重绘</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#GestureDetector%E7%82%B9%E5%87%BB%E7%A9%BA%E7%99%BD%E5%A4%84%E4%B8%8D%E5%93%8D%E5%BA%94%E7%82%B9%E5%87%BB%E4%BA%8B%E4%BB%B6"><span class="nav-number">2.5.</span> <span class="nav-text">GestureDetector点击空白处不响应点击事件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Text-%E8%A1%8C%E9%97%B4%E8%B7%9D"><span class="nav-number">2.6.</span> <span class="nav-text">Text 行间距</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#TextFiled%E7%84%A6%E7%82%B9%E5%A4%84%E7%90%86"><span class="nav-number">2.7.</span> <span class="nav-text">TextFiled焦点处理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#StatefulBuilder"><span class="nav-number">2.8.</span> <span class="nav-text">StatefulBuilder</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#FlutterEngineGroup-%E4%BC%A0%E5%8F%82"><span class="nav-number">3.</span> <span class="nav-text">FlutterEngineGroup 传参</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8E%9F%E7%94%9F%E4%BE%A7"><span class="nav-number">3.1.</span> <span class="nav-text">原生侧</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#flutter%E4%BE%A7"><span class="nav-number">3.2.</span> <span class="nav-text">flutter侧</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Vertical%EF%BC%88Horizontal%EF%BC%89-viewport-was-given-unbounded-height"><span class="nav-number">4.</span> <span class="nav-text">Vertical（Horizontal） viewport was given unbounded height.</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B7%B7%E5%90%88%E5%BC%80%E5%8F%91Fflutter%E9%A1%B5%E9%9D%A2%E7%9A%84%E8%BF%94%E5%9B%9E%E6%8C%89%E9%92%AE%E5%A4%84%E7%90%86"><span class="nav-number">5.</span> <span class="nav-text">混合开发Fflutter页面的返回按钮处理</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">yndongyong</span>
+</div>
+
+
+<div class="powered-by">
+<i class="fa fa-user-md"></i><span id="busuanzi_container_site_uv">
+  本站访客数:<span id="busuanzi_value_site_uv"></span>
+</span>
+</div>
+<div class="powered-by">
+  由 <a class="theme-link" target="_blank" rel="noopener" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" target="_blank" rel="noopener" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+<div class="theme-info">
+  <div class="powered-by"></div>
+  <span class="post-count">博客全站共30.5k字</span>
+</div>
+
+
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+  
+  <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
