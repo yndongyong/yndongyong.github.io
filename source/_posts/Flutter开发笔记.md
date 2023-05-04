@@ -169,13 +169,23 @@ StatefulBuilder(
 ),
 ```
 
+### Vertical（Horizontal） viewport was given unbounded height.错误
+
+`ListView`没有被赋予一个确定的纵向约束，该错误通常是因为在`Column`（`Row`、`ListView`）中嵌套`ListView`时中出现，一般情况下`Column`给ListView传递的约束是loose constraint。有三种解决办法。
+
+1. 在`ListView`外层嵌套一个`SizedBox`并设置`tight constraint`。
+2. 在`ListView`外层嵌套一个`Expand`，撑开`Column`剩余可用空间。
+3. 指定`ShrinkWrap`属性为true，让`ListView`能根据自身高度进行自适应，`listview`会收缩，缩小到其child的高度。
 
 
-## FlutterEngineGroup 传参
 
-flutter 混合工程中 原生侧的Flutter engine使用FlutterEngineGroup管理，跳转到Flutter的页面并且携带参数
+## 混合开发
 
-### 原生侧
+### FlutterEngineGroup 传参
+
+flutter 混合工程中 原生侧的Flutter engine使用`FlutterEngineGroup`管理，跳转到Flutter的某个页面并且携带参数。tag1处对应flutter侧的tag2
+
+#### 原生侧
 
 ```kotlin
 dartEntrypoint = DartExecutor.DartEntrypoint(
@@ -189,10 +199,10 @@ options.dartEntrypointArgs = arrayListOf("key1=value1&key2=value2")  //携带参
 flutterEngine = FlutterManager.flutterEngines.createAndRunEngine(options)
 ```
 
-### flutter侧
+#### flutter侧
 
 ```dart
-@pragma('vm:entry-point')
+@pragma('vm:entry-point')//必需的，每个main方法都需要
 void xxxxMain(args) async { //tag2
   //args 原生侧传递过来的参数，是个List<String>
   var params = Uri.splitQueryString(args[0]);
@@ -200,17 +210,9 @@ void xxxxMain(args) async { //tag2
 }
 ```
 
-## Vertical（Horizontal） viewport was given unbounded height.
+### 多入口flutter页面的返回按钮处理
 
-`ListView`没有被赋予一个确定的纵向约束，该错误通常是因为在`Column`（`Row`、`ListView`）中嵌套`ListView`时中出现，一般情况下`Column`给ListView传递的约束是loose constraint。有三种解决办法。
-
-1. 在`ListView`外层嵌套一个`SizedBox`并设置`tight constraint`。
-2. 在`ListView`外层嵌套一个`Expand`，撑开`Column`剩余可用空间。
-3. 指定`ShrinkWrap`属性为true，让`ListView`能根据自身高度进行自适应，`listview`会收缩，缩小到其child的高度。
-
-## 混合开发Fflutter页面的返回按钮处理
-
-一个flutter表单详情页面，跳转的它的入口有两类，一类是原生侧直接跳转，此时该Flutter页面会被当做根路由；第二类是是正常的flutter路由跳转，对于这两种情况返回按钮的处理逻辑是不同的。第一种的情况下，点击返回按钮要求关闭flutter该页面；第二种情况下，点击返回按钮要求返回到上一个Flutter页面。可以判断当前路由能否被关闭，能的话关闭当前页面返回上一个，不能的话就是根路由使用MethodChannel关闭FlutterActivity容器。
+一个flutter表单详情页面，跳转的它的入口有两类，一类是原生侧直接跳转，此时该flutter页面会被当做根路由；第二类是是正常的flutter路由跳转，对于这两种情况返回按钮的处理逻辑是不同的。第一种的情况下，点击返回按钮要求关闭flutter该页面；第二种情况下，点击返回按钮要求返回到上一个Flutter页面。可以判断当前路由能否被关闭，能的话关闭当前页面返回上一个，不能的话就是根路由然后使用MethodChannel通知原生侧关闭FlutterActivity容器。
 
 ```dart
 ModalRoute.of(context)?.canPop ?? false
@@ -218,9 +220,11 @@ ModalRoute.of(context)?.canPop ?? false
         : schemeApi.closeFlutterPage(null);
 ```
 
+## dart常用语法
+
 ### Factory单例
 
-```
+```dart
 class SingletonTest{
   factory SingletonTest() => _instance ??= SingletonTest._();
 
@@ -230,4 +234,10 @@ class SingletonTest{
 }
 ```
 
-使用`SingletonTest()`  getx中的依赖依赖注入相关的`GetInstance`就是这种写法
+使用`SingletonTest()`  ，getx中的依赖依赖注入相关的`GetInstance`就是这种写法。
+
+### 常用回调
+
+- 无参数写法： `VoidCallback`
+- 有一个参数，可以使用泛型：`final ValueChanged<T> onSelectCallback`
+- 参数大于多个：`typedef OnCardItemTap = void Function(int index, List<XxxModle> modle);`
