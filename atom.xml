@@ -6,7 +6,7 @@
   <link href="https://yndongyong.github.io/atom.xml" rel="self"/>
   
   <link href="https://yndongyong.github.io/"/>
-  <updated>2023-04-28T09:54:47.829Z</updated>
+  <updated>2023-05-12T08:20:49.355Z</updated>
   <id>https://yndongyong.github.io/</id>
   
   <author>
@@ -15,6 +15,31 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Sourcetree配置AndroidStudio为默认的diff工具</title>
+    <link href="https://yndongyong.github.io/2023/05/12/Sourcetree%E9%85%8D%E7%BD%AEAndroidStudio%E4%B8%BA%E9%BB%98%E8%AE%A4%E7%9A%84diff%E5%B7%A5%E5%85%B7/"/>
+    <id>https://yndongyong.github.io/2023/05/12/Sourcetree%E9%85%8D%E7%BD%AEAndroidStudio%E4%B8%BA%E9%BB%98%E8%AE%A4%E7%9A%84diff%E5%B7%A5%E5%85%B7/</id>
+    <published>2023-05-12T08:16:10.000Z</published>
+    <updated>2023-05-12T08:20:49.355Z</updated>
+    
+    <content type="html"><![CDATA[<p>配置操作路径Tools -&gt; Options -&gt; External Diff&#x2F;Merge 都选自定义</p><h3 id="diff配置"><a href="#diff配置" class="headerlink" title="diff配置"></a>diff配置</h3><p>Diff Command: xxxpath\studio64.exe<br>Arguments: diff $LOCAL $PWD&#x2F;$REMOTE</p><h3 id="merge配置"><a href="#merge配置" class="headerlink" title="merge配置"></a>merge配置</h3><p>Merge Command: xxxpath\studio64.exe<br>Arguments: merge $LOCAL $PWD&#x2F;$REMOTE $PWD&#x2F;$BASE $MERGED</p>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;p&gt;配置操作路径Tools -&amp;gt; Options -&amp;gt; External Diff&amp;#x2F;Merge 都选自定义&lt;/p&gt;
+&lt;h3 id=&quot;diff配置&quot;&gt;&lt;a href=&quot;#diff配置&quot; class=&quot;headerlink&quot; title=&quot;diff配置&quot;&gt;&lt;/</summary>
+      
+    
+    
+    
+    <category term="android" scheme="https://yndongyong.github.io/categories/android/"/>
+    
+    
+    <category term="android studio" scheme="https://yndongyong.github.io/tags/android-studio/"/>
+    
+  </entry>
   
   <entry>
     <title>Flutter开发笔记</title>
@@ -549,30 +574,6 @@
     
     
     <category term="android" scheme="https://yndongyong.github.io/tags/android/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>使用NON-UI—FRAGMENT优化startActivityForResult代码</title>
-    <link href="https://yndongyong.github.io/2018/08/30/%E4%BD%BF%E7%94%A8NON-UI%E2%80%94FRAGMENT%E4%BC%98%E5%8C%96startActivityForResult%E4%BB%A3%E7%A0%81/"/>
-    <id>https://yndongyong.github.io/2018/08/30/%E4%BD%BF%E7%94%A8NON-UI%E2%80%94FRAGMENT%E4%BC%98%E5%8C%96startActivityForResult%E4%BB%A3%E7%A0%81/</id>
-    <published>2018-08-30T02:30:58.000Z</published>
-    <updated>2022-03-28T15:27:56.708Z</updated>
-    
-    <content type="html"><![CDATA[<h2 id="使用NON-UI-FRAGMENT优化startActivityForResult"><a href="#使用NON-UI-FRAGMENT优化startActivityForResult" class="headerlink" title="使用NON-UI-FRAGMENT优化startActivityForResult"></a>使用NON-UI-FRAGMENT优化startActivityForResult</h2><p>一般地，要使用AActivity.startActivityForResult(BActivity)需要在Activity中覆盖父类的onActivityForResult（）回调方法。</p><p>如果一个Activity需要调用多个Activity并且获取返回结果，会造成调用处和回调处彼此分离，逻辑不清晰、代码混乱的的问题。有没有一种较为优雅的方式，打破这种惯性。</p><p>回答是肯定的，即本文的NON-UI-FRAGMENT，使用无UI的fragment，将部分业务代码封装到fragment中，再通过callback将最终结果回调给Activity，原本的Activity再也不用复写父类的startActivityForResult，传递一个回调即可。</p><p>使用这种方式，可以封装那些共性较多的类，将原本需要通过继承和复写的逻辑放到fragment中，体现了软件开发中的一大设计原则——使用组合替代继承。</p><p>本文中的startActivityForResult的替代优化仅是NON-UI-FRAGMENT的一种实现使用，NON-UI-FRAGMENT的可以做的更多，一些简单的使用场景：譬如封装权限申请、登录判断跳转，第三方登录等、截屏等等，其他待自己拓展。</p><h3 id="使用方式"><a href="#使用方式" class="headerlink" title="使用方式"></a>使用方式</h3><pre><code>ActivityResultHelper resultHelper = ActivityResultHelper.attach(this);resultHelper.startForResult(intent, 0x10, new ActivityResultHelper.CallBack() &#123;    @Override    public void onActivityResult(int requestCode, int resultCode, Intent data) &#123;        if (requestCode == 101 &amp;&amp; resultCode == RESULT_OK) &#123;            Log.d(&quot;DONG&quot;, &quot;true&quot;);        &#125; else &#123;            Log.d(&quot;DONG&quot;, &quot;false&quot;);        &#125;    &#125;&#125;);</code></pre><p>再也不用将调用入口和返回结果处理的代码分开了。 </p><h3 id="完整代码"><a href="#完整代码" class="headerlink" title="完整代码"></a>完整代码</h3><pre><code> public class ActivityResultHelper extends Fragment &#123;    private static final String FRAG_TAG = ActivityResultHelper.class.getCanonicalName();    private Activity mContext;    private CallBack mListener;    public interface CallBack &#123;        void onActivityResult(int requestCode, int resultCode, Intent data);    &#125;    public static &lt;ParentFrag extends Fragment&gt; ActivityResultHelper attach(ParentFrag parent) &#123;        return attach(parent.getChildFragmentManager());    &#125;    public static &lt;ParentActivity extends FragmentActivity&gt; ActivityResultHelper attach(ParentActivity parent) &#123;        return attach(parent.getSupportFragmentManager());    &#125;    private static ActivityResultHelper attach(FragmentManager fragmentManager) &#123;        ActivityResultHelper frag = (ActivityResultHelper) fragmentManager.findFragmentByTag(FRAG_TAG);        if (frag == null) &#123;            frag = new ActivityResultHelper();            fragmentManager.beginTransaction().add(frag, FRAG_TAG).commit();            //TODO fragment在Activity的onCreate中被attach之后就立即调用fragment的一些方法，需要如下代码，否则不需要            fragmentManager.executePendingTransactions();        &#125;        return frag;    &#125;    @Override    public void onAttach(Context context) &#123;        super.onAttach(context);        mContext = (Activity) context;    &#125;    @Override    public void onDetach() &#123;        super.onDetach();        mContext = null;    &#125;    public Activity getContext() &#123;        return mContext;    &#125;    public void startForResult(Intent intent, int requestCode, CallBack listener) &#123;        this.mListener = listener;        startActivityForResult(intent, requestCode);    &#125;    @Override    public void onActivityResult(int requestCode, int resultCode, Intent data) &#123;        if (mListener != null) &#123;            mListener.onActivityResult(requestCode, resultCode, data);        &#125;    &#125;&#125;      </code></pre>]]></content>
-    
-    
-      
-      
-    <summary type="html">&lt;h2 id=&quot;使用NON-UI-FRAGMENT优化startActivityForResult&quot;&gt;&lt;a href=&quot;#使用NON-UI-FRAGMENT优化startActivityForResult&quot; class=&quot;headerlink&quot; title=&quot;使用NON-UI-F</summary>
-      
-    
-    
-    
-    <category term="android" scheme="https://yndongyong.github.io/categories/android/"/>
-    
-    
-    <category term="non-ui-framgment headlessfragment" scheme="https://yndongyong.github.io/tags/non-ui-framgment-headlessfragment/"/>
     
   </entry>
   
