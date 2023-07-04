@@ -103,7 +103,7 @@
 <meta property="og:description" content="1 环境配置插件的build.gradle的配置，一开始各种配置不对，后期研究了文档之后方向，两种可以正常编译运行的方式。 方式一：12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455565758plugins &amp;#123;    id &amp;#x27;">
 <meta property="og:locale">
 <meta property="article:published_time" content="2022-11-04T02:07:31.000Z">
-<meta property="article:modified_time" content="2023-03-04T02:10:59.271Z">
+<meta property="article:modified_time" content="2023-05-25T02:44:39.667Z">
 <meta property="article:author" content="yndongyong">
 <meta property="article:tag" content="android">
 <meta name="twitter:card" content="summary">
@@ -324,8 +324,8 @@
               
                 <span class="post-meta-item-text">更新于</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2023-03-04T10:10:59+08:00">
-                2023-03-04
+              <time title="更新于" itemprop="dateModified" datetime="2023-05-25T10:44:39+08:00">
+                2023-05-25
               </time>
             
           </span>
@@ -429,7 +429,8 @@
 <p>此外需要注意下：plugin.xml中需要如果有单独是针对Android 平台的相关的配置，是需要加入对Android平台的配置支持的。</p>
 <figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">depends</span>&gt;</span>com.intellij.modules.platform<span class="tag">&lt;/<span class="name">depends</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">depends</span>&gt;</span>com.intellij.modules.androidstudio<span class="tag">&lt;/<span class="name">depends</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">depends</span>&gt;</span>org.jetbrains.android<span class="tag">&lt;/<span class="name">depends</span>&gt;</span></span><br></pre></td></tr></table></figure>
 
-<h3 id="注意："><a href="#注意：" class="headerlink" title="注意："></a><strong>注意：</strong></h3><p>在前期的过程中，需要如果gradle的使用的版本高于6.6 ，需要配合JDK11，否则编译过程中会报handler_shake xx的错误。是jdk的版本过低，本机就是java8.<br>要是还报错的话，的要挂梯子了。后面再次搭建环境，遇到了这个报错，通过换了不同的节点处理的，等编译过一遍之后还需要关闭梯子，否则会报其他的错误，不影响编译的问题。</p>
+<h3 id="注意："><a href="#注意：" class="headerlink" title="注意："></a><strong>注意：</strong></h3><p>在前期的过程中，需要如果gradle的使用的版本高于6.6 ，需要配合JDK11，<del>否则编译过程中会报handler_shake xx的错误。是jdk的版本过低，本机就是java8.</del><br><del>要是还报错的话，的要挂梯子了。后面再次搭建环境，遇到了这个报错，通过换了不同的节点处理的，等编译过一遍之后还需要关闭梯子，否则会报其他的错误，不影响编译的问题。</del></p>
+<p>2023年5月更新：handler_shake错误，最近一次启动起来也是报错了，搜遍全网，发现是openjdk11.0.2的问题，更新openjdk到11.0.19之后正常了，晕死。</p>
 <p>对于引入了第三方的jar的插件，生成的plugin的格式是zip格式，在安装插件的时候要引入zip格式的。如果引入了jar包格式的，会不正常。<br>插件的生成目录是build&#x2F;distributions</p>
 
       
@@ -670,7 +671,7 @@
 </div>
 <div class="theme-info">
   <div class="powered-by"></div>
-  <span class="post-count">博客全站共30.6k字</span>
+  <span class="post-count">博客全站共30.7k字</span>
 </div>
 
 
