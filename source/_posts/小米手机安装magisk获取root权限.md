@@ -21,15 +21,15 @@ date: 2023-02-11 14:59:14
 
 1. 解锁bootloader，之前刷机时已经解锁了，解锁参考[红米note 8 pro 刷pixelexperience | yndongyong‘s blog](https://yndongyong.github.io/2023/03/03/红米note-8-pro-刷pixelexperience/)
 
-2. 从rom包提取boot.img，手机连接电脑 ，拷贝到手机sd卡根目录。
+2. 从小米手机我的设备，下载完整的安装包，等rom包下载完成。从rom包提取boot.img，手机连接电脑 ，拷贝到手机sd卡根目录。
 
    ```
    adb push boot.img /sdcard
    ```
 
-   3.安装Magisk app，打开App，安装->下一步->选择并修补一个文件,从手机sd卡根目录选择boot.img 。“开始”生成补丁img
+   3.安装`Magisk app`，打开App，安装 -> 下一步 -> 选择并修补一个文件,从手机sd卡根目录选择`boot.img` 。“开始”生成补丁img
 
-4. 修补成功，会在sd卡根目录生成一个**magisk_patched-版本_随机.img**
+4. 修补成功，会在sd卡的download目录生成一个**magisk_patched-版本_随机.img** ，提前记录好名字
 
 5. 进入fastboot模式，
 
@@ -37,13 +37,17 @@ date: 2023-02-11 14:59:14
    adb reboot bootloader
    ```
 
-6. 刷入magisk生成的img
+6. 刷入magisk生成的img 
 
 ```sh
 fastboot flash boot magisk_patcerd_xxx.img
 ```
 
-7. 出现fish字样就是刷好了，然后重启进入手机，打开magisk app，会显示magsik的版本。	
+7. 出现fish字样就是刷好了，然后重启进入手机   ，打开magisk app，会显示magsik的版本。
+
+    ``` fastboot reboot``` 
+
+   ​	
 
 # 3.Magisk隐藏root
 
