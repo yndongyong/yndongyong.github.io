@@ -1,0 +1,823 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="android," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="yndongyong‘s blog" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="记录一下在现有Android端项目集成Flutter工作中遇到的问题。 flutter版本3.3.10 如下：  集成的主要步骤参考官方的文档将 Flutter module 集成到 Android 项目 - Flutter 中文文档 - Flutter 中文开发者网站 - Flutter 因为现有的原生工程已经迭代很久，拥有完善的网络框架：支持网关切换、请求加解密、通用的请求参数，业务接口异常埋">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Flutter add-to-app Android 端集成">
+<meta property="og:url" content="https://yndongyong.github.io/2023/08/21/Flutter-add-to-app-Android-%E7%AB%AF%E9%9B%86%E6%88%90/index.html">
+<meta property="og:site_name" content="yndongyong‘s blog">
+<meta property="og:description" content="记录一下在现有Android端项目集成Flutter工作中遇到的问题。 flutter版本3.3.10 如下：  集成的主要步骤参考官方的文档将 Flutter module 集成到 Android 项目 - Flutter 中文文档 - Flutter 中文开发者网站 - Flutter 因为现有的原生工程已经迭代很久，拥有完善的网络框架：支持网关切换、请求加解密、通用的请求参数，业务接口异常埋">
+<meta property="og:locale">
+<meta property="og:image" content="https://raw.githubusercontent.com/yndongyong/picBed/master/img/Snipaste_2023-01-05_17-14-49.png">
+<meta property="article:published_time" content="2023-08-21T07:24:57.000Z">
+<meta property="article:modified_time" content="2024-07-25T07:34:33.930Z">
+<meta property="article:author" content="yndongyong">
+<meta property="article:tag" content="android">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/yndongyong/picBed/master/img/Snipaste_2023-01-05_17-14-49.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://yndongyong.github.io/2023/08/21/Flutter-add-to-app-Android-端集成/"/>
+
+
+
+
+
+  <title>Flutter add-to-app Android 端集成 | yndongyong‘s blog</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">yndongyong‘s blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">生命不息，学习不止！</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://yndongyong.github.io/2023/08/21/Flutter-add-to-app-Android-%E7%AB%AF%E9%9B%86%E6%88%90/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="yndongyong‘s blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Flutter add-to-app Android 端集成</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2023-08-21T15:24:57+08:00">
+                2023-08-21
+              </time>
+            
+
+            
+              <span class="post-meta-divider">|</span>
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">更新于</span>
+              
+              <time title="更新于" itemprop="dateModified" datetime="2024-07-25T15:34:33+08:00">
+                2024-07-25
+              </time>
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/android/" itemprop="url" rel="index">
+                    <span itemprop="name">android</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/flutter/" itemprop="url" rel="index">
+                    <span itemprop="name">flutter</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>记录一下在现有Android端项目集成Flutter工作中遇到的问题。</p>
+<p>flutter版本3.3.10 如下：</p>
+<p><img src="https://raw.githubusercontent.com/yndongyong/picBed/master/img/Snipaste_2023-01-05_17-14-49.png" alt="flutter环境"></p>
+<p>集成的主要步骤参考官方的文档<a target="_blank" rel="noopener" href="https://flutter.cn/docs/development/add-to-app/android/project-setup">将 Flutter module 集成到 Android 项目 - Flutter 中文文档 - Flutter 中文开发者网站 - Flutter</a></p>
+<p>因为现有的原生工程已经迭代很久，拥有完善的网络框架：支持网关切换、请求加解密、通用的请求参数，业务接口异常埋点等功能，埋点组件、路由组件等很多基础业务组件，这部分的能力希望复用，而不是在flutter上再次实现一遍，如果这样，前期flutter的引入需要很大的代价去实现一系列基础组件,与我们目前引入flutter的初衷：降本增效——降低开发成本，提升开发效率相违背。同时如果存在两套组件，比如网络组件，后期也会增加维护成本。需要尽可能多的复用原生已有的能力。</p>
+<p>flutter 的集成有如下两种方式</p>
+<ul>
+<li>源码依赖集成</li>
+<li><code>aar</code>集成</li>
+</ul>
+<h3 id="集成目标"><a href="#集成目标" class="headerlink" title="集成目标"></a>集成目标</h3><p>​	一：在开发阶段如果如果不涉及flutter相关的开发、以及打包的时候则使用<code>aar</code>集成的方式对flutter无感，避免隐形的编译成本。</p>
+<p>​	二：涉及flutter相关的开发则切换的源码依赖的方式，毕竟要使用原生宿主的能力，需要先将app跑起来，在使用<code>flutter attach</code>进行开发调试。</p>
+<p>需要有一种很简单的方式，可能动态的改变flutter组件是aar依赖，还是源码依赖，这一块复用我们之前在组件化过程的配置的脚本即可。</p>
+<h3 id="源码依赖集成"><a href="#源码依赖集成" class="headerlink" title="源码依赖集成"></a>源码依赖集成</h3><p>第一步，在<code>settings.gradle</code>文件中配置，将flutter工程引入到宿主工程中</p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> flutterEmbedFile = file(<span class="string">&#x27;../xxx_fluter/.android/include_flutter.groovy&#x27;</span>)   <span class="comment">// new</span></span><br><span class="line"><span class="keyword">if</span> (flutterEmbedFile.exists() &amp;&amp; debugable) &#123;</span><br><span class="line">    setBinding(<span class="keyword">new</span> Binding([<span class="attr">gradle:</span> <span class="variable language_">this</span>]))                                          <span class="comment">// new</span></span><br><span class="line">    evaluate(file(                                                               <span class="comment">// new</span></span><br><span class="line">            <span class="string">&#x27;../xxx_fluter/.android/include_flutter.groovy&#x27;</span>                         <span class="comment">// new</span></span><br><span class="line">    ))</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>第二步，在<code>app/build.gradle</code>中引入flutter模块 </p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">dependencies &#123;</span><br><span class="line">  implementation project(<span class="string">&#x27;:flutter&#x27;</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>之后就可以在app工程中使用<code>io.flutter.embedding.android.FlutterActivity</code></p>
+<p><strong>注意</strong>：源码依赖集成时最好使用git submodel的方式，单独管理flutter工程</p>
+<h3 id="aar依赖集成"><a href="#aar依赖集成" class="headerlink" title="aar依赖集成"></a>aar依赖集成</h3><h4 id="aar包构建"><a href="#aar包构建" class="headerlink" title="aar包构建"></a>aar包构建</h4><p>目前<code>flutter 3.0</code>中已经提供了完善的构建aar的工具了，不会再有之前的构建的aar包中没有包含上第三方依赖的问题了。构建flutter aar产物的命令是 <code>flutter build aar</code> 会在本地生成<code>maven repo</code>，不方便远程依赖，而我们希望是能够直接将aar产物上传到公司的maven私库中。</p>
+<p>使用 <code>flutter build aar -v</code>命令，详细的了解的该命令的执行过程，发现就是执行了sdk目录中的 <code>aar_init_script.gradle</code> 脚本。目录为 <code>FlutterSdk\flutter\packages\flutter_tools\gradle</code></p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"> <span class="symbol">executing:</span> [<span class="attr">D:</span>\code_space\xxx_fluter\.android/]  <span class="attr">D:</span>\code_space\xxx_fluter\.android\gradlew.bat -I=<span class="attr">D:</span>\FlutterSdk\flutter\packages\flutter_tools\gradle\aar_init_script.gradle</span><br><span class="line">-Pflutter-root=<span class="attr">D:</span>\FlutterSdk\flutter -Poutput-dir=<span class="attr">D:</span>\code_space\xxx_fluter\build\host -Pis-plugin=<span class="literal">false</span> -PbuildNumber=<span class="number">1.0</span> --full-stacktrace --info -Pverbose=<span class="literal">true</span> -Ptarget=lib\main.dart</span><br><span class="line">-Pdart-obfuscation=<span class="literal">false</span> -Ptrack-widget-creation=<span class="literal">true</span> -Ptree-shake-icons=<span class="literal">false</span> -Ptarget-platform=android-arm,android-arm64,android-x64 assembleAarDebug</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>该脚本的大概作用就是给<code>gradle project</code>配置上<code>maven-publish plugin</code>，同时进行相关的配置</p>
+<p>基本该脚本，修改了一份 <code>flutter_aar_upload.gradle</code>，支持配置publish到远程仓库。改动的地方可搜索 <code>add by dong</code>查看</p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// This script is used to initialize the build in a module or plugin project.</span></span><br><span class="line"><span class="comment">// During this phase, the script applies the Maven plugin and configures the</span></span><br><span class="line"><span class="comment">// destination of the local repository.</span></span><br><span class="line"><span class="comment">// The local repository will contain the AAR and POM files.</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.nio.file.Paths</span><br><span class="line"><span class="keyword">import</span> org.gradle.api.Project</span><br><span class="line"><span class="keyword">import</span> org.gradle.api.artifacts.Configuration</span><br><span class="line"><span class="keyword">import</span> org.gradle.api.publish.maven.MavenPublication</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> configureProject(Project project, String mavenUrl ,String mavenUser ,String mavenPwd) &#123;</span><br><span class="line">    <span class="keyword">if</span> (!project.hasProperty(<span class="string">&quot;android&quot;</span>)) &#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> GradleException(<span class="string">&quot;Android property not found.&quot;</span>)</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (!project.android.hasProperty(<span class="string">&quot;libraryVariants&quot;</span>)) &#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> GradleException(<span class="string">&quot;Can&#x27;t generate AAR on a non Android library project.&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Snapshot versions include the timestamp in the artifact name.</span></span><br><span class="line">    <span class="comment">// Therefore, remove the snapshot part, so new runs of `flutter build aar` overrides existing artifacts.</span></span><br><span class="line">    <span class="comment">// This version isn&#x27;t relevant in Flutter since the pub version is used</span></span><br><span class="line">    <span class="comment">// to resolve dependencies.</span></span><br><span class="line">    project.version = project.version.replace(<span class="string">&quot;-SNAPSHOT&quot;</span>, <span class="string">&quot;&quot;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (project.hasProperty(<span class="string">&quot;buildNumber&quot;</span>)) &#123;</span><br><span class="line">        project.version = project.property(<span class="string">&quot;buildNumber&quot;</span>)</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    project.android.libraryVariants.all &#123; variant -&gt;</span><br><span class="line">        addAarTask(project, variant)</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    project.publishing &#123;</span><br><span class="line">        repositories &#123;</span><br><span class="line">            <span class="keyword">if</span> (mavenUrl.startsWith(<span class="string">&quot;file://&quot;</span>))&#123;</span><br><span class="line">                maven &#123;</span><br><span class="line">                    name = <span class="string">&quot;local&quot;</span></span><br><span class="line">                    <span class="comment">//默认本地路径</span></span><br><span class="line">                    url = uri(<span class="string">&quot;$&#123;mavenUrl&#125;/outputs/repo&quot;</span>)</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;<span class="keyword">else</span> <span class="keyword">if</span> (mavenUrl.startsWith(<span class="string">&quot;http&quot;</span>))&#123;</span><br><span class="line">                maven &#123;</span><br><span class="line">                    name = <span class="string">&quot;remote&quot;</span></span><br><span class="line">                    <span class="comment">//指定要上传的maven私服仓库</span></span><br><span class="line">                    url = mavenUrl</span><br><span class="line">                    allowInsecureProtocol = <span class="literal">true</span></span><br><span class="line">                    <span class="comment">//认证用户和密码</span></span><br><span class="line">                    credentials &#123;</span><br><span class="line">                        username mavenUser</span><br><span class="line">                        password mavenPwd</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Some extra work to have alternative publications with the same format as the old maven plugin.</span></span><br><span class="line">    <span class="comment">// Instead of using classifiers for the variants, the old maven plugin appended `_&#123;variant&#125;` to the artifactId</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// First, create a default MavenPublication for each variant (except &quot;all&quot; since that is used to publish artifacts in the new way)</span></span><br><span class="line">    project.components.forEach &#123; component -&gt;</span><br><span class="line">        <span class="keyword">if</span> (component.name != <span class="string">&quot;all&quot;</span>) &#123;</span><br><span class="line">            project.publishing.publications.create(component.name, MavenPublication) &#123;</span><br><span class="line">                from component</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// then, rename the artifactId to include the variant and make sure to remove any classifier</span></span><br><span class="line">    <span class="comment">// data tha gradle has set, as well as adding a &lt;relocation&gt; tag pointing to the new coordinates</span></span><br><span class="line">    project.publishing.publications.forEach &#123; pub -&gt;</span><br><span class="line">        <span class="keyword">def</span> relocationArtifactId = pub.artifactId</span><br><span class="line">        pub.artifactId = <span class="string">&quot;$&#123;relocationArtifactId&#125;_$&#123;pub.name&#125;&quot;</span></span><br><span class="line">        pub.alias = <span class="literal">true</span></span><br><span class="line"></span><br><span class="line">        pub.pom.distributionManagement &#123;</span><br><span class="line">            relocation &#123;</span><br><span class="line">                <span class="comment">// New artifact coordinates</span></span><br><span class="line">                groupId = <span class="string">&quot;$&#123;pub.groupId&#125;&quot;</span></span><br><span class="line">                artifactId = <span class="string">&quot;$&#123;relocationArtifactId&#125;&quot;</span></span><br><span class="line">                version = <span class="string">&quot;$&#123;pub.version&#125;&quot;</span></span><br><span class="line">                message = <span class="string">&quot;Use classifiers rather than _variant for new publish plugin&quot;</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// also publish the artifacts in the new way, using one set of coordinates with classifiers</span></span><br><span class="line">    project.publishing.publications.create(<span class="string">&quot;all&quot;</span>, MavenPublication) &#123;</span><br><span class="line">        from project.components.all</span><br><span class="line">        alias <span class="literal">false</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (!project.property(<span class="string">&quot;is-plugin&quot;</span>).toBoolean()) &#123;</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    String storageUrl = System.getenv(<span class="string">&#x27;FLUTTER_STORAGE_BASE_URL&#x27;</span>) ?: <span class="string">&quot;https://storage.googleapis.com&quot;</span></span><br><span class="line">    <span class="comment">// This is a Flutter plugin project. Plugin projects don&#x27;t apply the Flutter Gradle plugin,</span></span><br><span class="line">    <span class="comment">// as a result, add the dependency on the embedding.</span></span><br><span class="line">    project.repositories &#123;</span><br><span class="line">        maven &#123;</span><br><span class="line">            url <span class="string">&quot;$storageUrl/download.flutter.io&quot;</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    String engineVersion = Paths.get(getFlutterRoot(project), <span class="string">&quot;bin&quot;</span>, <span class="string">&quot;internal&quot;</span>, <span class="string">&quot;engine.version&quot;</span>)</span><br><span class="line">            .toFile().text.trim()</span><br><span class="line">    project.dependencies &#123;</span><br><span class="line">        <span class="comment">// Add the embedding dependency.</span></span><br><span class="line">        compileOnly (<span class="string">&quot;io.flutter:flutter_embedding_release:1.0.0-$engineVersion&quot;</span>) &#123;</span><br><span class="line">            <span class="comment">// We only need to expose io.flutter.plugin.*</span></span><br><span class="line">            <span class="comment">// No need for the embedding transitive dependencies.</span></span><br><span class="line">            transitive = <span class="literal">false</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//add by dong 5</span></span><br><span class="line"><span class="type">void</span> configurePlugin(Project project, String mavenUrl ,String mavenUser ,String mavenPwd) &#123;</span><br><span class="line">    <span class="keyword">if</span> (!project.hasProperty(<span class="string">&quot;android&quot;</span>)) &#123;</span><br><span class="line">        <span class="comment">// A plugin doesn&#x27;t support the Android platform when this property isn&#x27;t defined in the plugin.</span></span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">    &#125;</span><br><span class="line">    configureProject(project, mavenUrl,mavenUser,mavenPwd)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">String getFlutterRoot(Project project) &#123;</span><br><span class="line">    <span class="keyword">if</span> (!project.hasProperty(<span class="string">&quot;flutter-root&quot;</span>)) &#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> GradleException(<span class="string">&quot;The `-Pflutter-root` flag must be specified.&quot;</span>)</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> project.property(<span class="string">&quot;flutter-root&quot;</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> addAarTask(Project project, variant) &#123;</span><br><span class="line">    String variantName = variant.name.capitalize()</span><br><span class="line">    String taskName = <span class="string">&quot;assembleAar$variantName&quot;</span></span><br><span class="line">    project.tasks.create(<span class="attr">name:</span> taskName) &#123;</span><br><span class="line">        <span class="comment">// This check is required to be able to configure the archives before `publish` runs.</span></span><br><span class="line">        <span class="keyword">if</span> (!project.gradle.startParameter.taskNames.contains(taskName)) &#123;</span><br><span class="line">            <span class="keyword">return</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// Generate the Maven artifacts.</span></span><br><span class="line">        finalizedBy <span class="string">&quot;publish&quot;</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// maven-publish has to be applied _before_ the project gets evaluated, but some of the code in</span></span><br><span class="line"><span class="comment">// `configureProject` requires the project to be evaluated. Apply the maven plugin to all projects, but</span></span><br><span class="line"><span class="comment">// only configure it if it matches the conditions in `projectsEvaluated`</span></span><br><span class="line"></span><br><span class="line">allprojects &#123;</span><br><span class="line">    apply <span class="attr">plugin:</span> <span class="string">&quot;maven-publish&quot;</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">projectsEvaluated &#123;</span><br><span class="line">    <span class="keyword">assert</span> rootProject.hasProperty(<span class="string">&quot;is-plugin&quot;</span>)</span><br><span class="line">    <span class="keyword">if</span> (rootProject.property(<span class="string">&quot;is-plugin&quot;</span>).toBoolean()) &#123;</span><br><span class="line">        <span class="keyword">assert</span> rootProject.hasProperty(<span class="string">&quot;maven-url&quot;</span>)</span><br><span class="line">        <span class="comment">// In plugin projects, the root project is the plugin.</span></span><br><span class="line">        configureProject(rootProject,  rootProject.property(<span class="string">&quot;maven-url&quot;</span>),</span><br><span class="line">                rootProject.property(<span class="string">&quot;maven-user&quot;</span>), rootProject.property(<span class="string">&quot;maven-pwd&quot;</span>))</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// The module project is the `:flutter` subproject.</span></span><br><span class="line">    Project moduleProject = rootProject.subprojects.find &#123; it.name == <span class="string">&quot;flutter&quot;</span> &#125;</span><br><span class="line">    <span class="keyword">assert</span> moduleProject != <span class="literal">null</span></span><br><span class="line">    <span class="comment">//add by dong 1</span></span><br><span class="line">    println(<span class="string">&quot;moduleProject: &quot;</span> + moduleProject)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">assert</span> moduleProject.hasProperty(<span class="string">&quot;maven-url&quot;</span>)</span><br><span class="line">    configureProject(moduleProject, moduleProject.property(<span class="string">&quot;maven-url&quot;</span>),</span><br><span class="line">            moduleProject.property(<span class="string">&quot;maven-user&quot;</span>), moduleProject.property(<span class="string">&quot;maven-pwd&quot;</span>))</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Gets the plugin subprojects.</span></span><br><span class="line">    Set&lt;Project&gt; modulePlugins = rootProject.subprojects.findAll &#123;</span><br><span class="line">        it.name != <span class="string">&quot;flutter&quot;</span> &amp;&amp; it.name != <span class="string">&quot;app&quot;</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// When a module is built as a Maven artifacts, plugins must also be built this way</span></span><br><span class="line">    <span class="comment">// because the module POM&#x27;s file will include a dependency on the plugin Maven artifact.</span></span><br><span class="line">    <span class="comment">// This is due to the Android Gradle Plugin expecting all library subprojects to be published</span></span><br><span class="line">    <span class="comment">// as Maven artifacts.</span></span><br><span class="line">    modulePlugins.each &#123; pluginProject -&gt;</span><br><span class="line">        configurePlugin(pluginProject, moduleProject.property(<span class="string">&quot;maven-url&quot;</span>),moduleProject.property(<span class="string">&quot;maven-user&quot;</span>), moduleProject.property(<span class="string">&quot;maven-pwd&quot;</span>))</span><br><span class="line">        moduleProject.android.libraryVariants.all &#123; variant -&gt;</span><br><span class="line">            <span class="comment">// Configure the `assembleAar&lt;variantName&gt;` task for each plugin&#x27;s projects and make</span></span><br><span class="line">            <span class="comment">// the module&#x27;s equivalent task depend on the plugin&#x27;s task.</span></span><br><span class="line">            String variantName = variant.name.capitalize()</span><br><span class="line">            moduleProject.tasks.findByPath(<span class="string">&quot;assembleAar$variantName&quot;</span>)</span><br><span class="line">                    .dependsOn(pluginProject.tasks.findByPath(<span class="string">&quot;assembleAar$variantName&quot;</span>))</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//add by dong 4</span></span><br><span class="line">    String mavenUrl = moduleProject.property(<span class="string">&quot;maven-url&quot;</span>)</span><br><span class="line">    String version = moduleProject.property(<span class="string">&quot;buildNumber&quot;</span>)</span><br><span class="line"></span><br><span class="line">    println(<span class="string">&quot;Version: $version&quot;</span>)</span><br><span class="line">    println(<span class="string">&quot;MavenUrl: &quot;</span> + mavenUrl)</span><br><span class="line"></span><br><span class="line">    <span class="comment">//输出 配置</span></span><br><span class="line">    String buildMode = moduleProject.gradle.startParameter</span><br><span class="line">            .taskNames.find &#123; it.startsWith(<span class="string">&quot;assembleAar&quot;</span>) &#125;.substring(<span class="number">11</span>)</span><br><span class="line">    println(<span class="string">&quot;BuildMode: $buildMode&quot;</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//获取Flutter Engine Version</span></span><br><span class="line"><span class="keyword">def</span> flutterEngineVersion(Project project) &#123;</span><br><span class="line"><span class="comment">//    Process process = Runtime.getRuntime().exec([&quot;sh&quot;, &quot;-c&quot;, &quot;which flutter&quot;] as String[])</span></span><br><span class="line"><span class="comment">//    BufferedReader reader = new BufferedReader(new InputStreamReader(process.inputStream))</span></span><br><span class="line"><span class="comment">//    process.waitFor()</span></span><br><span class="line"><span class="comment">//    String path = reader.readLine()</span></span><br><span class="line">    String path = getFlutterRoot(project)</span><br><span class="line">    println(<span class="string">&quot;Flutter Path：&quot;</span> + path)</span><br><span class="line"><span class="comment">//    String engineVersion = Paths.get(path, &quot;internal&quot;, &quot;engine.version&quot;)</span></span><br><span class="line"><span class="comment">//            .toFile().text.trim()</span></span><br><span class="line">    String engineVersion = Paths.get(path, <span class="string">&quot;bin&quot;</span>, <span class="string">&quot;internal&quot;</span>, <span class="string">&quot;engine.version&quot;</span>)</span><br><span class="line">            .toFile().text.trim()</span><br><span class="line">    println(<span class="string">&quot;Flutter Engine Version: &quot;</span> + engineVersion)</span><br><span class="line">    <span class="keyword">return</span> engineVersion</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>同时，将调用该文件的脚本以及需要传递的参数放置于脚本 <code>build_flutter_aar.sh</code> 中,方便构建产物。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash">!/usr/bin/env sh</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">从script目录放回上一层级</span></span><br><span class="line">cd ..</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">自动生成.android文件夹</span></span><br><span class="line">flutter pub get</span><br><span class="line">cd .android</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">参数说明</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">Pflutter-root flutter sdk的目录</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">-Pmaven-url 可以是本地路径，也可为远程地址</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">示例：</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">maven-url=file://D:/code_space/xxx_fluter/build/host</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">maven-url=http://xxxxxxxxxxx/repository/ynty_android/</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">maven-user 与 maven-pwd 为maven远程用户及密码，若发布到本地无需设置</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">-PbuildNumber=1.0.0 为版本号</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">最后 assembleAarRelease 为打包类型，assembleAarDebug, assembleAarProfile</span></span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">debug包</span> </span><br><span class="line">./gradlew \</span><br><span class="line"> -I=../script/flutter_aar_upload.gradle \</span><br><span class="line"> -Pflutter-root=D:/FlutterSdk/flutter \</span><br><span class="line"> -Pmaven-url=&#x27;http://xxxxxxx/repository/android/&#x27; \</span><br><span class="line"> -Pmaven-user=xxxx \</span><br><span class="line"> -Pmaven-pwd=xxxxx \</span><br><span class="line"> -Pis-plugin=false \</span><br><span class="line"> -PbuildNumber=&#x27;1.0.0&#x27; \</span><br><span class="line"> --full-stacktrace --info -Pverbose=true -Ptarget=&#x27;lib\main.dart&#x27; -Pdart-obfuscation=false \</span><br><span class="line"> -Ptrack-widget-creation=true \</span><br><span class="line"> -Ptree-shake-icons=false -Ptarget-platform=&#x27;android-arm,android-arm64,android-x64&#x27; assembleAarDebug</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">release包</span></span><br><span class="line">./gradlew \</span><br><span class="line"> -I=../script/flutter_aar_upload.gradle \</span><br><span class="line"> -Pflutter-root=D:/FlutterSdk/flutter \</span><br><span class="line"> -Pmaven-url=&#x27;http://xxxxx/repository/android/&#x27; \</span><br><span class="line"> -Pmaven-user=xxxx \</span><br><span class="line"> -Pmaven-pwd=xxxx \</span><br><span class="line"> -Pis-plugin=false \</span><br><span class="line"> -PbuildNumber=&#x27;1.0.0&#x27; \</span><br><span class="line"> --full-stacktrace --info -Pverbose=true -Ptarget=&#x27;lib\main.dart&#x27; -Pdart-obfuscation=false \</span><br><span class="line"> -Ptrack-widget-creation=true \</span><br><span class="line"> -Ptree-shake-icons=false -Ptarget-platform=&#x27;android-arm,android-arm64,android-x64&#x27; assembleAarRelease</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h4 id="app工程flutter产物aar集成"><a href="#app工程flutter产物aar集成" class="headerlink" title="app工程flutter产物aar集成"></a>app工程flutter产物aar集成</h4><ol>
+<li><p>app中配置<strong>maven</strong>仓库地址</p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"> String storageUrl = System.getenv(<span class="string">&#x27;FLUTTER_STORAGE_BASE_URL&#x27;</span>) ?: <span class="string">&quot;https://storage.googleapis.com&quot;</span></span><br><span class="line">	#flutter 国内镜像 storageUrl = <span class="attr">https:</span><span class="comment">//storage.flutter-io.cn</span></span><br><span class="line">repositories &#123;</span><br><span class="line">    maven &#123;</span><br><span class="line">    	url <span class="string">&#x27;私库地址xxxx&#x27;</span></span><br><span class="line">    &#125;</span><br><span class="line">    maven &#123;</span><br><span class="line">    	url <span class="string">&#x27;https://$storageUrl/download.flutter.io&#x27;</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>app&#x2F;build.gradle中引入</p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">dependencies &#123;</span><br><span class="line">    <span class="keyword">def</span> flutter_aar_sdk_version = <span class="string">&quot;1.0.0&quot;</span></span><br><span class="line">    debugImplementation <span class="string">&quot;$gourp_id:flutter_debug:$flutter_aar_sdk_version&quot;</span></span><br><span class="line">    releaseImplementation <span class="string">&quot;$groupd_id:flutter_release:$flutter_aar_sdk_version&quot;</span></span><br><span class="line">   <span class="comment">//flutter engine version 不用直接依赖了</span></span><br><span class="line">          </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ol>
+<h3 id="CI-自动化构建"><a href="#CI-自动化构建" class="headerlink" title="CI 自动化构建"></a>CI 自动化构建</h3><p>jenkins 新建job,执行<code>build_flutter_aar.sh</code>负责构建flutter的aar产物，使用aar包构建的脚本自动上传到maven私库，aar的版本号使用对应的git库的master分支最后一次提交的commit。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/android/" rel="tag"><i class="fa fa-tag"></i> android</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2023/05/12/Sourcetree%E9%85%8D%E7%BD%AEAndroidStudio%E4%B8%BA%E9%BB%98%E8%AE%A4%E7%9A%84diff%E5%B7%A5%E5%85%B7/" rel="next" title="Sourcetree配置AndroidStudio为默认的diff工具">
+                <i class="fa fa-chevron-left"></i> Sourcetree配置AndroidStudio为默认的diff工具
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2024/08/18/Android%E5%BC%80%E5%8F%91%E5%BF%AB%E9%80%9F%E5%AE%9A%E4%BD%8DApp%E9%A1%B6%E5%B1%82%E7%9A%84Activity%E5%92%8CFragment/" rel="prev" title="Android开发快速定位App顶层的Activity和Fragment">
+                Android开发快速定位App顶层的Activity和Fragment <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="" />
+          <p class="site-author-name" itemprop="name"></p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">32</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">10</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">26</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%9B%86%E6%88%90%E7%9B%AE%E6%A0%87"><span class="nav-number">1.</span> <span class="nav-text">集成目标</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%BA%90%E7%A0%81%E4%BE%9D%E8%B5%96%E9%9B%86%E6%88%90"><span class="nav-number">2.</span> <span class="nav-text">源码依赖集成</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#aar%E4%BE%9D%E8%B5%96%E9%9B%86%E6%88%90"><span class="nav-number">3.</span> <span class="nav-text">aar依赖集成</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#aar%E5%8C%85%E6%9E%84%E5%BB%BA"><span class="nav-number">3.1.</span> <span class="nav-text">aar包构建</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#app%E5%B7%A5%E7%A8%8Bflutter%E4%BA%A7%E7%89%A9aar%E9%9B%86%E6%88%90"><span class="nav-number">3.2.</span> <span class="nav-text">app工程flutter产物aar集成</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#CI-%E8%87%AA%E5%8A%A8%E5%8C%96%E6%9E%84%E5%BB%BA"><span class="nav-number">4.</span> <span class="nav-text">CI 自动化构建</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">yndongyong</span>
+</div>
+
+
+<div class="powered-by">
+<i class="fa fa-user-md"></i><span id="busuanzi_container_site_uv">
+  本站访客数:<span id="busuanzi_value_site_uv"></span>
+</span>
+</div>
+<div class="powered-by">
+  由 <a class="theme-link" target="_blank" rel="noopener" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" target="_blank" rel="noopener" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+<div class="theme-info">
+  <div class="powered-by"></div>
+  <span class="post-count">博客全站共33.6k字</span>
+</div>
+
+
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+  
+  <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
