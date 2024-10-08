@@ -79,7 +79,7 @@ RUN chmod -R a+w $ANDROID_HOME  \
   
 #更换一个软件源
 #安装flutter需要的插件
-RUN sed -i -e "s/deb.debian.org/mirrors.tuna.tsinghua.edu.cn/" /etc/apt/sources.list && \ 
+RUN sed -i -e "s/deb.debian.org/mirrors.tuna.tsinghua.edu.cn/" /etc/apt/sources.list.d/debian.sources && \ 
     apt-get update && \
     apt-get install -y \
        xz-utils \
@@ -114,8 +114,8 @@ RUN mkdir -p $GRADLE_USER_HOME \
      && chmod -R a+w $GRADLE_USER_HOME 
     
 #将gradle全局属性拷贝到GRADLE_USER_HOME
-COPY ./init.gradle $GRADLE_USER_HOME
-COPY ./gradle.properties $GRADLE_USER_HOME
+#COPY ./init.gradle $GRADLE_USER_HOME
+#COPY ./gradle.properties $GRADLE_USER_HOME
 
 
 #将walle-cli等拷贝

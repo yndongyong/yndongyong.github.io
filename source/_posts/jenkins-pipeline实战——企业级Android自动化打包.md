@@ -642,7 +642,7 @@ def executeJiagu(protectedSourceApkName, jiagu32Apk,jiagu64Apk, downloadPath) {
     echo '加固start'
     // sh( """ ${leguLibPath}/jiagu "${protectedSourceApkName}" "${jiaguApk}" /legu/base.conf """)
     sh(script: """
-    java -jar /sdk/bang/secapi.jar -i https://usc.an110.com -u yntyxx -a 62e3ff42-ea46-4139-9b17-764023851612 -c 03b7f84d-ff93-419b-b5be-2c941455fdcd -p ${protectedSourceApkName} -d ${downloadPath} -t ${__BANGBANG_ID} -f 0 """)
+    java -jar /sdk/bang/secapi.jar -i https://usc.an110.com -u [username] -a [appid] -c [ccc] -p ${protectedSourceApkName} -d ${downloadPath} -t ${__BANGBANG_ID} -f 0 """)
     if (fileExists(jiagu32Apk) == false) {
         error '加固失败'
     }
