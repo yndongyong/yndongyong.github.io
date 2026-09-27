@@ -5,6 +5,9 @@
   "hexo": {
     "version": "6.3.0"
   },
+  "scripts": {
+    "run": "hexo clean && hexo g -d && git add . && git commit -m '同步新文章' && git push origin hexo_source"
+  },
   "dependencies": {
     "express": "^4.17.3",
     "hexo": "^6.3.0",
