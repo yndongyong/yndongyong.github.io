@@ -195,6 +195,9 @@ NexT.utils = NexT.$u = {
    * @returns {string|void|XML|*}
    */
   escapeSelector: function (selector) {
+    try {
+      selector = decodeURI(selector);
+    } catch (e) {}
     return selector.replace(/[!"$%&'()*+,.\/:;<=>?@[\\\]^`{|}~]/g, '\\$&');
   },
 

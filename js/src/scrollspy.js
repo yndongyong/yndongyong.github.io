@@ -66,6 +66,14 @@
         var href  = $el.data('target') || $el.attr('href')
         var $href = /^#./.test(href) && $(NexT.utils.escapeSelector(href)) // Need to escape selector.
 
+        if (!$href || !$href.length) {
+          try {
+            var rawId = decodeURI(href).replace(/^#/, '');
+            var el = document.getElementById(rawId);
+            if (el) $href = $(el);
+          } catch (e) {}
+        }
+
         return ($href
           && $href.length
           && $href.is(':visible')

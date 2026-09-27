@@ -120,8 +120,25 @@ $(document).ready(function () {
 
   $('.post-toc a').on('click', function (e) {
     e.preventDefault();
-    var targetSelector = NexT.utils.escapeSelector(this.getAttribute('href'));
-    var offset = $(targetSelector).offset().top;
+    var href = this.getAttribute('href');
+    var targetSelector = NexT.utils.escapeSelector(href);
+    var $target = $(targetSelector);
+
+    if (!$target.length) {
+      try {
+        var rawId = decodeURI(href).replace(/^#/, '');
+        var el = document.getElementById(rawId);
+        if (el) {
+          $target = $(el);
+        }
+      } catch (err) {}
+    }
+
+    if (!$target.length) {
+      return;
+    }
+
+    var offset = $target.offset().top;
 
     hasVelocity ?
       html.velocity('stop').velocity('scroll', {

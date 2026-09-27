@@ -1,0 +1,911 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Git,SourceTree,Windows," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="yndongyong‘s blog" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="本文配置 3 个常用的 SourceTree Custom Actions，用于在 Windows 下管理 Git 的 assume-unchanged 文件，并在文末附带 Windows 鼠标右键快速用 SourceTree 打开项目的配置。 一、功能说明   Action 功能 命令    Assume Unchanged 对选中的文件设置 assume-unchanged git updat">
+<meta property="og:type" content="article">
+<meta property="og:title" content="SourceTree 自定义 Git Actions">
+<meta property="og:url" content="https://yndongyong.github.io/2026/09/27/SourceTree%E8%87%AA%E5%AE%9A%E4%B9%89GitActions/index.html">
+<meta property="og:site_name" content="yndongyong‘s blog">
+<meta property="og:description" content="本文配置 3 个常用的 SourceTree Custom Actions，用于在 Windows 下管理 Git 的 assume-unchanged 文件，并在文末附带 Windows 鼠标右键快速用 SourceTree 打开项目的配置。 一、功能说明   Action 功能 命令    Assume Unchanged 对选中的文件设置 assume-unchanged git updat">
+<meta property="og:locale">
+<meta property="article:published_time" content="2026-09-27T06:10:00.000Z">
+<meta property="article:modified_time" content="2026-09-27T06:18:32.213Z">
+<meta property="article:author" content="yndongyong">
+<meta property="article:tag" content="Git">
+<meta property="article:tag" content="SourceTree">
+<meta property="article:tag" content="Windows">
+<meta name="twitter:card" content="summary">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://yndongyong.github.io/2026/09/27/SourceTree自定义GitActions/"/>
+
+
+
+
+
+  <title>SourceTree 自定义 Git Actions | yndongyong‘s blog</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">yndongyong‘s blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">生命不息，学习不止！</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://yndongyong.github.io/2026/09/27/SourceTree%E8%87%AA%E5%AE%9A%E4%B9%89GitActions/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="yndongyong‘s blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">SourceTree 自定义 Git Actions</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2026-09-27T14:10:00+08:00">
+                2026-09-27
+              </time>
+            
+
+            
+              <span class="post-meta-divider">|</span>
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">更新于</span>
+              
+              <time title="更新于" itemprop="dateModified" datetime="2026-09-27T14:18:32+08:00">
+                2026-09-27
+              </time>
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Git/" itemprop="url" rel="index">
+                    <span itemprop="name">Git</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%B7%A5%E5%85%B7/" itemprop="url" rel="index">
+                    <span itemprop="name">工具</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>本文配置 3 个常用的 SourceTree Custom Actions，用于在 Windows 下管理 Git 的 <code>assume-unchanged</code> 文件，并在文末附带 Windows 鼠标右键快速用 SourceTree 打开项目的配置。</p>
+<h2 id="一、功能说明"><a href="#一、功能说明" class="headerlink" title="一、功能说明"></a>一、功能说明</h2><table>
+<thead>
+<tr>
+<th>Action</th>
+<th>功能</th>
+<th>命令</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>Assume Unchanged</code></td>
+<td>对选中的文件设置 <code>assume-unchanged</code></td>
+<td><code>git update-index --assume-unchanged &lt;file&gt;</code></td>
+</tr>
+<tr>
+<td><code>List Assume Unchanged</code></td>
+<td>查看所有标记为 <code>assume-unchanged</code> 的文件</td>
+<td><code>git ls-files -v | findstr /b &quot;h&quot;</code></td>
+</tr>
+<tr>
+<td><code>Restore All Assume Unchanged</code></td>
+<td>一键恢复所有 <code>assume-unchanged</code> 文件</td>
+<td><code>git update-index --no-assume-unchanged &lt;file&gt;</code></td>
+</tr>
+</tbody></table>
+<blockquote>
+<p><strong>提示</strong>：<code>assume-unchanged</code> 仅作用于本地 Git Index，只对已被 Git 跟踪的文件生效，不修改 <code>.gitignore</code>，不影响远程仓库。</p>
+</blockquote>
+<hr>
+<h2 id="二、脚本目录"><a href="#二、脚本目录" class="headerlink" title="二、脚本目录"></a>二、脚本目录</h2><p>统一存放目录：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">D:\tools\ASoureTreeActions\</span><br><span class="line">├── git-assume-unchanged.bat</span><br><span class="line">├── git-list-assume-unchanged.bat</span><br><span class="line">└── git-restore-assume-unchanged.bat</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="三、Action-1：Assume-Unchanged"><a href="#三、Action-1：Assume-Unchanged" class="headerlink" title="三、Action 1：Assume Unchanged"></a>三、Action 1：Assume Unchanged</h2><h3 id="1-BAT-脚本"><a href="#1-BAT-脚本" class="headerlink" title="1. BAT 脚本"></a>1. BAT 脚本</h3><p>文件：<code>D:\tools\ASoureTreeActions\git-assume-unchanged.bat</code></p>
+<figure class="highlight bat"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">@<span class="built_in">echo</span> off</span><br><span class="line"><span class="built_in">setlocal</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> &quot;%~<span class="number">1</span>&quot;==&quot;&quot; (</span><br><span class="line">    <span class="built_in">echo</span> No file selected.</span><br><span class="line">    <span class="built_in">pause</span></span><br><span class="line">    <span class="keyword">exit</span> /b <span class="number">1</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">git update-index --assume-unchanged -- &quot;%~<span class="number">1</span>&quot;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> <span class="keyword">errorlevel</span> <span class="number">1</span> (</span><br><span class="line">    <span class="built_in">echo</span> Failed: %~<span class="number">1</span></span><br><span class="line">    <span class="built_in">pause</span></span><br><span class="line">    <span class="keyword">exit</span> /b <span class="number">1</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="built_in">echo</span> Assume unchanged:</span><br><span class="line"><span class="built_in">echo</span> %~<span class="number">1</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="2-SourceTree-配置"><a href="#2-SourceTree-配置" class="headerlink" title="2. SourceTree 配置"></a>2. SourceTree 配置</h3><p>路径：<code>Tools → Options → Custom Actions</code></p>
+<ul>
+<li><strong>Menu Caption</strong>: <code>Assume Unchanged</code></li>
+<li><strong>Script to run</strong>: <code>D:\tools\ASoureTreeActions\git-assume-unchanged.bat</code></li>
+<li><strong>Parameters</strong>: <code>&quot;$FILE&quot;</code></li>
+<li><strong>选项</strong>: 勾选 <code>Open in a separate window</code> 与 <code>Show Full Output</code></li>
+</ul>
+<h3 id="3-使用"><a href="#3-使用" class="headerlink" title="3. 使用"></a>3. 使用</h3><p>在 SourceTree 文件列表中：<code>选中文件</code> → <code>右键/顶部 Actions</code> → <code>Custom Actions</code> → <code>Assume Unchanged</code></p>
+<hr>
+<h2 id="四、Action-2：List-Assume-Unchanged"><a href="#四、Action-2：List-Assume-Unchanged" class="headerlink" title="四、Action 2：List Assume Unchanged"></a>四、Action 2：List Assume Unchanged</h2><h3 id="1-BAT-脚本-1"><a href="#1-BAT-脚本-1" class="headerlink" title="1. BAT 脚本"></a>1. BAT 脚本</h3><p>文件：<code>D:\tools\ASoureTreeActions\git-list-assume-unchanged.bat</code></p>
+<figure class="highlight bat"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">@<span class="built_in">echo</span> off</span><br><span class="line"><span class="built_in">setlocal</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">echo</span> ========================================</span><br><span class="line"><span class="built_in">echo</span> Assume Unchanged Files</span><br><span class="line"><span class="built_in">echo</span> ========================================</span><br><span class="line"><span class="built_in">echo</span>.</span><br><span class="line"></span><br><span class="line">git ls-files -v | <span class="built_in">findstr</span> /b &quot;h&quot;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> <span class="keyword">errorlevel</span> <span class="number">1</span> (</span><br><span class="line">    <span class="built_in">echo</span> No assume-unchanged files.</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="built_in">echo</span>.</span><br><span class="line"><span class="built_in">echo</span> ========================================</span><br><span class="line"><span class="built_in">pause</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="2-SourceTree-配置-1"><a href="#2-SourceTree-配置-1" class="headerlink" title="2. SourceTree 配置"></a>2. SourceTree 配置</h3><ul>
+<li><strong>Menu Caption</strong>: <code>List Assume Unchanged</code></li>
+<li><strong>Script to run</strong>: <code>D:\tools\ASoureTreeActions\git-list-assume-unchanged.bat</code></li>
+<li><strong>Parameters</strong>: 留空</li>
+<li><strong>选项</strong>: 勾选 <code>Open in a separate window</code> 与 <code>Show Full Output</code></li>
+</ul>
+<h3 id="3-使用-1"><a href="#3-使用-1" class="headerlink" title="3. 使用"></a>3. 使用</h3><p><code>Actions</code> → <code>Custom Actions</code> → <code>List Assume Unchanged</code></p>
+<p>输出以 <code>h</code> 开头即为当前忽略的文件。</p>
+<hr>
+<h2 id="五、Action-3：Restore-All-Assume-Unchanged"><a href="#五、Action-3：Restore-All-Assume-Unchanged" class="headerlink" title="五、Action 3：Restore All Assume Unchanged"></a>五、Action 3：Restore All Assume Unchanged</h2><h3 id="1-BAT-脚本-2"><a href="#1-BAT-脚本-2" class="headerlink" title="1. BAT 脚本"></a>1. BAT 脚本</h3><p>文件：<code>D:\tools\ASoureTreeActions\git-restore-assume-unchanged.bat</code></p>
+<figure class="highlight bat"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">@<span class="built_in">echo</span> off</span><br><span class="line"><span class="built_in">setlocal</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">echo</span> ========================================</span><br><span class="line"><span class="built_in">echo</span> <span class="built_in">Restore</span> Assume Unchanged Files</span><br><span class="line"><span class="built_in">echo</span> ========================================</span><br><span class="line"><span class="built_in">echo</span>.</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> /f &quot;tokens=<span class="number">1</span>,*&quot; <span class="variable">%%a</span> <span class="keyword">in</span> (&#x27;git ls-files -v ^| <span class="built_in">findstr</span> /b &quot;h&quot;&#x27;) <span class="keyword">do</span> (</span><br><span class="line">    <span class="built_in">echo</span> Restoring: <span class="variable">%%b</span></span><br><span class="line">    git update-index --no-assume-unchanged -- &quot;<span class="variable">%%b</span>&quot;</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="built_in">echo</span>.</span><br><span class="line"><span class="built_in">echo</span> ========================================</span><br><span class="line"><span class="built_in">echo</span> Done.</span><br><span class="line"><span class="built_in">echo</span> ========================================</span><br><span class="line"><span class="built_in">pause</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="2-SourceTree-配置-2"><a href="#2-SourceTree-配置-2" class="headerlink" title="2. SourceTree 配置"></a>2. SourceTree 配置</h3><ul>
+<li><strong>Menu Caption</strong>: <code>Restore All Assume Unchanged</code></li>
+<li><strong>Script to run</strong>: <code>D:\tools\ASoureTreeActions\git-restore-assume-unchanged.bat</code></li>
+<li><strong>Parameters</strong>: 留空</li>
+<li><strong>选项</strong>: 勾选 <code>Open in a separate window</code> 与 <code>Show Full Output</code></li>
+</ul>
+<h3 id="3-使用-2"><a href="#3-使用-2" class="headerlink" title="3. 使用"></a>3. 使用</h3><p><code>Actions</code> → <code>Custom Actions</code> → <code>Restore All Assume Unchanged</code></p>
+<hr>
+<h2 id="六、三个-Action-总配置表"><a href="#六、三个-Action-总配置表" class="headerlink" title="六、三个 Action 总配置表"></a>六、三个 Action 总配置表</h2><table>
+<thead>
+<tr>
+<th>Action</th>
+<th>Script to run</th>
+<th>Parameters</th>
+<th>窗口选项</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>Assume Unchanged</code></td>
+<td><code>D:\tools\ASoureTreeActions\git-assume-unchanged.bat</code></td>
+<td><code>&quot;$FILE&quot;</code></td>
+<td>独立窗口打开、显示输出</td>
+</tr>
+<tr>
+<td><code>List Assume Unchanged</code></td>
+<td><code>D:\tools\ASoureTreeActions\git-list-assume-unchanged.bat</code></td>
+<td><em>(留空)</em></td>
+<td>独立窗口打开、显示输出</td>
+</tr>
+<tr>
+<td><code>Restore All Assume Unchanged</code></td>
+<td><code>D:\tools\ASoureTreeActions\git-restore-assume-unchanged.bat</code></td>
+<td><em>(留空)</em></td>
+<td>独立窗口打开、显示输出</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="七、直接导入-customactions-xml"><a href="#七、直接导入-customactions-xml" class="headerlink" title="七、直接导入 customactions.xml"></a>七、直接导入 customactions.xml</h2><p>关闭 SourceTree，打开配置文件：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">%LOCALAPPDATA%\Atlassian\SourceTree\customactions.xml</span><br></pre></td></tr></table></figure>
+
+<p>将以下 XML 内容写入或追加：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version=<span class="string">&quot;1.0&quot;</span> encoding=<span class="string">&quot;utf-8&quot;</span>?&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">ArrayOfCustomAction</span> <span class="attr">xmlns:xsd</span>=<span class="string">&quot;http://www.w3.org/2001/XMLSchema&quot;</span></span></span><br><span class="line"><span class="tag">                     <span class="attr">xmlns:xsi</span>=<span class="string">&quot;http://www.w3.org/2001/XMLSchema-instance&quot;</span>&gt;</span></span><br><span class="line"></span><br><span class="line">  <span class="tag">&lt;<span class="name">CustomAction</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">Caption</span>&gt;</span>Assume Unchanged<span class="tag">&lt;/<span class="name">Caption</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">OpenInSeparateWindow</span>&gt;</span>true<span class="tag">&lt;/<span class="name">OpenInSeparateWindow</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">ShowFullOutput</span>&gt;</span>true<span class="tag">&lt;/<span class="name">ShowFullOutput</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">IsSilent</span>&gt;</span>false<span class="tag">&lt;/<span class="name">IsSilent</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">Target</span>&gt;</span>D:\tools\ASoureTreeActions\git-assume-unchanged.bat<span class="tag">&lt;/<span class="name">Target</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">Parameters</span>&gt;</span>&quot;$FILE&quot;<span class="tag">&lt;/<span class="name">Parameters</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">CustomAction</span>&gt;</span></span><br><span class="line"></span><br><span class="line">  <span class="tag">&lt;<span class="name">CustomAction</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">Caption</span>&gt;</span>List Assume Unchanged<span class="tag">&lt;/<span class="name">Caption</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">OpenInSeparateWindow</span>&gt;</span>true<span class="tag">&lt;/<span class="name">OpenInSeparateWindow</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">ShowFullOutput</span>&gt;</span>true<span class="tag">&lt;/<span class="name">ShowFullOutput</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">IsSilent</span>&gt;</span>false<span class="tag">&lt;/<span class="name">IsSilent</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">Target</span>&gt;</span>D:\tools\ASoureTreeActions\git-list-assume-unchanged.bat<span class="tag">&lt;/<span class="name">Target</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">Parameters</span>&gt;</span><span class="tag">&lt;/<span class="name">Parameters</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">CustomAction</span>&gt;</span></span><br><span class="line"></span><br><span class="line">  <span class="tag">&lt;<span class="name">CustomAction</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">Caption</span>&gt;</span>Restore All Assume Unchanged<span class="tag">&lt;/<span class="name">Caption</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">OpenInSeparateWindow</span>&gt;</span>true<span class="tag">&lt;/<span class="name">OpenInSeparateWindow</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">ShowFullOutput</span>&gt;</span>true<span class="tag">&lt;/<span class="name">ShowFullOutput</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">IsSilent</span>&gt;</span>false<span class="tag">&lt;/<span class="name">IsSilent</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">Target</span>&gt;</span>D:\tools\ASoureTreeActions\git-restore-assume-unchanged.bat<span class="tag">&lt;/<span class="name">Target</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">Parameters</span>&gt;</span><span class="tag">&lt;/<span class="name">Parameters</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">CustomAction</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;/<span class="name">ArrayOfCustomAction</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="八、日常使用流程"><a href="#八、日常使用流程" class="headerlink" title="八、日常使用流程"></a>八、日常使用流程</h2><ol>
+<li><strong>临时忽略</strong>：修改本地配置后，选中文件执行 <code>Assume Unchanged</code>，文件不再出现在修改列表中；</li>
+<li><strong>查看清单</strong>：执行 <code>List Assume Unchanged</code>，查看当前被忽略的文件；</li>
+<li><strong>全部恢复</strong>：更新或切换分支前，执行 <code>Restore All Assume Unchanged</code>，恢复正常 Git 追踪。</li>
+</ol>
+<hr>
+<h2 id="九、注意事项"><a href="#九、注意事项" class="headerlink" title="九、注意事项"></a>九、注意事项</h2><ol>
+<li><strong>仅适用于已跟踪文件</strong>：无法忽略未跟踪的新文件（新文件请用 <code>.gitignore</code>）；</li>
+<li><strong>仅影响本地</strong>：不产生 Commit，不修改远程，不影响其他团队成员；</li>
+<li><strong>适合个人差异配置</strong>：适合本地调试配置、环境差异文件，不要长期用于替代工程化的环境配置文件。</li>
+</ol>
+<hr>
+<h2 id="十、Windows-右键配置：使用-SourceTree-打开指定目录"><a href="#十、Windows-右键配置：使用-SourceTree-打开指定目录" class="headerlink" title="十、Windows 右键配置：使用 SourceTree 打开指定目录"></a>十、Windows 右键配置：使用 SourceTree 打开指定目录</h2><p>在 Windows 资源管理器中右键任意文件夹或空白处，直接用 SourceTree 打开该仓库。</p>
+<h3 id="核心命令"><a href="#核心命令" class="headerlink" title="核心命令"></a>核心命令</h3><figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&quot;你的SourceTree.exe路径&quot; -f &quot;%V&quot;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>其中 <code>-f</code> 指定仓库路径，<code>&quot;%V&quot;</code> 代表右键选中的目录。</p>
+</blockquote>
+<h3 id="一键注册表脚本（-reg）"><a href="#一键注册表脚本（-reg）" class="headerlink" title="一键注册表脚本（.reg）"></a>一键注册表脚本（.reg）</h3><p>新建 <code>OpenWithSourceTree.reg</code>，将以下内容保存后<strong>双击导入</strong>（注意替换你的 <code>SourceTree.exe</code> 实际路径，路径中的反斜杠需写成双反斜杠 <code>\\</code>）：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">Windows Registry Editor Version 5.00</span><br><span class="line"></span><br><span class="line">; 1. 文件夹上右键</span><br><span class="line">[HKEY_CLASSES_ROOT\Directory\shell\SourceTree]</span><br><span class="line">@=&quot;Open with SourceTree&quot;</span><br><span class="line">&quot;Icon&quot;=&quot;C:\\Users\\dong\\AppData\\Local\\SourceTree\\SourceTree.exe&quot;</span><br><span class="line"></span><br><span class="line">[HKEY_CLASSES_ROOT\Directory\shell\SourceTree\command]</span><br><span class="line">@=&quot;\&quot;C:\\Users\\dong\\AppData\\Local\\SourceTree\\SourceTree.exe\&quot; -f \&quot;%V\&quot;&quot;</span><br><span class="line"></span><br><span class="line">; 2. 文件夹内部空白处右键</span><br><span class="line">[HKEY_CLASSES_ROOT\Directory\Background\shell\SourceTree]</span><br><span class="line">@=&quot;Open with SourceTree&quot;</span><br><span class="line">&quot;Icon&quot;=&quot;C:\\Users\\dong\\AppData\\Local\\SourceTree\\SourceTree.exe&quot;</span><br><span class="line"></span><br><span class="line">[HKEY_CLASSES_ROOT\Directory\Background\shell\SourceTree\command]</span><br><span class="line">@=&quot;\&quot;C:\\Users\\dong\\AppData\\Local\\SourceTree\\SourceTree.exe\&quot; -f \&quot;%V\&quot;&quot;</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Git/" rel="tag"><i class="fa fa-tag"></i> Git</a>
+          
+            <a href="/tags/SourceTree/" rel="tag"><i class="fa fa-tag"></i> SourceTree</a>
+          
+            <a href="/tags/Windows/" rel="tag"><i class="fa fa-tag"></i> Windows</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2026/02/06/Windows%E7%B3%BB%E7%BB%9F%E5%B8%B8%E7%94%A8%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E9%85%8D/" rel="next" title="Windows系统常用开发环境配">
+                <i class="fa fa-chevron-left"></i> Windows系统常用开发环境配
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2026/09/27/Dart%E7%8E%B0%E4%BB%A3%E8%AF%AD%E6%B3%95%E9%80%9F%E6%9F%A5%E7%AC%94%E8%AE%B0/" rel="prev" title="Dart 现代语法速查笔记（面向 Kotlin / Android 开发者）">
+                Dart 现代语法速查笔记（面向 Kotlin / Android 开发者） <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="" />
+          <p class="site-author-name" itemprop="name"></p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">35</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">14</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">34</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%E3%80%81%E5%8A%9F%E8%83%BD%E8%AF%B4%E6%98%8E"><span class="nav-number">1.</span> <span class="nav-text">一、功能说明</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8C%E3%80%81%E8%84%9A%E6%9C%AC%E7%9B%AE%E5%BD%95"><span class="nav-number">2.</span> <span class="nav-text">二、脚本目录</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%89%E3%80%81Action-1%EF%BC%9AAssume-Unchanged"><span class="nav-number">3.</span> <span class="nav-text">三、Action 1：Assume Unchanged</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-BAT-%E8%84%9A%E6%9C%AC"><span class="nav-number">3.1.</span> <span class="nav-text">1. BAT 脚本</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-SourceTree-%E9%85%8D%E7%BD%AE"><span class="nav-number">3.2.</span> <span class="nav-text">2. SourceTree 配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E4%BD%BF%E7%94%A8"><span class="nav-number">3.3.</span> <span class="nav-text">3. 使用</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9B%9B%E3%80%81Action-2%EF%BC%9AList-Assume-Unchanged"><span class="nav-number">4.</span> <span class="nav-text">四、Action 2：List Assume Unchanged</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-BAT-%E8%84%9A%E6%9C%AC-1"><span class="nav-number">4.1.</span> <span class="nav-text">1. BAT 脚本</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-SourceTree-%E9%85%8D%E7%BD%AE-1"><span class="nav-number">4.2.</span> <span class="nav-text">2. SourceTree 配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E4%BD%BF%E7%94%A8-1"><span class="nav-number">4.3.</span> <span class="nav-text">3. 使用</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%94%E3%80%81Action-3%EF%BC%9ARestore-All-Assume-Unchanged"><span class="nav-number">5.</span> <span class="nav-text">五、Action 3：Restore All Assume Unchanged</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-BAT-%E8%84%9A%E6%9C%AC-2"><span class="nav-number">5.1.</span> <span class="nav-text">1. BAT 脚本</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-SourceTree-%E9%85%8D%E7%BD%AE-2"><span class="nav-number">5.2.</span> <span class="nav-text">2. SourceTree 配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E4%BD%BF%E7%94%A8-2"><span class="nav-number">5.3.</span> <span class="nav-text">3. 使用</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%AD%E3%80%81%E4%B8%89%E4%B8%AA-Action-%E6%80%BB%E9%85%8D%E7%BD%AE%E8%A1%A8"><span class="nav-number">6.</span> <span class="nav-text">六、三个 Action 总配置表</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%83%E3%80%81%E7%9B%B4%E6%8E%A5%E5%AF%BC%E5%85%A5-customactions-xml"><span class="nav-number">7.</span> <span class="nav-text">七、直接导入 customactions.xml</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%AB%E3%80%81%E6%97%A5%E5%B8%B8%E4%BD%BF%E7%94%A8%E6%B5%81%E7%A8%8B"><span class="nav-number">8.</span> <span class="nav-text">八、日常使用流程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B9%9D%E3%80%81%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9"><span class="nav-number">9.</span> <span class="nav-text">九、注意事项</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8D%81%E3%80%81Windows-%E5%8F%B3%E9%94%AE%E9%85%8D%E7%BD%AE%EF%BC%9A%E4%BD%BF%E7%94%A8-SourceTree-%E6%89%93%E5%BC%80%E6%8C%87%E5%AE%9A%E7%9B%AE%E5%BD%95"><span class="nav-number">10.</span> <span class="nav-text">十、Windows 右键配置：使用 SourceTree 打开指定目录</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A0%B8%E5%BF%83%E5%91%BD%E4%BB%A4"><span class="nav-number">10.1.</span> <span class="nav-text">核心命令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%80%E9%94%AE%E6%B3%A8%E5%86%8C%E8%A1%A8%E8%84%9A%E6%9C%AC%EF%BC%88-reg%EF%BC%89"><span class="nav-number">10.2.</span> <span class="nav-text">一键注册表脚本（.reg）</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2026</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">yndongyong</span>
+</div>
+
+
+<div class="powered-by">
+<i class="fa fa-user-md"></i><span id="busuanzi_container_site_uv">
+  本站访客数:<span id="busuanzi_value_site_uv"></span>
+</span>
+</div>
+<div class="powered-by">
+  由 <a class="theme-link" target="_blank" rel="noopener" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" target="_blank" rel="noopener" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+<div class="theme-info">
+  <div class="powered-by"></div>
+  <span class="post-count">博客全站共38.5k字</span>
+</div>
+
+
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+  
+  <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

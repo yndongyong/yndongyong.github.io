@@ -1,0 +1,990 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Dart,Flutter,Kotlin," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="yndongyong‘s blog" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="本文针对具备 Kotlin &#x2F; Android 开发背景的同学，剔除琐碎细节与纯理论，聚焦 Dart 2.18 → Dart 3.x 在 Flutter 开发中最核心、最高频的现代语法特性与差异对照。  一、Kotlin 与 Dart 核心语法映射表   场景 &#x2F; 概念 Kotlin Dart    可变变量 var a &#x3D; 1 var a &#x3D; 1;   只读引用（运行时） v">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Dart 现代语法速查笔记（面向 Kotlin &#x2F; Android 开发者）">
+<meta property="og:url" content="https://yndongyong.github.io/2026/09/27/Dart%E7%8E%B0%E4%BB%A3%E8%AF%AD%E6%B3%95%E9%80%9F%E6%9F%A5%E7%AC%94%E8%AE%B0/index.html">
+<meta property="og:site_name" content="yndongyong‘s blog">
+<meta property="og:description" content="本文针对具备 Kotlin &#x2F; Android 开发背景的同学，剔除琐碎细节与纯理论，聚焦 Dart 2.18 → Dart 3.x 在 Flutter 开发中最核心、最高频的现代语法特性与差异对照。  一、Kotlin 与 Dart 核心语法映射表   场景 &#x2F; 概念 Kotlin Dart    可变变量 var a &#x3D; 1 var a &#x3D; 1;   只读引用（运行时） v">
+<meta property="og:locale">
+<meta property="article:published_time" content="2026-09-27T06:26:00.000Z">
+<meta property="article:modified_time" content="2026-09-27T06:27:12.644Z">
+<meta property="article:author" content="yndongyong">
+<meta property="article:tag" content="Dart">
+<meta property="article:tag" content="Flutter">
+<meta property="article:tag" content="Kotlin">
+<meta name="twitter:card" content="summary">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://yndongyong.github.io/2026/09/27/Dart现代语法速查笔记/"/>
+
+
+
+
+
+  <title>Dart 现代语法速查笔记（面向 Kotlin / Android 开发者） | yndongyong‘s blog</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">yndongyong‘s blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">生命不息，学习不止！</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://yndongyong.github.io/2026/09/27/Dart%E7%8E%B0%E4%BB%A3%E8%AF%AD%E6%B3%95%E9%80%9F%E6%9F%A5%E7%AC%94%E8%AE%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="yndongyong‘s blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Dart 现代语法速查笔记（面向 Kotlin / Android 开发者）</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2026-09-27T14:26:00+08:00">
+                2026-09-27
+              </time>
+            
+
+            
+              <span class="post-meta-divider">|</span>
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">更新于</span>
+              
+              <time title="更新于" itemprop="dateModified" datetime="2026-09-27T14:27:12+08:00">
+                2026-09-27
+              </time>
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Flutter/" itemprop="url" rel="index">
+                    <span itemprop="name">Flutter</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Dart/" itemprop="url" rel="index">
+                    <span itemprop="name">Dart</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>本文针对具备 Kotlin &#x2F; Android 开发背景的同学，剔除琐碎细节与纯理论，聚焦 <strong>Dart 2.18 → Dart 3.x</strong> 在 Flutter 开发中最核心、最高频的现代语法特性与差异对照。</p>
+<hr>
+<h2 id="一、Kotlin-与-Dart-核心语法映射表"><a href="#一、Kotlin-与-Dart-核心语法映射表" class="headerlink" title="一、Kotlin 与 Dart 核心语法映射表"></a>一、Kotlin 与 Dart 核心语法映射表</h2><table>
+<thead>
+<tr>
+<th>场景 &#x2F; 概念</th>
+<th>Kotlin</th>
+<th>Dart</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>可变变量</td>
+<td><code>var a = 1</code></td>
+<td><code>var a = 1;</code></td>
+</tr>
+<tr>
+<td>只读引用（运行时）</td>
+<td><code>val a = compute()</code></td>
+<td><code>final a = compute();</code></td>
+</tr>
+<tr>
+<td>编译期常量</td>
+<td><code>const val A = 1</code></td>
+<td><code>const a = 1;</code></td>
+</tr>
+<tr>
+<td>延迟初始化</td>
+<td><code>lateinit var a: String</code></td>
+<td><code>late String a;</code> &#x2F; <code>late final a = ...</code></td>
+</tr>
+<tr>
+<td>可空类型</td>
+<td><code>String?</code></td>
+<td><code>String?</code></td>
+</tr>
+<tr>
+<td>安全调用</td>
+<td><code>user?.name</code></td>
+<td><code>user?.name</code></td>
+</tr>
+<tr>
+<td>空值合并 &#x2F; 默认值</td>
+<td><code>name ?: &quot;Unknown&quot;</code></td>
+<td><code>name ?? &#39;Unknown&#39;</code></td>
+</tr>
+<tr>
+<td>空值赋值</td>
+<td><code>if (a == null) a = b</code></td>
+<td><code>a ??= b;</code></td>
+</tr>
+<tr>
+<td>非空断言</td>
+<td><code>name!!</code></td>
+<td><code>name!</code></td>
+</tr>
+<tr>
+<td>作用域变换 &#x2F; 级联</td>
+<td><code>obj.apply &#123; ... &#125;</code></td>
+<td><code>obj..foo()..bar();</code></td>
+</tr>
+<tr>
+<td>Lambda &#x2F; 箭头函数</td>
+<td><code>&#123; x -&gt; x * 2 &#125;</code></td>
+<td><code>(x) =&gt; x * 2</code></td>
+</tr>
+<tr>
+<td>必填命名参数</td>
+<td>构造器&#x2F;函数命名调用</td>
+<td><code>&#123;required String name&#125;</code></td>
+</tr>
+<tr>
+<td>构造器参数自动绑定</td>
+<td><code>class User(val name: String)</code></td>
+<td><code>User(this.name);</code></td>
+</tr>
+<tr>
+<td>继承父类参数透传</td>
+<td><code>class Button(key: Key) : View(key)</code></td>
+<td><code>Button(&#123;super.key&#125;);</code></td>
+</tr>
+<tr>
+<td>接口声明</td>
+<td><code>interface Repository</code></td>
+<td><code>abstract interface class Repository</code> (Dart 3)</td>
+</tr>
+<tr>
+<td>密封类</td>
+<td><code>sealed class UiState</code></td>
+<td><code>sealed class UiState</code> (Dart 3)</td>
+</tr>
+<tr>
+<td>条件分支表达式</td>
+<td><code>val x = when(state) &#123; ... &#125;</code></td>
+<td><code>final x = switch(state) &#123; ... &#125;;</code> (Dart 3)</td>
+</tr>
+<tr>
+<td>匿名数据结构 &#x2F; 元组</td>
+<td><code>Pair(&quot;A&quot;, 1)</code></td>
+<td>Record: <code>(&#39;A&#39;, 1)</code> (Dart 3)</td>
+</tr>
+<tr>
+<td>解构匹配</td>
+<td><code>val (name, age) = user</code></td>
+<td><code>final (name, age) = user;</code> (Dart 3)</td>
+</tr>
+<tr>
+<td>集合过滤</td>
+<td><code>list.filter &#123; it &gt; 0 &#125;</code></td>
+<td><code>list.where((x) =&gt; x &gt; 0).toList()</code></td>
+</tr>
+<tr>
+<td>集合展开</td>
+<td><code>val all = a + b</code></td>
+<td><code>[...a, ...b]</code></td>
+</tr>
+<tr>
+<td>异步单值</td>
+<td><code>suspend fun load(): String</code></td>
+<td><code>Future&lt;String&gt; load() async</code></td>
+</tr>
+<tr>
+<td>异步事件流</td>
+<td><code>Flow&lt;Int&gt;</code> &#x2F; <code>flow &#123; emit(1) &#125;</code></td>
+<td><code>Stream&lt;int&gt;</code> &#x2F; <code>async* &#123; yield 1; &#125;</code></td>
+</tr>
+<tr>
+<td>单例 &#x2F; 伴生对象</td>
+<td><code>object</code> &#x2F; <code>companion object</code></td>
+<td>Top-level 顶层成员 &#x2F; <code>static</code> &#x2F; <code>factory</code></td>
+</tr>
+<tr>
+<td>扩展函数 &#x2F; 属性</td>
+<td><code>val String.isEmail: Boolean</code></td>
+<td><code>extension on String &#123; bool get isEmail =&gt; ...; &#125;</code></td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="二、变量声明：var-x2F-final-x2F-const-x2F-late"><a href="#二、变量声明：var-x2F-final-x2F-const-x2F-late" class="headerlink" title="二、变量声明：var &#x2F; final &#x2F; const &#x2F; late"></a>二、变量声明：var &#x2F; final &#x2F; const &#x2F; late</h2><figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 1. var: 类型自动推断，变量可重新赋值</span></span><br><span class="line"><span class="keyword">var</span> name = <span class="string">&#x27;Tom&#x27;</span>;</span><br><span class="line">name = <span class="string">&#x27;Jerry&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 2. final: 运行时常量，仅可赋值一次（对应 Kotlin val）</span></span><br><span class="line"><span class="keyword">final</span> now = <span class="built_in">DateTime</span>.now();</span><br><span class="line"></span><br><span class="line"><span class="comment">// 3. const: 编译期常量，用于 Flutter Widget 性能优化</span></span><br><span class="line"><span class="keyword">const</span> padding = EdgeInsets.all(<span class="number">16</span>);</span><br><span class="line"><span class="keyword">const</span> widget = SizedBox(height: <span class="number">10</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 4. late: 延迟初始化（对应 Kotlin lateinit），不立即初始化但承诺使用前已赋值</span></span><br><span class="line"><span class="keyword">late</span> <span class="keyword">final</span> TextEditingController controller;</span><br><span class="line"></span><br><span class="line"><span class="comment">// late 表达式同时具备类似 Kotlin lazy 的特性（第一次访问时求值）</span></span><br><span class="line"><span class="keyword">late</span> <span class="built_in">String</span> heavyData = _computeHeavyData();</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p><strong>注意</strong>：Flutter 中 Widget 属性若全部为 <code>const</code>，框架会复用编译期对象，避免频繁重绘。</p>
+</blockquote>
+<hr>
+<h2 id="三、空安全与运算符"><a href="#三、空安全与运算符" class="headerlink" title="三、空安全与运算符"></a>三、空安全与运算符</h2><p>Dart 默认开启健全空安全（Sound Null Safety）：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">String?</span> nullableStr; <span class="comment">// 允许为 null</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 1. 安全调用 ?. 与空合并 ??（等价于 Kotlin ?:）</span></span><br><span class="line"><span class="keyword">final</span> length = nullableStr?.length ?? <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 2. 空赋值操作符 ??=</span></span><br><span class="line">nullableStr ??= <span class="string">&#x27;Default Value&#x27;</span>; <span class="comment">// 为 null 时才赋值</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 3. 智能类型提升（Smart Cast）</span></span><br><span class="line"><span class="keyword">if</span> (nullableStr != <span class="keyword">null</span>) &#123;</span><br><span class="line">  <span class="built_in">print</span>(nullableStr.length); <span class="comment">// 自动提升为非空 String，无需手动断言</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 4. 慎用非空断言 !</span></span><br><span class="line"><span class="built_in">print</span>(nullableStr!); <span class="comment">// 等价于 Kotlin 的 !!</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 5. 类型判断与转换</span></span><br><span class="line"><span class="keyword">if</span> (value <span class="keyword">is</span> <span class="built_in">String</span>) &#123; ... &#125;</span><br><span class="line"><span class="keyword">final</span> str = value <span class="keyword">as</span> <span class="built_in">String</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 6. 整除运算符 ~/（容易忽略的 Dart 特有操作符）</span></span><br><span class="line"><span class="keyword">final</span> result = <span class="number">10</span> ~/ <span class="number">3</span>; <span class="comment">// 结果为整数 3</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="四、函数与-Flutter-参数风格"><a href="#四、函数与-Flutter-参数风格" class="headerlink" title="四、函数与 Flutter 参数风格"></a>四、函数与 Flutter 参数风格</h2><p>Dart 语法深度适配了 Flutter 嵌套组件树的设计：</p>
+<h3 id="1-命名参数与必选标记-required"><a href="#1-命名参数与必选标记-required" class="headerlink" title="1. 命名参数与必选标记 required"></a>1. 命名参数与必选标记 <code>required</code></h3><figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 使用 &#123;&#125; 包裹即为命名参数，配合 required 实现严格约束</span></span><br><span class="line"><span class="keyword">void</span> login(&#123;</span><br><span class="line">  <span class="keyword">required</span> <span class="built_in">String</span> username,</span><br><span class="line">  <span class="keyword">required</span> <span class="built_in">String</span> password,</span><br><span class="line">  <span class="built_in">bool</span> rememberMe = <span class="keyword">true</span>, <span class="comment">// 默认参数</span></span><br><span class="line">&#125;) &#123;&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 调用端具备极高可读性</span></span><br><span class="line">login(</span><br><span class="line">  username: <span class="string">&#x27;tom&#x27;</span>,</span><br><span class="line">  password: <span class="string">&#x27;123&#x27;</span>,</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-回调函数与级联操作符"><a href="#2-回调函数与级联操作符" class="headerlink" title="2. 回调函数与级联操作符 .."></a>2. 回调函数与级联操作符 <code>..</code></h3><figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// VoidCallback 对应 Kotlin 的 () -&gt; Unit</span></span><br><span class="line">Widget buildButton(&#123;<span class="keyword">required</span> VoidCallback onPressed&#125;) &#123;</span><br><span class="line">  <span class="keyword">return</span> ElevatedButton(onPressed: onPressed, child: <span class="keyword">const</span> Text(<span class="string">&#x27;OK&#x27;</span>));</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 级联操作符 ..（类似 Kotlin 的 apply，链式操作同一个对象）</span></span><br><span class="line"><span class="keyword">final</span> controller = TextEditingController()</span><br><span class="line">  ..text = <span class="string">&#x27;Hello&#x27;</span></span><br><span class="line">  ..selection = <span class="keyword">const</span> TextSelection.collapsed(offset: <span class="number">5</span>);</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="五、面向对象与现代化类设计"><a href="#五、面向对象与现代化类设计" class="headerlink" title="五、面向对象与现代化类设计"></a>五、面向对象与现代化类设计</h2><h3 id="1-构造函数简化与-super-key"><a href="#1-构造函数简化与-super-key" class="headerlink" title="1. 构造函数简化与 super.key"></a>1. 构造函数简化与 <code>super.key</code></h3><figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">UserWidget</span> <span class="keyword">extends</span> <span class="title">StatelessWidget</span> </span>&#123;</span><br><span class="line">  <span class="comment">// super.key 替代了旧版的 : super(key: key)</span></span><br><span class="line">  <span class="keyword">const</span> UserWidget(&#123;</span><br><span class="line">    <span class="keyword">super</span>.key,</span><br><span class="line">    <span class="keyword">required</span> <span class="keyword">this</span>.name,</span><br><span class="line">    <span class="keyword">this</span>.age = <span class="number">18</span>,</span><br><span class="line">  &#125;);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">final</span> <span class="built_in">String</span> name;</span><br><span class="line">  <span class="keyword">final</span> <span class="built_in">int</span> age;</span><br><span class="line"></span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  Widget build(BuildContext context) =&gt; Text(<span class="string">&#x27;<span class="subst">$name</span> - <span class="subst">$age</span>&#x27;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-命名构造函数与-factory"><a href="#2-命名构造函数与-factory" class="headerlink" title="2. 命名构造函数与 factory"></a>2. 命名构造函数与 <code>factory</code></h3><figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">User</span> </span>&#123;</span><br><span class="line">  <span class="keyword">final</span> <span class="built_in">String</span> name;</span><br><span class="line">  User(<span class="keyword">this</span>.name);</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 命名构造函数（替代 Kotlin companion object 工厂方法）</span></span><br><span class="line">  User.guest() : name = <span class="string">&#x27;Guest&#x27;</span>;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// factory 构造函数：常用于 JSON 反序列化、缓存或根据条件返回子类</span></span><br><span class="line">  <span class="keyword">factory</span> User.fromJson(<span class="built_in">Map</span>&lt;<span class="built_in">String</span>, <span class="built_in">dynamic</span>&gt; json) &#123;</span><br><span class="line">    <span class="keyword">return</span> User(json[<span class="string">&#x27;name&#x27;</span>] <span class="keyword">as</span> <span class="built_in">String</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-私有作用域、Mixin-与接口修饰符（Dart-3）"><a href="#3-私有作用域、Mixin-与接口修饰符（Dart-3）" class="headerlink" title="3. 私有作用域、Mixin 与接口修饰符（Dart 3）"></a>3. 私有作用域、Mixin 与接口修饰符（Dart 3）</h3><ul>
+<li><strong>私有标识</strong>：变量或方法前加下划线 <code>_name</code>，其私有范围是 <strong>文件&#x2F;Library 级</strong>（而非仅仅 Class 内）。</li>
+<li>**<code>mixin</code>**：实现跨类行为复用（<code>class Controller with LogMixin &#123;&#125;</code>）。</li>
+<li>**<code>abstract interface class</code>**：明确声明纯接口契约。</li>
+<li>**<code>extension</code>**：扩展函数&#x2F;Getter：<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">extension</span> StringExt <span class="keyword">on</span> <span class="built_in">String</span> &#123;</span><br><span class="line">  <span class="built_in">bool</span> <span class="keyword">get</span> isEmail =&gt; contains(<span class="string">&#x27;@&#x27;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<hr>
+<h2 id="六、集合与内嵌语法（Collection-if-x2F-for-x2F-spread）"><a href="#六、集合与内嵌语法（Collection-if-x2F-for-x2F-spread）" class="headerlink" title="六、集合与内嵌语法（Collection if &#x2F; for &#x2F; spread）"></a>六、集合与内嵌语法（Collection if &#x2F; for &#x2F; spread）</h2><p>这是 Flutter 声明式 UI 编程的核心利器：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">final</span> <span class="built_in">bool</span> isLoggedIn = <span class="keyword">true</span>;</span><br><span class="line"><span class="keyword">final</span> items = [<span class="string">&#x27;Item 1&#x27;</span>, <span class="string">&#x27;Item 2&#x27;</span>];</span><br><span class="line"></span><br><span class="line"><span class="keyword">final</span> widgets = [</span><br><span class="line">  <span class="keyword">const</span> HeaderWidget(),</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 1. Collection if：满足条件才插入元素</span></span><br><span class="line">  <span class="keyword">if</span> (isLoggedIn) </span><br><span class="line">    <span class="keyword">const</span> UserProfileWidget()</span><br><span class="line">  <span class="keyword">else</span> </span><br><span class="line">    <span class="keyword">const</span> LoginButton(),</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 2. Collection for：直接展开循环生成组件</span></span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">final</span> item <span class="keyword">in</span> items) </span><br><span class="line">    ListTile(title: Text(item)),</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 3. 展开操作符 ... 与空安全展开 ...?</span></span><br><span class="line">  ...extraWidgets,</span><br><span class="line">  ...?nullableWidgets, <span class="comment">// 若为 null 则静默忽略</span></span><br><span class="line">];</span><br></pre></td></tr></table></figure>
+
+<h3 id="常见集合流式-API-与-Kotlin-对照"><a href="#常见集合流式-API-与-Kotlin-对照" class="headerlink" title="常见集合流式 API 与 Kotlin 对照"></a>常见集合流式 API 与 Kotlin 对照</h3><figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 过滤：where 对应 Kotlin 的 filter</span></span><br><span class="line"><span class="keyword">final</span> activeUsers = users.where((u) =&gt; u.isActive).toList();</span><br><span class="line"></span><br><span class="line"><span class="comment">// 变换：map 对应 Kotlin 的 map</span></span><br><span class="line"><span class="keyword">final</span> names = users.map((u) =&gt; u.name).toList();</span><br><span class="line"></span><br><span class="line"><span class="comment">// 聚合：fold / reduce</span></span><br><span class="line"><span class="keyword">final</span> sum = numbers.fold(<span class="number">0</span>, (prev, elem) =&gt; prev + elem);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 判断：any / every 对应 Kotlin 的 any / all</span></span><br><span class="line"><span class="keyword">final</span> hasAdmin = users.any((u) =&gt; u.isAdmin);</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="七、Dart-3-核心：Record、Pattern-与-Switch-表达式"><a href="#七、Dart-3-核心：Record、Pattern-与-Switch-表达式" class="headerlink" title="七、Dart 3 核心：Record、Pattern 与 Switch 表达式"></a>七、Dart 3 核心：Record、Pattern 与 Switch 表达式</h2><p>Dart 3 引入了完整的模式匹配与元组支持，极大地重构了状态管理逻辑。</p>
+<h3 id="1-记录（Record）：轻量级匿名数据返回"><a href="#1-记录（Record）：轻量级匿名数据返回" class="headerlink" title="1. 记录（Record）：轻量级匿名数据返回"></a>1. 记录（Record）：轻量级匿名数据返回</h3><figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 多返回值无需专门定义 DTO Class，支持位置与命名参数</span></span><br><span class="line">(<span class="built_in">String</span> token, <span class="built_in">int</span> expiresIn) login() &#123;</span><br><span class="line">  <span class="keyword">return</span> (<span class="string">&#x27;token_xxx&#x27;</span>, <span class="number">3600</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 模式匹配解构</span></span><br><span class="line"><span class="keyword">final</span> (token, expire) = login();</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-sealed-class-配合-switch-表达式建模-UI-状态"><a href="#2-sealed-class-配合-switch-表达式建模-UI-状态" class="headerlink" title="2. sealed class 配合 switch 表达式建模 UI 状态"></a>2. <code>sealed class</code> 配合 <code>switch</code> 表达式建模 UI 状态</h3><p>类似 Kotlin 的 Sealed Class + <code>when</code>：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 1. 定义密封类状态</span></span><br><span class="line">sealed <span class="class"><span class="keyword">class</span> <span class="title">UiState</span> </span>&#123;&#125;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Loading</span> <span class="keyword">extends</span> <span class="title">UiState</span> </span>&#123;&#125;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Success</span> <span class="keyword">extends</span> <span class="title">UiState</span> </span>&#123;</span><br><span class="line">  <span class="keyword">final</span> <span class="built_in">List</span>&lt;<span class="built_in">String</span>&gt; data;</span><br><span class="line">  Success(<span class="keyword">this</span>.data);</span><br><span class="line">&#125;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Error</span> <span class="keyword">extends</span> <span class="title">UiState</span> </span>&#123;</span><br><span class="line">  <span class="keyword">final</span> <span class="built_in">String</span> message;</span><br><span class="line">  Error(<span class="keyword">this</span>.message);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 2. 现代 Switch 表达式模式匹配解构（详尽性检查，少写 case 编译报错）</span></span><br><span class="line">Widget buildBody(UiState state) &#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">switch</span> (state) &#123;</span><br><span class="line">    Loading() =&gt; <span class="keyword">const</span> CircularProgressIndicator(),</span><br><span class="line">    Success(:<span class="keyword">final</span> data) =&gt; ListView(children: [<span class="keyword">for</span> (<span class="keyword">final</span> item <span class="keyword">in</span> data) Text(item)]),</span><br><span class="line">    Error(:<span class="keyword">final</span> message) =&gt; Text(<span class="string">&#x27;Error: <span class="subst">$message</span>&#x27;</span>),</span><br><span class="line">  &#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="八、异步编程：Future-与-Stream"><a href="#八、异步编程：Future-与-Stream" class="headerlink" title="八、异步编程：Future 与 Stream"></a>八、异步编程：Future 与 Stream</h2><table>
+<thead>
+<tr>
+<th>概念</th>
+<th>核心语法</th>
+<th>对齐 Kotlin</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>单次异步任务</td>
+<td><code>Future&lt;T&gt;</code> + <code>async / await</code></td>
+<td><code>suspend fun</code> 挂起函数</td>
+</tr>
+<tr>
+<td>异步并发执行</td>
+<td><code>await Future.wait([taskA(), taskB()])</code></td>
+<td><code>coroutineScope &#123; awaitAll(...) &#125;</code></td>
+</tr>
+<tr>
+<td>异步事件流</td>
+<td><code>Stream&lt;T&gt;</code> + <code>async*</code> &#x2F; <code>yield</code></td>
+<td><code>Flow&lt;T&gt;</code> + <code>flow &#123; emit(...) &#125;</code></td>
+</tr>
+<tr>
+<td>消费事件流</td>
+<td><code>await for (final item in stream)</code></td>
+<td><code>flow.collect &#123; item -&gt; ... &#125;</code></td>
+</tr>
+</tbody></table>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 1. Future 异步请求与错误重抛</span></span><br><span class="line">Future&lt;User&gt; fetchUser(<span class="built_in">String</span> id) <span class="keyword">async</span> &#123;</span><br><span class="line">  <span class="keyword">try</span> &#123;</span><br><span class="line">    <span class="keyword">final</span> response = <span class="keyword">await</span> http.<span class="keyword">get</span>(<span class="string">&#x27;/user/<span class="subst">$id</span>&#x27;</span>);</span><br><span class="line">    <span class="keyword">return</span> User.fromJson(response.data);</span><br><span class="line">  &#125; <span class="keyword">catch</span> (e) &#123;</span><br><span class="line">    logError(e);</span><br><span class="line">    <span class="keyword">rethrow</span>; <span class="comment">// 重新向上抛出原始异常</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 2. Stream 数据生成器（对应 Kotlin flow 构建器）</span></span><br><span class="line">Stream&lt;<span class="built_in">int</span>&gt; countDown(<span class="built_in">int</span> from) <span class="keyword">async</span>* &#123;</span><br><span class="line">  <span class="keyword">for</span> (<span class="built_in">int</span> i = from; i &gt;= <span class="number">0</span>; i--) &#123;</span><br><span class="line">    <span class="keyword">await</span> Future.delayed(<span class="keyword">const</span> <span class="built_in">Duration</span>(seconds: <span class="number">1</span>));</span><br><span class="line">    <span class="keyword">yield</span> i; <span class="comment">// 产生数据流</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Dart/" rel="tag"><i class="fa fa-tag"></i> Dart</a>
+          
+            <a href="/tags/Flutter/" rel="tag"><i class="fa fa-tag"></i> Flutter</a>
+          
+            <a href="/tags/Kotlin/" rel="tag"><i class="fa fa-tag"></i> Kotlin</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2026/09/27/SourceTree%E8%87%AA%E5%AE%9A%E4%B9%89GitActions/" rel="next" title="SourceTree 自定义 Git Actions">
+                <i class="fa fa-chevron-left"></i> SourceTree 自定义 Git Actions
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="" />
+          <p class="site-author-name" itemprop="name"></p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">35</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">14</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">34</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%E3%80%81Kotlin-%E4%B8%8E-Dart-%E6%A0%B8%E5%BF%83%E8%AF%AD%E6%B3%95%E6%98%A0%E5%B0%84%E8%A1%A8"><span class="nav-number">1.</span> <span class="nav-text">一、Kotlin 与 Dart 核心语法映射表</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8C%E3%80%81%E5%8F%98%E9%87%8F%E5%A3%B0%E6%98%8E%EF%BC%9Avar-x2F-final-x2F-const-x2F-late"><span class="nav-number">2.</span> <span class="nav-text">二、变量声明：var &#x2F; final &#x2F; const &#x2F; late</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%89%E3%80%81%E7%A9%BA%E5%AE%89%E5%85%A8%E4%B8%8E%E8%BF%90%E7%AE%97%E7%AC%A6"><span class="nav-number">3.</span> <span class="nav-text">三、空安全与运算符</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9B%9B%E3%80%81%E5%87%BD%E6%95%B0%E4%B8%8E-Flutter-%E5%8F%82%E6%95%B0%E9%A3%8E%E6%A0%BC"><span class="nav-number">4.</span> <span class="nav-text">四、函数与 Flutter 参数风格</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E5%91%BD%E5%90%8D%E5%8F%82%E6%95%B0%E4%B8%8E%E5%BF%85%E9%80%89%E6%A0%87%E8%AE%B0-required"><span class="nav-number">4.1.</span> <span class="nav-text">1. 命名参数与必选标记 required</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E5%9B%9E%E8%B0%83%E5%87%BD%E6%95%B0%E4%B8%8E%E7%BA%A7%E8%81%94%E6%93%8D%E4%BD%9C%E7%AC%A6"><span class="nav-number">4.2.</span> <span class="nav-text">2. 回调函数与级联操作符 ..</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%94%E3%80%81%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E4%B8%8E%E7%8E%B0%E4%BB%A3%E5%8C%96%E7%B1%BB%E8%AE%BE%E8%AE%A1"><span class="nav-number">5.</span> <span class="nav-text">五、面向对象与现代化类设计</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0%E7%AE%80%E5%8C%96%E4%B8%8E-super-key"><span class="nav-number">5.1.</span> <span class="nav-text">1. 构造函数简化与 super.key</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E5%91%BD%E5%90%8D%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0%E4%B8%8E-factory"><span class="nav-number">5.2.</span> <span class="nav-text">2. 命名构造函数与 factory</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E7%A7%81%E6%9C%89%E4%BD%9C%E7%94%A8%E5%9F%9F%E3%80%81Mixin-%E4%B8%8E%E6%8E%A5%E5%8F%A3%E4%BF%AE%E9%A5%B0%E7%AC%A6%EF%BC%88Dart-3%EF%BC%89"><span class="nav-number">5.3.</span> <span class="nav-text">3. 私有作用域、Mixin 与接口修饰符（Dart 3）</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%AD%E3%80%81%E9%9B%86%E5%90%88%E4%B8%8E%E5%86%85%E5%B5%8C%E8%AF%AD%E6%B3%95%EF%BC%88Collection-if-x2F-for-x2F-spread%EF%BC%89"><span class="nav-number">6.</span> <span class="nav-text">六、集合与内嵌语法（Collection if &#x2F; for &#x2F; spread）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B8%B8%E8%A7%81%E9%9B%86%E5%90%88%E6%B5%81%E5%BC%8F-API-%E4%B8%8E-Kotlin-%E5%AF%B9%E7%85%A7"><span class="nav-number">6.1.</span> <span class="nav-text">常见集合流式 API 与 Kotlin 对照</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%83%E3%80%81Dart-3-%E6%A0%B8%E5%BF%83%EF%BC%9ARecord%E3%80%81Pattern-%E4%B8%8E-Switch-%E8%A1%A8%E8%BE%BE%E5%BC%8F"><span class="nav-number">7.</span> <span class="nav-text">七、Dart 3 核心：Record、Pattern 与 Switch 表达式</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E8%AE%B0%E5%BD%95%EF%BC%88Record%EF%BC%89%EF%BC%9A%E8%BD%BB%E9%87%8F%E7%BA%A7%E5%8C%BF%E5%90%8D%E6%95%B0%E6%8D%AE%E8%BF%94%E5%9B%9E"><span class="nav-number">7.1.</span> <span class="nav-text">1. 记录（Record）：轻量级匿名数据返回</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-sealed-class-%E9%85%8D%E5%90%88-switch-%E8%A1%A8%E8%BE%BE%E5%BC%8F%E5%BB%BA%E6%A8%A1-UI-%E7%8A%B6%E6%80%81"><span class="nav-number">7.2.</span> <span class="nav-text">2. sealed class 配合 switch 表达式建模 UI 状态</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%AB%E3%80%81%E5%BC%82%E6%AD%A5%E7%BC%96%E7%A8%8B%EF%BC%9AFuture-%E4%B8%8E-Stream"><span class="nav-number">8.</span> <span class="nav-text">八、异步编程：Future 与 Stream</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2026</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">yndongyong</span>
+</div>
+
+
+<div class="powered-by">
+<i class="fa fa-user-md"></i><span id="busuanzi_container_site_uv">
+  本站访客数:<span id="busuanzi_value_site_uv"></span>
+</span>
+</div>
+<div class="powered-by">
+  由 <a class="theme-link" target="_blank" rel="noopener" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" target="_blank" rel="noopener" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+<div class="theme-info">
+  <div class="powered-by"></div>
+  <span class="post-count">博客全站共38.5k字</span>
+</div>
+
+
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+  
+  <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
